@@ -1,0 +1,18 @@
+arrow
+confire
+Flask
+Flask-RESTful
+Flask-Script
+Flask-SQLAlchemy
+gunicorn
+redis
+python-dotenv
+
+# test
+factory-boy
+fake-factory
+fakeredis
+mock
+pytest
+pytest-flask
+pytest-mock

@@ -9,6 +9,7 @@ redis
 python-dotenv
 pyjwt
 psycopg2
+enum
 
 
 # test

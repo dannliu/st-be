@@ -35,3 +35,6 @@ class APIErrors:
     PASSWORD_INCORRECT = (401, 4012, 'Password is incorrect')
     TOKEN_EXPIRED = (401, 4013, 'Token is expired')
     TOKEN_INVALID = (401, 4014, 'Token is invalid')
+
+    # Parameter errors
+    PARAMETER_MISSING = (400, 4001, 'Missing parameter')

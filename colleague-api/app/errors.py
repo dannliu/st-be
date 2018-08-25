@@ -1,3 +1,12 @@
+from flask import jsonify
+
+
+def handle_api_exception(error):
+    response = jsonify(error.to_dict())
+    response.status_code = error.status_code
+    return response
+
+
 class APIException(Exception):
     def __init__(self, http_status_code, code, error_message, result=None):
         Exception.__init__(self)

@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from flask import current_app, Flask
+from flask import Flask, jsonify
 from flask_restful import Api
 
 from .config import settings
+from .errors import APIException
 from .extensions import db
 
 
@@ -27,20 +28,28 @@ def create_app(config_object=None, settings=None):
 
 
 def register_extensions(app):
+    import models
     db.init_app(app)
     db.app = app
+    db.create_all()
     app.db = db
 
 
 def register_blueprints(app):
     from .api import TestUser
+    from .api import Login
 
     api = Api(app)
     api.add_resource(TestUser, '/test')
+    api.add_resource(Login, '/sns/v1/login')
 
 
 def register_errorhandlers(app):
-    return None
+    @app.errorhandler(APIException)
+    def handle_api_exception(error):
+        response = jsonify(error.to_dict())
+        response.status_code = error.status_code
+        return response
 
 
 app = create_app(settings=settings)

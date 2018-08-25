@@ -2,12 +2,12 @@
 
 from datetime import datetime
 
-from app.extensions import db
+from .extensions import db
 
 
 class UserStatus(object):
-    New = 0
-    Confirmed = 1  # after confirmed by sms
+    Login = 0
+    Logout = 1
     Blocked = 2
     Deleted = 3
 

@@ -30,14 +30,14 @@ class Login(Resource):
     TOKEN_ALGORITHM = 'HS256'
     ACCESS_TOKEN_EXP_DURATION_MINUTES = 60 * 24  # 1d
     REFRESH_TOKEN_EXP_DURATION_MINUTES = 60 * 24 * 30  # 30d
-    LOGIN_TYPE = Enum('login', 'refresh')
+    LOGIN_TYPE = Enum('LoginType', ['login', 'refresh'])
 
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('device-id', dest='device_id', type=str,
                                    location='headers', required=True)
         self.reqparse.add_argument('type', type=str, location='json',
-                                   choices=[t.key for t in Login.LOGIN_TYPE],
+                                   choices=[t.name for t in Login.LOGIN_TYPE],
                                    required=True)
         self.reqparse.add_argument('mobile', type=str, location='json')
         self.reqparse.add_argument('password', type=str, location='json')
@@ -47,7 +47,7 @@ class Login(Resource):
         args = self.reqparse.parse_args()
         device_id = args['device_id']
         login_type = args['type']
-        if Login.LOGIN_TYPE.login.key == login_type:
+        if Login.LOGIN_TYPE.login.name == login_type:
             mobile = args['mobile']
             password = args['password']
             if mobile is None or password is None:
@@ -61,7 +61,7 @@ class Login(Resource):
             if not check_password(user.password_hash, password):
                 raise APIException(*APIErrors.PASSWORD_INCORRECT)
 
-        elif Login.LOGIN_TYPE.refresh.key == login_type:
+        elif Login.LOGIN_TYPE.refresh.name == login_type:
             refresh_token = args['refresh_token']
             if refresh_token is None:
                 raise APIException(*APIErrors.PARAMETER_MISSING, result={

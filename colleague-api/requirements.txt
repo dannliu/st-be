@@ -7,6 +7,10 @@ Flask-SQLAlchemy
 gunicorn
 redis
 python-dotenv
+pyjwt
+psycopg2
+enum34
+
 
 # test
 factory-boy

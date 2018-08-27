@@ -4,8 +4,10 @@ Flask
 Flask-RESTful
 Flask-Script
 Flask-SQLAlchemy
+flask-jwt-extended
 gunicorn
 redis
+psycopg2
 python-dotenv
 
 # test

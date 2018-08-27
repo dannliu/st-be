@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import os
 import dotenv
 
@@ -26,6 +27,12 @@ class Config(Configuration):
     redis_host = environ_setting('REDIS_HOST', required=True)
     redis_port = int(environ_setting('REDIS_PORT', 6379, required=False))
 
+    jwt_secret_key = environ_setting("JWT_SECRET_KEY", required=True)
+    jwt_access_token_expires = int(environ_setting("JWT_ACCESS_TOKEN_EXPIRES", default=30, required=False))   # days
+    jwt_refresh_token_expires = int(environ_setting("JWT_REFRESH_TOKEN_EXPIRES", default=365, required=False))  # days
+
+    max_verification_code_request_count = 5
+
     def config_for_flask(self):
         """
         UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be
@@ -38,6 +45,10 @@ class Config(Configuration):
             "SQLALCHEMY_ECHO": False,
             "SQLALCHEMY_TRACK_MODIFICATIONS": True,
             'SECRET_KEY': self.get('secret_key'),
+            'JWT_SECRET_KEY': self.get('JWT_SECRET_KEY'),
+            'BUNDLE_ERRORS': True,
+            "JWT_ACCESS_TOKEN_EXPIRES": datetime.timedelta(days=self.get('JWT_ACCESS_TOKEN_EXPIRES')),
+            "JWT_REFRESH_TOKEN_EXPIRES": datetime.timedelta(days=self.get('JWT_REFRESH_TOKEN_EXPIRES'))
         }
 
 

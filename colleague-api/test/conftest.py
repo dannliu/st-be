@@ -5,9 +5,9 @@ import os
 import pytest
 from sqlalchemy.exc import InternalError as SQLAInternalError
 
-from app.app import create_app
-from app.config import TestConfig
-from app.extensions import db as _db
+from colleague.app import create_app
+from colleague.config import TestConfig
+from colleague.extensions import db as _db
 
 
 @pytest.yield_fixture(scope='function')

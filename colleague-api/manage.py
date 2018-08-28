@@ -3,7 +3,7 @@
 
 from flask_script import Manager, Shell
 
-from app.app import app, db
+from colleague.app import app, db
 
 
 manager = Manager(app)

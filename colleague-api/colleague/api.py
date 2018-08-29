@@ -85,6 +85,35 @@ class Verification(Resource):
         }
 
 
+class Login(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('device-id', dest='device_id', type=str,
+                                   location='headers', required=True)
+        self.reqparse.add_argument('mobile', type=str, location='json', required=True)
+        self.reqparse.add_argument('password', type=str, location='json', required=True)
+
+    def post(self):
+        args = self.reqparse.parse_args()
+        device_id = args['device_id']
+        mobile = args['mobile']
+        password = args['password']
+        user = User.find_user_mobile(mobile)
+        if user is None:
+            raise ApiException(ErrorCode.NON_EXIST_USER,
+                               "not exist user, please register first")
+        
+        if not user.verify_password(password):
+            raise ApiException(ErrorCode.USER_PASSWORD_WRONG,
+                               "the password is wrong")
+
+        token = user.login_on(device_id)
+        return {
+            "status": 200,
+            "result": token
+        }
+
+
 class TestUser(Resource):
     @login_required
     def get(self):

@@ -2,6 +2,9 @@
 
 from datetime import datetime
 
+import arrow
+from flask_jwt_extended import create_access_token, create_refresh_token
+
 from colleague.extensions import db
 
 
@@ -10,6 +13,7 @@ class UserStatus(object):
     Confirmed = 1  # after confirmed by sms
     Blocked = 2
     Deleted = 3
+    Logout = 4
 
 
 class User(db.Model):
@@ -54,6 +58,23 @@ class User(db.Model):
     def verify_password(self, password):
         # TODO:
         return True
+
+    def login_on(self, device_id):
+        self.last_login_at = arrow.utcnow().naive
+        self.status = UserStatus.Confirmed
+        db.session.commit()
+
+        payload = {
+            'user_id': self.id,
+            'device_id': device_id,
+            'timestamp': arrow.get(self.last_login_at).timestamp
+        }
+        access_token = create_access_token(identity=payload)
+        refresh_token = create_refresh_token(identity=payload)
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }
 
 
 class Organization(db.Model):

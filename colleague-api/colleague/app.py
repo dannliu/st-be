@@ -6,7 +6,8 @@ from werkzeug.exceptions import NotFound
 
 from .utils import ApiException
 from .config import settings
-from .extensions import db, jwt
+from .extensions import jwt
+from .models import db
 
 
 class ColleagueApi(Api):
@@ -55,6 +56,7 @@ def create_app(config_object=None, settings=None):
 def register_extensions(app):
     db.init_app(app)
     db.app = app
+    db.create_all()
     app.db = db
 
     jwt.init_app(app)
@@ -62,13 +64,14 @@ def register_extensions(app):
 
 def register_blueprints(app):
     from .api import TestUser
-    from .api import Register, Verification
+    from .api import Register, Verification, Login
 
-    api = Api(app)
+    api = ColleagueApi(app)
 
     api.add_resource(Register, '/register')
     api.add_resource(TestUser, '/test')
     api.add_resource(Verification, '/send_verification')
+    api.add_resource(Login, '/login')
 
 
 def register_errorhandlers(app):

@@ -9,6 +9,8 @@ class ErrorCode(object):
     VERIFICATION_CODE_NOT_MATCH = 2003
     VERIFICATION_CODE_MAX_REQUEST = 2004
 
+    USER_PASSWORD_WRONG = 2005
+
 
 class ApiException(Exception):
     def __init__(self, status_code, error, http_status_code=200):

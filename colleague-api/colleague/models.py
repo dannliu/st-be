@@ -83,6 +83,16 @@ class User(db.Model):
         expected = self._generate_token_metadata(device_id)
         return metadata == expected
 
+    def is_available(self):
+        return self.status not in [UserStatus.Blocked, UserStatus.Deleted]
+
+    def is_logged_out(self):
+        return self.status == UserStatus.Logout
+
+    def logout(self):
+        self.status = UserStatus.Logout
+        db.session.commit()
+
 
 class Organization(db.Model):
     __tablename__ = 'organizations'

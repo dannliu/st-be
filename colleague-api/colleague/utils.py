@@ -11,6 +11,7 @@ class ErrorCode(object):
 
     USER_PASSWORD_WRONG = 2005
     DEVICE_MISMATCH = 2006
+    USER_UNAVAILABLE = 2007
 
 
 class ApiException(Exception):

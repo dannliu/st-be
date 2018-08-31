@@ -2,11 +2,10 @@
 
 import arrow
 from flask import request
-from flask_jwt_extended import create_access_token, create_refresh_token, current_user, \
-    verify_jwt_refresh_token_in_request
+from flask_jwt_extended import create_access_token, create_refresh_token, current_user
 from flask_restful import Resource, reqparse
 
-from colleague.acl import login_required
+from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
 from .extensions import redis_conn
 from .models import User
@@ -103,10 +102,12 @@ class Login(Resource):
         if user is None:
             raise ApiException(ErrorCode.NON_EXIST_USER,
                                "not exist user, please register first")
-        
-        if not user.verify_password(password):
+        elif not user.verify_password(password):
             raise ApiException(ErrorCode.USER_PASSWORD_WRONG,
                                "the password is wrong")
+        elif not user.is_available():
+            raise ApiException(ErrorCode.USER_UNAVAILABLE,
+                               "the user is unavailable")
 
         token = user.login_on(device_id)
         return {
@@ -116,22 +117,25 @@ class Login(Resource):
 
 
 class RefreshToken(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('device-id', dest='device_id', type=str,
-                                   location='headers', required=True)
-
+    @refresh_token_required
     def get(self):
-        args = self.reqparse.parse_args()
-        device_id = args['device_id']
-        verify_jwt_refresh_token_in_request()
-        if device_id != current_user.device_id:
-            raise ApiException(ErrorCode.DEVICE_MISMATCH,
-                               "the device mismatches")
         return {
             "status": 200,
-            "result": current_user.user.login_on(device_id)
+            "result": current_user.user.login_on(current_user.device_id)
         }
+
+    post = get
+
+
+class Logout(Resource):
+    @login_required
+    def get(self):
+        current_user.user.logout()
+        return {
+            "status": 200
+        }
+
+    post = get
 
 
 class TestUser(Resource):

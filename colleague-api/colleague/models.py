@@ -64,17 +64,24 @@ class User(db.Model):
         self.status = UserStatus.Confirmed
         db.session.commit()
 
-        payload = {
-            'user_id': self.id,
-            'device_id': device_id,
-            'timestamp': arrow.get(self.last_login_at).timestamp
-        }
+        payload = self._generate_token_metadata(device_id)
         access_token = create_access_token(identity=payload)
         refresh_token = create_refresh_token(identity=payload)
         return {
             'access_token': access_token,
             'refresh_token': refresh_token
         }
+
+    def _generate_token_metadata(self, device_id):
+        return {
+            'user_id': self.id,
+            'device_id': device_id,
+            'timestamp': arrow.get(self.last_login_at).timestamp
+        }
+
+    def verify_token_metadata(self, metadata, device_id):
+        expected = self._generate_token_metadata(device_id)
+        return metadata == expected
 
 
 class Organization(db.Model):

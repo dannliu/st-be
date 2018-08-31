@@ -17,9 +17,9 @@ class UserObject(object):
 @jwt.user_loader_callback_loader
 def user_loader_callback(identity):
     user_object = UserObject(**identity)
-    if user_object.user is None:
+    if user_object.user is None \
+            or not user_object.user.verify_token_metadata(identity, user_object.device_id):
         return None
-
     return user_object
 
 

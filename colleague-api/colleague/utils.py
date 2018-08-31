@@ -10,6 +10,7 @@ class ErrorCode(object):
     VERIFICATION_CODE_MAX_REQUEST = 2004
 
     USER_PASSWORD_WRONG = 2005
+    DEVICE_MISMATCH = 2006
 
 
 class ApiException(Exception):

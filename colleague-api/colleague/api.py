@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import arrow
 
-from flask import request, current_app
-from flask_jwt_extended import create_access_token, create_refresh_token, current_user
+import arrow
+from flask import request
+from flask_jwt_extended import create_access_token, create_refresh_token, current_user, \
+    verify_jwt_refresh_token_in_request
 from flask_restful import Resource, reqparse
 
 from colleague.acl import login_required
@@ -111,6 +112,25 @@ class Login(Resource):
         return {
             "status": 200,
             "result": token
+        }
+
+
+class RefreshToken(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('device-id', dest='device_id', type=str,
+                                   location='headers', required=True)
+
+    def get(self):
+        args = self.reqparse.parse_args()
+        device_id = args['device_id']
+        verify_jwt_refresh_token_in_request()
+        if device_id != current_user.device_id:
+            raise ApiException(ErrorCode.DEVICE_MISMATCH,
+                               "the device mismatches")
+        return {
+            "status": 200,
+            "result": current_user.user.login_on(device_id)
         }
 
 

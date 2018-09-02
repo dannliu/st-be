@@ -57,7 +57,7 @@ class User(db.Model):
 
     def verify_password(self, password):
         # TODO:
-        return True
+        return password == self.password_hash
 
     def login_on(self, device_id):
         self.last_login_at = arrow.utcnow().naive

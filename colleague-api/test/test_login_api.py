@@ -1,4 +1,5 @@
 import json
+import time
 
 import arrow
 import flask_jwt_extended
@@ -107,3 +108,82 @@ def test_login_to_blocked_user(client, user, db):
 
     data = json.loads(rv.data)
     assert data.get('status', -1) == ErrorCode.USER_UNAVAILABLE
+
+
+def test_login_required_api_with_valid_access_token(client, user):
+    access_token = get_token_by_login(client)[0]
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
+    rv = client.get(url_for('testuser'), headers=headers)
+
+    data = json.loads(rv.data)
+    assert data["user"] == user.id
+
+
+def test_login_required_api_with_valid_refresh_token(client, user):
+    refresh_token = get_token_by_login(client)[1]
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(refresh_token)
+    }
+    rv = client.get(url_for('testuser'), headers=headers)
+
+    assert rv.status_code == 422
+
+
+def test_login_required_api_with_invalid_device(client, user):
+    access_token = get_token_by_login(client)[0]
+    headers = {
+        'device-id': 'test-device-id2',
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
+    rv = client.get(url_for('testuser'), headers=headers)
+
+    data = json.loads(rv.data)
+    assert data["status"] == ErrorCode.DEVICE_MISMATCH
+
+
+def test_login_required_api_with_regenerated_token(client, user):
+    access_token1 = get_token_by_login(client)[0]
+    time.sleep(1)
+    access_token2 = get_token_by_login(client)[0]
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(access_token1)
+    }
+    rv1 = client.get(url_for('testuser'), headers=headers)
+    assert rv1.status_code == 401
+
+    headers['Authorization'] = 'Bearer {}'.format(access_token2)
+    rv2 = client.get(url_for('testuser'), headers=headers)
+    assert rv2.status_code == 200
+    data = json.loads(rv2.data)
+    assert data["user"] == user.id
+
+
+def test_login_required_api_with_faked_token(client, user):
+    access_token = get_token_by_login(client)[0]
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}111'.format(access_token)
+    }
+    rv1 = client.get(url_for('testuser'), headers=headers)
+    assert rv1.status_code == 422
+
+
+def get_token_by_login(client):
+    headers = {
+        'content-type': 'application/json',
+        'device-id': 'test-device-id'
+    }
+    data = {
+        'mobile': '12345678910',
+        'password': '123456'
+    }
+    rv = client.post(url_for('login'), headers=headers, data=json.dumps(data))
+    assert rv.status_code == 200
+    data = json.loads(rv.data)
+    result = data['result']
+    return result['access_token'], result['refresh_token']

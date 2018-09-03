@@ -173,6 +173,121 @@ def test_login_required_api_with_faked_token(client, user):
     assert rv1.status_code == 422
 
 
+def test_refresh_token(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    time.sleep(1)
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(refresh_token)
+    }
+    rv = client.get(url_for('refreshtoken'), headers=headers)
+    assert rv.status_code == 200
+    data = json.loads(rv.data)
+    result = data['result']
+    access_token2, refresh_token2 = result['access_token'], result['refresh_token']
+
+    # assert previous access token and refresh token are invalid
+    headers['Authorization'] = 'Bearer {}'.format(access_token)
+    rv = client.get(url_for('testuser'), headers=headers)
+    assert rv.status_code == 401
+    headers['Authorization'] = 'Bearer {}'.format(refresh_token)
+    rv = client.get(url_for('refreshtoken'), headers=headers)
+    assert rv.status_code == 401
+
+    # assert new access token is valid
+    headers['Authorization'] = 'Bearer {}'.format(access_token2)
+    rv = client.get(url_for('testuser'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["user"] == user.id
+
+
+def test_refresh_token_with_invalid_device(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    headers = {
+        'device-id': 'test-device-id2',
+        'Authorization': 'Bearer {}'.format(refresh_token)
+    }
+    rv = client.get(url_for('refreshtoken'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["status"] == ErrorCode.DEVICE_MISMATCH
+
+
+def test_refresh_token_with_valid_access_token(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
+    rv = client.get(url_for('refreshtoken'), headers=headers)
+    assert rv.status_code == 422
+
+
+def test_refresh_token_with_faked_token(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}111'.format(refresh_token)
+    }
+    rv = client.get(url_for('refreshtoken'), headers=headers)
+    assert rv.status_code == 422
+
+
+def test_logout(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    headers = {
+            'device-id': 'test-device-id',
+            'Authorization': 'Bearer {}'.format(access_token)
+        }
+    rv = client.get(url_for('logout'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["status"] == 200
+    assert user.status == UserStatus.Logout
+
+    # assert access token and refresh token are invalid
+    headers['Authorization'] = 'Bearer {}'.format(access_token)
+    rv = client.get(url_for('testuser'), headers=headers)
+    assert rv.status_code == 401
+    headers['Authorization'] = 'Bearer {}'.format(refresh_token)
+    rv = client.get(url_for('refreshtoken'), headers=headers)
+    assert rv.status_code == 401
+
+
+def test_logout_and_then_login(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    headers = {
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
+    rv = client.get(url_for('logout'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["status"] == 200
+
+    time.sleep(1)
+    access_token2, refresh_token2 = get_token_by_login(client)
+    headers['Authorization'] = 'Bearer {}'.format(access_token2)
+    rv = client.get(url_for('testuser'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["user"] == user.id
+    assert user.status == UserStatus.Confirmed
+
+
+def test_logout_with_invalid_device(client, user):
+    access_token, refresh_token = get_token_by_login(client)
+    headers = {
+        'device-id': 'test-device-id2',
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
+    rv = client.get(url_for('logout'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["status"] == ErrorCode.DEVICE_MISMATCH
+
+    # assert access token is still valid
+    headers['device-id'] = 'test-device-id'
+    rv = client.get(url_for('testuser'), headers=headers)
+    data = json.loads(rv.data)
+    assert data["user"] == user.id
+    
+
 def get_token_by_login(client):
     headers = {
         'content-type': 'application/json',

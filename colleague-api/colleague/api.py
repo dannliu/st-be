@@ -15,6 +15,7 @@ from .utils import ApiException, ErrorCode, VerificationCode
 class Register(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('device-id', type=str, location='headers', required=True)
         self.reqparse.add_argument('mobile', type=str, location='json', required=True)
         self.reqparse.add_argument('password', type=str, location='json', required=True)
         self.reqparse.add_argument('verification_code', type=str, location='json', required=True)
@@ -37,23 +38,11 @@ class Register(Resource):
             raise ApiException(ErrorCode.VERIFICATION_CODE_NOT_MATCH, "wrong verification code.")
 
         user = User.add_user(mobile, password)
-
-        # TODO: redirect to login
-        data = {
-            "user_id": user.id,
-            "device_id": request.headers["device_id"],
-            "timestamp": arrow.utcnow().timestamp,
-        }
-
-        access_token = create_access_token(identity=data)
-        refresh_token = create_refresh_token(identity=data)
+        token = user.login_on(args["device-id"])
 
         return {
             "status": 200,
-            "result": {
-                "access_token": access_token,
-                "refresh_token": refresh_token
-            }
+            "result": token
         }
 
 
@@ -136,9 +125,3 @@ class Logout(Resource):
         }
 
     post = get
-
-
-class TestUser(Resource):
-    @login_required
-    def get(self):
-        return {"user": current_user.user.id}

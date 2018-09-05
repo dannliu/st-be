@@ -63,13 +63,11 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from .api import TestUser
     from .api import Register, Verification, Login, RefreshToken, Logout
 
     api = ColleagueApi(app)
 
     api.add_resource(Register, '/register')
-    api.add_resource(TestUser, '/test')
     api.add_resource(Verification, '/send_verification')
     api.add_resource(Login, '/login')
     api.add_resource(RefreshToken, '/refresh_token')

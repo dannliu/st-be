@@ -7,7 +7,7 @@ from sqlalchemy.exc import InternalError as SQLAInternalError
 
 from colleague.app import create_app
 from colleague.config import TestConfig
-from colleague.extensions import db as _db
+from colleague.models import db as _db
 
 
 @pytest.yield_fixture(scope='function')

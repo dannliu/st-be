@@ -2,6 +2,9 @@
 
 from datetime import datetime
 
+import arrow
+from flask_jwt_extended import create_access_token, create_refresh_token
+
 from colleague.extensions import db
 
 
@@ -10,6 +13,7 @@ class UserStatus(object):
     Confirmed = 1  # after confirmed by sms
     Blocked = 2
     Deleted = 3
+    Logout = 4
 
 
 class User(db.Model):
@@ -53,7 +57,41 @@ class User(db.Model):
 
     def verify_password(self, password):
         # TODO:
-        return True
+        return password == self.password_hash
+
+    def login_on(self, device_id):
+        self.last_login_at = arrow.utcnow().naive
+        self.status = UserStatus.Confirmed
+        db.session.commit()
+
+        payload = self._generate_token_metadata(device_id)
+        access_token = create_access_token(identity=payload)
+        refresh_token = create_refresh_token(identity=payload)
+        return {
+            'access_token': access_token,
+            'refresh_token': refresh_token
+        }
+
+    def _generate_token_metadata(self, device_id):
+        return {
+            'user_id': self.id,
+            'device_id': device_id,
+            'timestamp': arrow.get(self.last_login_at).timestamp
+        }
+
+    def verify_token_metadata(self, metadata, device_id):
+        expected = self._generate_token_metadata(device_id)
+        return metadata == expected
+
+    def is_available(self):
+        return self.status not in [UserStatus.Blocked, UserStatus.Deleted]
+
+    def is_logged_out(self):
+        return self.status == UserStatus.Logout
+
+    def logout(self):
+        self.status = UserStatus.Logout
+        db.session.commit()
 
 
 class Organization(db.Model):

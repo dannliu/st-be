@@ -9,6 +9,7 @@ gunicorn
 redis
 psycopg2
 python-dotenv
+passlib
 
 # test
 factory-boy

@@ -4,8 +4,16 @@ from datetime import datetime
 
 import arrow
 from flask_jwt_extended import create_access_token, create_refresh_token
+from passlib.context import CryptContext
 
 from colleague.extensions import db
+
+
+pwd_context = CryptContext(
+        schemes=["pbkdf2_sha256"],
+        default="pbkdf2_sha256",
+        pbkdf2_sha256__default_rounds=5000
+)
 
 
 class UserStatus(object):
@@ -52,12 +60,10 @@ class User(db.Model):
         return user
 
     def hash_password(self, password):
-        # TODO:
-        self.password_hash = password
+        self.password_hash = pwd_context.encrypt(password)
 
     def verify_password(self, password):
-        # TODO:
-        return password == self.password_hash
+        return pwd_context.verify(password, self.password_hash)
 
     def login_on(self, device_id):
         self.last_login_at = arrow.utcnow().naive

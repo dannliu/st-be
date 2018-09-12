@@ -33,6 +33,8 @@ class Config(Configuration):
 
     max_verification_code_request_count = 5
 
+    upload_folder =  environ_setting("UPLOAD_FOLDER", required=True)
+
     def config_for_flask(self):
         """
         UserWarning: SQLALCHEMY_TRACK_MODIFICATIONS adds significant overhead and will be

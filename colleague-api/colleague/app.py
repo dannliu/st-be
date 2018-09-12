@@ -63,7 +63,7 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from .api import Register, Verification, Login, RefreshToken, Logout
+    from .api import Register, Verification, Login, RefreshToken, Logout, UserDetail, UploadUserIcon
 
     api = ColleagueApi(app)
 
@@ -72,6 +72,8 @@ def register_blueprints(app):
     api.add_resource(Login, '/login')
     api.add_resource(RefreshToken, '/refresh_token')
     api.add_resource(Logout, '/logout')
+    api.add_resource(UserDetail, '/user_detail')
+    api.add_resource(UploadUserIcon, '/upload_avatar')
 
 
 def register_errorhandlers(app):

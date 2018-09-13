@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token, create_refresh_token
 from passlib.context import CryptContext
 
 from colleague.extensions import db
+from colleague.utils import ApiException, ErrorCode
 
 
 pwd_context = CryptContext(
@@ -34,6 +35,7 @@ class User(db.Model):
     user_name = db.Column(db.String(256))
     gender = db.Column(db.Integer)
     avatar = db.Column(db.String(1024))
+    user_id = db.Column(db.Text)
 
     status = db.Column(db.Integer)
 
@@ -58,6 +60,23 @@ class User(db.Model):
         db.session.commit()
 
         return user
+
+    def update_user(self, **kwargs):
+        if not kwargs:
+            return
+
+        for key, value in kwargs.iteritems():
+            if key in ["password", "user_name", "gender", "user_id", "avatar"]:
+                if key == 'password':
+                    self.hash_password(value)
+                if key == 'user_id':
+                    exist_user_id = User.query.filter(User.user_id == value).one_or_none()
+                    if exist_user_id:
+                        raise ApiException(ErrorCode.ALREADY_EXIST_USER_ID, "please user other user id.")
+                else:
+                    setattr(self, key, value)
+
+        db.session.commit()
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -98,6 +117,15 @@ class User(db.Model):
     def logout(self):
         self.status = UserStatus.Logout
         db.session.commit()
+
+    def to_dict(self):
+        return {
+            "mobile": self.mobile,
+            "user_name": self.user_name,
+            "gender": self.gender,
+            "avatar": self.avatar,
+            "user_id": self.user_id
+        }
 
 
 class Organization(db.Model):

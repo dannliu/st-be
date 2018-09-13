@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import hashlib
+
 from colleague.extensions import redis_conn
 
 
@@ -12,6 +14,9 @@ class ErrorCode(object):
     USER_PASSWORD_WRONG = 2005
     DEVICE_MISMATCH = 2006
     USER_UNAVAILABLE = 2007
+
+    ALREADY_EXIST_MOBILE = 2008
+    ALREADY_EXIST_USER_ID = 2009
 
 
 class ApiException(Exception):
@@ -38,10 +43,15 @@ class VerificationCode(object):
         return int(redis_conn.get(self.count_key) or 0)
 
     def set_code(self, code):
-        redis_conn.set(self.count_key, code, ex=10 * 60)
+        redis_conn.set(self.code_key, code, ex=10 * 60)
 
         redis_conn.incrby(self.count_key)
         redis_conn.expire(self.count_key, 24 * 60 * 60)
 
     def get_code(self):
-        redis_conn.get(self.count_key)
+        redis_conn.get(self.code_key)
+
+
+def md5(secret, salt):
+    h = hashlib.md5(secret.encode() + salt)
+    return h.hexdigest()

@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
+import os
 
-import arrow
 from flask import request
-from flask_jwt_extended import create_access_token, create_refresh_token, current_user
+
+from flask_jwt_extended import current_user
 from flask_restful import Resource, reqparse
+from werkzeug.utils import secure_filename
 
 from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
 from .extensions import redis_conn
 from .models import User
-from .utils import ApiException, ErrorCode, VerificationCode
+from .utils import ApiException, ErrorCode, VerificationCode, md5
 
 
 class Register(Resource):
@@ -28,7 +30,7 @@ class Register(Resource):
 
         user = User.find_user_mobile(mobile)
         if user:
-            raise ApiException(ErrorCode.NON_EXIST_USER, "not exist user, please register first")
+            raise ApiException(ErrorCode.ALREADY_EXIST_MOBILE, "this mobile has been signed up, please login directly.")
 
         verification_code = redis_conn.get("verification_code:{}".format(mobile))
         if verification_code is None:
@@ -99,9 +101,12 @@ class Login(Resource):
                                "the user is unavailable")
 
         token = user.login_on(device_id)
+        user_info = user.to_dict()
+        user_info.update(token)
+
         return {
             "status": 200,
-            "result": token
+            "result": user_info
         }
 
 
@@ -125,3 +130,32 @@ class Logout(Resource):
         }
 
     post = get
+
+
+class UserDetail(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_name', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('gender', type=int, location='json', required=False)
+        self.reqparse.add_argument('user_id', type=unicode, location='json', required=False)
+
+    @login_required
+    def post(self):
+        args = self.reqparse.parse_args()
+        current_user.user.update_user(**args)
+
+
+class UploadUserIcon(Resource):
+    @login_required
+    def post(self):
+        img = request.files['image']
+        img_name = secure_filename(img.filename)
+        ext = img_name.split('.')[-1]
+        user_id = current_user.user.id
+
+        img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
+        saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
+
+        current_user.user.update_user(avatar="/icons/{}".format(img_file))
+        img.save(saved_path)
+        return {"status": 200}

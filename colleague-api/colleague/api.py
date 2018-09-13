@@ -156,6 +156,6 @@ class UploadUserIcon(Resource):
         img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
         saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
 
-        current_user.user.update_user(avatar="/icons/{}".format(img_file))
+        current_user.user.update_user(avatar=img_file)
         img.save(saved_path)
         return {"status": 200}

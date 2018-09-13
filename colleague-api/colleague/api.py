@@ -142,7 +142,12 @@ class UserDetail(Resource):
     @login_required
     def post(self):
         args = self.reqparse.parse_args()
-        current_user.user.update_user(**args)
+        user_info = current_user.user.update_user(**args)
+
+        return {
+            "status": 200,
+            "result": user_info
+        }
 
 
 class UploadUserIcon(Resource):

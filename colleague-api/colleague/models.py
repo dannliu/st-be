@@ -79,6 +79,8 @@ class User(db.Model):
 
         db.session.commit()
 
+        return self.to_dict()
+
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
 

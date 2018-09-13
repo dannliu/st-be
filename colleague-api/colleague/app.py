@@ -56,7 +56,6 @@ def create_app(config_object=None, settings=None):
 def register_extensions(app):
     db.init_app(app)
     db.app = app
-    db.create_all()
     app.db = db
 
     jwt.init_app(app)

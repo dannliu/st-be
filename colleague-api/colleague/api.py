@@ -11,7 +11,7 @@ from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
 from .extensions import redis_conn
 from .models import User
-from .utils import ApiException, ErrorCode, VerificationCode
+from .utils import ApiException, ErrorCode, VerificationCode, md5
 
 
 class Register(Resource):
@@ -137,8 +137,7 @@ class UserDetail(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('user_name', type=unicode, location='json', required=False)
         self.reqparse.add_argument('gender', type=int, location='json', required=False)
-        self.reqparse.add_argument('password', type=str, location='json', required=False)
-        self.reqparse.add_argument('use_id', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('user_id', type=unicode, location='json', required=False)
 
     @login_required
     def post(self):
@@ -151,9 +150,10 @@ class UploadUserIcon(Resource):
     def post(self):
         img = request.files['image']
         img_name = secure_filename(img.filename)
+        ext = img_name.split('.')[-1]
         user_id = current_user.user.id
 
-        img_file = "{}_original_{}".format(user_id, img_name)
+        img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
         saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
 
         current_user.user.update_user(avatar="/icons/{}".format(img_file))

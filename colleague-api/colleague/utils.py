@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import hashlib
+
 from colleague.extensions import redis_conn
 
 
@@ -48,3 +50,8 @@ class VerificationCode(object):
 
     def get_code(self):
         redis_conn.get(self.code_key)
+
+
+def md5(secret, salt):
+    h = hashlib.md5(secret.encode() + salt)
+    return h.hexdigest()

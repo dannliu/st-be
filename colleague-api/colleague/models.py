@@ -124,7 +124,7 @@ class User(db.Model):
             "mobile": self.mobile,
             "user_name": self.user_name,
             "gender": self.gender,
-            "avatar": "https://{}/{}".format(settings["SERVER_NAME"], self.avatar),
+            "avatar": "https://{}/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else "",
             "user_id": self.user_id
         }
 

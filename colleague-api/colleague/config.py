@@ -5,7 +5,6 @@ import dotenv
 
 from confire import Configuration, environ_setting
 
-
 dotenv.load_dotenv(dotenv.find_dotenv(".env", raise_error_if_not_found=True, usecwd=True))
 
 
@@ -28,12 +27,13 @@ class Config(Configuration):
     redis_port = int(environ_setting('REDIS_PORT', 6379, required=False))
 
     jwt_secret_key = environ_setting("JWT_SECRET_KEY", required=True)
-    jwt_access_token_expires = int(environ_setting("JWT_ACCESS_TOKEN_EXPIRES", default=30, required=False))   # days
+    jwt_access_token_expires = int(environ_setting("JWT_ACCESS_TOKEN_EXPIRES", default=30, required=False))  # days
     jwt_refresh_token_expires = int(environ_setting("JWT_REFRESH_TOKEN_EXPIRES", default=365, required=False))  # days
 
     max_verification_code_request_count = 5
 
-    upload_folder =  environ_setting("UPLOAD_FOLDER", required=True)
+    server_name = environ_setting("SERVER_NAME", required=True)
+    upload_folder = environ_setting("UPLOAD_FOLDER", required=True)
 
     def config_for_flask(self):
         """

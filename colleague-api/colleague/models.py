@@ -6,6 +6,7 @@ import arrow
 from flask_jwt_extended import create_access_token, create_refresh_token
 from passlib.context import CryptContext
 
+from colleague.config import settings
 from colleague.extensions import db
 from colleague.utils import ApiException, ErrorCode
 
@@ -123,7 +124,7 @@ class User(db.Model):
             "mobile": self.mobile,
             "user_name": self.user_name,
             "gender": self.gender,
-            "avatar": self.avatar,
+            "avatar": "https://{}/{}".format(settings["SERVER_NAME"], self.avatar),
             "user_id": self.user_id
         }
 

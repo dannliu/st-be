@@ -21,11 +21,13 @@ class UserObject(object):
 @jwt.user_loader_callback_loader
 def user_loader_callback(identity):
     user_object = UserObject(**identity)
+
+    # TODO: raise different error
     if user_object.user is None \
             or user_object.user.is_logged_out() \
             or not user_object.user.is_available() \
             or not user_object.user.verify_token_metadata(identity, user_object.device_id):
-        return None
+        raise ApiException(ErrorCode.NON_EXIST_USER, "please login first.")
     return user_object
 
 

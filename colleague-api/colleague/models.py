@@ -67,7 +67,7 @@ class User(db.Model):
             return
 
         for key, value in kwargs.iteritems():
-            if key in ["password", "user_name", "gender", "user_id", "avatar"]:
+            if key in ["password", "user_name", "gender", "user_id", "avatar"] and value:
                 if key == 'password':
                     self.hash_password(value)
                 if key == 'user_id':

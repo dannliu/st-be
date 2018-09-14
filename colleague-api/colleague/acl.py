@@ -4,6 +4,7 @@ from flask import request
 from flask_jwt_extended import current_user
 from flask_jwt_extended import verify_jwt_in_request
 from flask_jwt_extended import verify_jwt_refresh_token_in_request
+from flask_jwt_extended.exceptions import NoAuthorizationError
 
 from colleague.extensions import jwt
 from colleague.models import User
@@ -27,7 +28,7 @@ def user_loader_callback(identity):
             or user_object.user.is_logged_out() \
             or not user_object.user.is_available() \
             or not user_object.user.verify_token_metadata(identity, user_object.device_id):
-        raise ApiException(ErrorCode.NON_EXIST_USER, "please login first.")
+        return None
     return user_object
 
 
@@ -55,5 +56,4 @@ def refresh_token_required(fn):
 def check_token_device():
     device_id = request.headers.get("device-id")
     if not device_id or device_id != current_user.device_id:
-        raise ApiException(ErrorCode.DEVICE_MISMATCH,
-                           "the device mismatches")
+        raise NoAuthorizationError("the device mismatches")

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from flask import current_app, Flask
+from flask_jwt_extended.exceptions import JWTExtendedException
 from flask_restful import Api
 from werkzeug.exceptions import NotFound
 
@@ -21,6 +22,8 @@ class ColleagueApi(Api):
         if isinstance(e, ApiException):
             current_app.logger.warning("{} %s".format(e.status_code), e.message)
             return self.make_response(e.to_dict(), e.http_status_code)
+        if isinstance(e, JWTExtendedException):
+            return self.make_response({"error": e.message}, 401)
 
         self.record_exception(e)
         return super(ColleagueApi, self).handle_error(e)

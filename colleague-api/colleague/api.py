@@ -162,5 +162,8 @@ class UploadUserIcon(Resource):
         saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
         img.save(saved_path)
 
-        current_user.user.update_user(avatar=img_file)
-        return {"status": 200}
+        user_info = current_user.user.update_user(avatar=img_file)
+        return {
+            "status": 200,
+            "result": user_info
+        }

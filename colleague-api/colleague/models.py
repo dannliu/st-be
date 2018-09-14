@@ -8,8 +8,7 @@ from passlib.context import CryptContext
 
 from colleague.config import settings
 from colleague.extensions import db
-from colleague.utils import ApiException, ErrorCode
-
+from colleague.utils import ApiException, ErrorCode, decode_cursor, list_to_dict
 
 pwd_context = CryptContext(
         schemes=["pbkdf2_sha256"],
@@ -52,6 +51,10 @@ class User(db.Model):
     @staticmethod
     def find_user_mobile(mobile):
         return User.query.filter(User.mobile == mobile).one_or_none()
+
+    @staticmethod
+    def find_user_by_ids(uids):
+        return User.query.filter(User.id.in_(uids)).all()
 
     @staticmethod
     def add_user(mobile, password):
@@ -139,3 +142,57 @@ class Organization(db.Model):
     icon = db.Column(db.String(1024))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     verified = db.Column(db.Boolean)
+
+
+class ContactType(object):
+    Added = 1,
+    Recommened = 2,
+
+
+class ContactStatus(object):
+    Removed = 0,
+    Normal = 1,
+
+
+class Contact(db.Model):
+    __tablename__ = 'contacts'
+    id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
+    from_uid = db.Column(db.BigInteger, nullable=False)
+    to_uid = db.Column(db.BigInteger, nullable=False)
+    # todo: do we need to record the recommend user here?
+    status = db.Column(db.Integer, nullable=False, comment=u'0: 已删除, 1: 正常')
+    type = db.Column(db.Integer, nullable=False, comment=u'1: 自己添加, 2: 熟人推荐')
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment=u'第一次添加时间')
+    updated_at = db.Column(db.DateTime, nullable=False, datetime=datetime.utcnow, comment=u'更新时间')
+    removed_at = db.Column(db.DateTime, nullable=True)
+
+    @staticmethod
+    def get_by_cursor(from_uid, cursor, size):
+        if cursor:
+            contacts = Contact.query \
+                .filter(Contact.from_uid == from_uid, Contact.status == ContactStatus.Normal) \
+                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
+        else:
+            last_update = decode_cursor(cursor)
+            contacts = Contact.query \
+                .filter(Contact.from_uid == from_uid, Contact.status == ContactStatus.Normal, Contact.updated_at < last_update) \
+                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
+        uids = set()
+        for contact in contacts:
+            uids.add(contact.from_uid)
+            uids.add(contact.to_uid)
+        users = User.find_user_by_ids(uids)
+        # todo: do we need to fetch the user from redis?
+        dict_users = list_to_dict(users, "id")
+        json_contacts = []
+        for contact in contacts:
+            from_user = dict_users.get(contact.from_uid)
+            to_user = dict_users.get(contact.to_uid)
+            if from_user and to_user:
+                json_contacts.append({
+                    'from_user': from_user,
+                    'to_user': to_user,
+                    'type': contact.type,
+                    'update_at': contact.updated_at
+                })
+        return json_contacts

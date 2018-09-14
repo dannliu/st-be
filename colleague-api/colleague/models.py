@@ -74,6 +74,7 @@ class User(db.Model):
                     exist_user_id = User.query.filter(User.user_id == value).one_or_none()
                     if exist_user_id:
                         raise ApiException(ErrorCode.ALREADY_EXIST_USER_ID, "please user other user id.")
+                    self.user_id = value
                 else:
                     setattr(self, key, value)
 
@@ -126,7 +127,7 @@ class User(db.Model):
             "mobile": self.mobile,
             "user_name": self.user_name,
             "gender": self.gender,
-            "avatar": "https://{}/images/avatar/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else "",
+            "avatar": "{}/images/avatar/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else "",
             "user_id": self.user_id
         }
 

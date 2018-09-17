@@ -154,11 +154,11 @@ class ContactStatus(object):
     Normal = 1,
 
 
-class Contact(db.Model):
-    __tablename__ = 'contacts'
+class Relationships(db.Model):
+    __tablename__ = 'relationships'
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    from_uid = db.Column(db.BigInteger, nullable=False)
-    to_uid = db.Column(db.BigInteger, nullable=False)
+    uid_one = db.Column(db.BigInteger, nullable=False)
+    uid_two = db.Column(db.BigInteger, nullable=False)
     # todo: do we need to record the recommend user here?
     status = db.Column(db.Integer, nullable=False, comment=u'0: 已删除, 1: 正常')
     type = db.Column(db.Integer, nullable=False, comment=u'1: 自己添加, 2: 熟人推荐')
@@ -169,29 +169,31 @@ class Contact(db.Model):
     @staticmethod
     def get_by_cursor(from_uid, cursor, size):
         if cursor:
-            contacts = Contact.query \
-                .filter(Contact.from_uid == from_uid, Contact.status == ContactStatus.Normal) \
-                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
+            contacts = Relationships.query \
+                .filter(Relationships.uid_one == from_uid or Relationships.uid_two == from_uid,
+                        Relationships.status == ContactStatus.Normal) \
+                .order_by(db.desc(Relationships.updated_at)).offset(0).limit(size)
         else:
             last_update = decode_cursor(cursor)
-            contacts = Contact.query \
-                .filter(Contact.from_uid == from_uid, Contact.status == ContactStatus.Normal, Contact.updated_at < last_update) \
-                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
+            contacts = Relationships.query \
+                .filter(Relationships.uid_one == from_uid or Relationships.uid_two,
+                        Relationships.status == ContactStatus.Normal,
+                        Relationships.updated_at < last_update) \
+                .order_by(db.desc(Relationships.updated_at)).offset(0).limit(size)
         uids = set()
         for contact in contacts:
-            uids.add(contact.from_uid)
-            uids.add(contact.to_uid)
+            uids.add(contact.uid_one)
+            uids.add(contact.uid_two)
         users = User.find_user_by_ids(uids)
         # todo: do we need to fetch the user from redis?
         dict_users = list_to_dict(users, "id")
         json_contacts = []
         for contact in contacts:
-            from_user = dict_users.get(contact.from_uid)
-            to_user = dict_users.get(contact.to_uid)
-            if from_user and to_user:
+            uid = contact.uid_one == from_uid and contact.uid_two or contact.uid_one
+            user = dict_users.get(uid)
+            if user:
                 json_contacts.append({
-                    'from_user': from_user,
-                    'to_user': to_user,
+                    'user': user.to_dict(),
                     'type': contact.type,
                     'update_at': contact.updated_at
                 })

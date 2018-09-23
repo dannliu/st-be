@@ -24,11 +24,11 @@ class ApiWorkExperience(Resource):
 
     @login_required
     def post(self):
-        # Add a new work expierence
+        # Add a new work experience
         args = self.reqparse.parse_args()
         company_id = args.get('company_id')
         company_name = args.get('company_name')
-        if not company_id or not company_name:
+        if not company_id and not company_name:
             st_raise_error(ErrorCode.COMPANY_INFO_MISSED)
         if company_id:
             company = Organization.find_by_id(decode_cursor(company_id))
@@ -38,16 +38,17 @@ class ApiWorkExperience(Resource):
             company = Organization.add(company_name)
             if not company:
                 st_raise_error(ErrorCode.COMPANY_INFO_MISSED)
-        work_expierence = WorkExperience(uid=current_user.user.id,
+        work_experience = WorkExperience(uid=current_user.user.id,
                                          start_year=args['start_year'],
                                          start_month=args['start_month'],
                                          end_year=args['end_year'],
                                          end_month=args.get('end_month'),
+                                         company_id=company.id,
                                          title=args['title'])
-        WorkExperience.add(work_expierence)
-        json_work_expierence = work_expierence.to_dict()
-        json_work_expierence['company'] = company.to_dict()
+        WorkExperience.add(work_experience)
+        json_work_experience = work_experience.to_dict()
+        json_work_experience['company'] = company.to_dict()
         return {
             "status": 200,
-            "result": json_work_expierence
+            "result": json_work_experience
         }

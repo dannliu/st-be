@@ -240,7 +240,7 @@ class WorkExperience(db.Model):
     @staticmethod
     def add(new_one):
         db.session.add(new_one)
-        db.commit()
+        db.session.commit()
 
     def to_dict(self):
         return {

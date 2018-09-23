@@ -75,7 +75,7 @@ def decode_cursor(cursor):
 
 
 def encode_cursor(cursor):
-    return base64.urlsafe_b64encode(cursor)
+    return base64.urlsafe_b64encode(str(cursor))
 
 
 def list_to_dict(objects, key):

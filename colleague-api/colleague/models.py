@@ -154,7 +154,7 @@ class Relationships(db.Model):
     status = db.Column(db.Integer, nullable=False, comment=u'0: 已删除, 1: 正常')
     type = db.Column(db.Integer, nullable=False, comment=u'1: 自己添加, 2: 熟人推荐')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment=u'第一次添加时间')
-    updated_at = db.Column(db.DateTime, nullable=False, datetime=datetime.utcnow, comment=u'更新时间')
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment=u'更新时间')
     removed_at = db.Column(db.DateTime, nullable=True)
 
     @staticmethod

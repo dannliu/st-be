@@ -2,6 +2,7 @@
 import hashlib
 
 from colleague.extensions import redis_conn
+import base64
 
 
 class ErrorCode(object):
@@ -55,3 +56,15 @@ class VerificationCode(object):
 def md5(secret, salt):
     h = hashlib.md5(secret.encode() + salt)
     return h.hexdigest()
+
+def decode_cursor(cursor):
+    return base64.urlsafe_b64decode(cursor)
+
+def encode_cursor(cursor):
+    return base64.urlsafe_b64encode(cursor)
+
+def list_to_dict(objects, key):
+    dict_objects = {}
+    for object in objects:
+        dict_objects[getattr(object, key)] = object
+    return dict_objects

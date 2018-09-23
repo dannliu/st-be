@@ -5,6 +5,12 @@ from colleague.extensions import redis_conn
 import base64
 
 
+class STError(object):
+    def __init__(self, code, message):
+        self.code = code
+        self.message = message
+
+
 class ErrorCode(object):
     NON_EXIST_USER = 2001
 
@@ -19,6 +25,8 @@ class ErrorCode(object):
     ALREADY_EXIST_MOBILE = 2008
     ALREADY_EXIST_USER_ID = 2009
 
+    COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
+
 
 class ApiException(Exception):
     def __init__(self, status_code, error, http_status_code=200):
@@ -31,6 +39,10 @@ class ApiException(Exception):
             "status": self.status_code,
             "error": self.message  # TODO: change to display error
         }
+
+
+def st_raise_error(error):
+    raise ApiException(error.code, error.message)
 
 
 class VerificationCode(object):
@@ -57,11 +69,14 @@ def md5(secret, salt):
     h = hashlib.md5(secret.encode() + salt)
     return h.hexdigest()
 
+
 def decode_cursor(cursor):
     return base64.urlsafe_b64decode(cursor)
 
+
 def encode_cursor(cursor):
     return base64.urlsafe_b64encode(cursor)
+
 
 def list_to_dict(objects, key):
     dict_objects = {}

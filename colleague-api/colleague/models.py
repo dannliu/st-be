@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 from colleague.config import settings
 from colleague.extensions import db
-from colleague.utils import ApiException, ErrorCode, decode_cursor, list_to_dict
+from colleague.utils import ApiException, ErrorCode, decode_cursor, encode_cursor, list_to_dict
 
 pwd_context = CryptContext(
         schemes=["pbkdf2_sha256"],
@@ -135,16 +135,6 @@ class User(db.Model):
         }
 
 
-class Organization(db.Model):
-    __tablename__ = 'organizations'
-
-    id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(256))
-    icon = db.Column(db.String(1024))
-    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    verified = db.Column(db.Boolean)
-
-
 class ContactType(object):
     Added = 1,
     Recommened = 2,
@@ -199,3 +189,65 @@ class Relationships(db.Model):
                     'update_at': contact.updated_at
                 })
         return json_contacts
+
+
+class Organization(db.Model):
+    __tablename__ = 'organizations'
+
+    id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
+    name = db.Column(db.String(256))
+    icon = db.Column(db.TEXT)
+    verified = db.Column(db.Boolean)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @staticmethod
+    def add(name, icon=None, verified=False):
+        og = Organization.query.filter(Organization.name == name).one_or_none()
+        if og:
+            return og
+        else:
+            og = Organization(name=name, icon=icon, verified=verified)
+            db.session.add(og)
+            db.session.commit()
+            return og
+
+    @staticmethod
+    def find_by_id(id):
+        return Organization.query(Organization.id == id).one_or_none()
+
+    def to_dict(self):
+        return {
+            "id": encode_cursor(self.id),
+            "name": self.name,
+            "icon": self.icon
+        }
+
+
+class WorkExperience(db.Model):
+    __tablename__ = "work_experience"
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    uid = db.Column(db.BigInteger, index=True, nullable=False)
+    start_year = db.Column(db.SMALLINT, nullable=False, comment=u'开始-年')
+    start_month = db.Column(db.SMALLINT, nullable=False, comment=u'开始-月')
+    end_year = db.Column(db.SMALLINT, nullable=True, comment=u'2999表示至今')
+    end_month = db.Column(db.SMALLINT, nullable=True)
+    title = db.Column(db.String(255), nullable=False, comment=u'职位')
+    company_id = db.Column(db.BigInteger, nullable=False)
+    create_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    update_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    delete_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @staticmethod
+    def add(new_one):
+        db.session.add(new_one)
+        db.commit()
+
+    def to_dict(self):
+        return {
+            "id": encode_cursor(self.id),
+            "start_year": self.start_year,
+            "start_month": self.start_month,
+            "end_year": self.end_year,
+            "end_month": self.end_month,
+            "title": self.title
+        }

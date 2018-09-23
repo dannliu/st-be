@@ -8,7 +8,6 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 
 from colleague.extensions import jwt
 from colleague.models import User
-from colleague.utils import ApiException, ErrorCode
 
 
 class UserObject(object):

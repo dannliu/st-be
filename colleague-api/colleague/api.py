@@ -91,14 +91,11 @@ class Login(Resource):
         password = args['password']
         user = User.find_user_mobile(mobile)
         if user is None:
-            raise ApiException(ErrorCode.NON_EXIST_USER,
-                               "not exist user, please register first")
+            raise ApiException(ErrorCode.NON_EXIST_USER, "还没有注册，快去注册吧")
         elif not user.verify_password(password):
-            raise ApiException(ErrorCode.USER_PASSWORD_WRONG,
-                               "the password is wrong")
+            raise ApiException(ErrorCode.USER_PASSWORD_WRONG, "密码错误")
         elif not user.is_available():
-            raise ApiException(ErrorCode.USER_UNAVAILABLE,
-                               "the user is unavailable")
+            raise ApiException(ErrorCode.USER_UNAVAILABLE, "用户已被禁止访问")
 
         token = user.login_on(device_id)
         user_info = user.to_dict()

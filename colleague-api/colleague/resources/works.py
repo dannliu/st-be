@@ -5,7 +5,7 @@ from flask_restful import Resource, reqparse
 from colleague.acl import login_required
 from colleague.models import WorkExperience, Organization
 from flask_jwt_extended import current_user
-from colleague.utils import ErrorCode, st_raise_error
+from colleague.utils import ErrorCode, st_raise_error, decode_cursor
 
 
 class ApiWorkExperience(Resource):
@@ -13,9 +13,9 @@ class ApiWorkExperience(Resource):
         self.reqparse = reqparse.RequestParser()
         # company_id and company_name must have one
         # if the compnay is a new one, create a compnay record first
-        self.reqparse.add_argument('company_id', type=str, location='json', required=False)
-        self.reqparse.add_argument('company_name', type=str, location='json', required=False)
-        self.reqparse.add_argument('title', type=str, location='json', required=True)
+        self.reqparse.add_argument('company_id', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('company_name', type=unicode, location='json', required=False)
+        self.reqparse.add_argument('title', type=unicode, location='json', required=True)
         self.reqparse.add_argument('start_year', type=int, location='json', required=True)
         self.reqparse.add_argument('start_month', type=int, location='json', required=True)
         # 2999 stands for present
@@ -31,7 +31,7 @@ class ApiWorkExperience(Resource):
         if not company_id or not company_name:
             st_raise_error(ErrorCode.COMPANY_INFO_MISSED)
         if company_id:
-            company = Organization.find_by_id(company_id)
+            company = Organization.find_by_id(decode_cursor(company_id))
             if not company:
                 st_raise_error(ErrorCode.COMPANY_INFO_MISSED)
         else:

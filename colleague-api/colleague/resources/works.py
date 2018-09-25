@@ -120,5 +120,6 @@ class ApiWorkExperienceDelete(Resource):
         id = args.get('id')
         WorkExperience.delete(current_user.user.id, decode_cursor(id))
         return {
-            'status': 200
+            'status': 200,
+            'result': {"work_experiences": work_service.get_all_work_experiences(current_user.user.id)}
         }

@@ -4,9 +4,9 @@ from colleague.models.work import WorkExperience
 from flask_jwt_extended import current_user
 
 
-def get_all_work_experiences():
+def get_all_work_experiences(uid):
     # todo we may need a server layer for this kind of api
-    work_experiences = WorkExperience.find_all_for_user(current_user.user.id)
+    work_experiences = WorkExperience.find_all_for_user(uid)
     work_experiences.sort(cmp=cmp)
     return [we.to_dict() for we in work_experiences]
 

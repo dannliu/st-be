@@ -96,7 +96,6 @@ class Login(Resource):
             raise ApiException(ErrorCode.USER_PASSWORD_WRONG, "密码错误")
         elif not user.is_available():
             raise ApiException(ErrorCode.USER_UNAVAILABLE, "用户已被禁止访问")
-
         token = user.login_on(device_id)
         user_info = user.to_dict()
         user_info.update(token)
@@ -106,7 +105,7 @@ class Login(Resource):
             "result": {
                 'user': user_info,
                 'user_details': {
-                    'work_experiences': work_service.get_all_work_experiences()
+                    'work_experiences': work_service.get_all_work_experiences(user.id)
                 }
             }
         }

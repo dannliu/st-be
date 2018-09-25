@@ -27,7 +27,7 @@ class ApiWorkExperience(Resource):
     def get(self):
         return {
             'status': 200,
-            'result': {"work_experiences": work_service.get_all_work_experiences()}
+            'result': {"work_experiences": work_service.get_all_work_experiences(current_user.user.id)}
         }
 
     @login_required
@@ -56,7 +56,7 @@ class ApiWorkExperience(Resource):
         WorkExperience.add(work_experience)
         return {
             'status': 200,
-            'result': {"work_experiences": work_service.get_all_work_experiences()}
+            'result': {"work_experiences": work_service.get_all_work_experiences(current_user.user.id)}
         }
 
 
@@ -105,7 +105,7 @@ class ApiWorkExperienceUpdate(Resource):
         work_experience.update()
         return {
             'status': 200,
-            'result': {"work_experiences": work_service.get_all_work_experiences()}
+            'result': {"work_experiences": work_service.get_all_work_experiences(current_user.user.id)}
         }
 
 

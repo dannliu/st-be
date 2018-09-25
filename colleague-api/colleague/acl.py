@@ -7,7 +7,7 @@ from flask_jwt_extended import verify_jwt_refresh_token_in_request
 from flask_jwt_extended.exceptions import NoAuthorizationError
 
 from colleague.extensions import jwt
-from colleague.models import User
+from colleague.models.user import User
 
 
 class UserObject(object):

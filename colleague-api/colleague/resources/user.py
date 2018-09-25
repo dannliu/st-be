@@ -9,9 +9,10 @@ from werkzeug.utils import secure_filename
 
 from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
-from .extensions import redis_conn
-from .models import User
-from .utils import ApiException, ErrorCode, VerificationCode, md5
+from colleague.extensions import redis_conn
+from colleague.models.user import User
+from colleague.utils import ApiException, ErrorCode, VerificationCode, md5
+from colleague.service import work_service
 
 
 class Register(Resource):
@@ -30,14 +31,13 @@ class Register(Resource):
 
         user = User.find_user_mobile(mobile)
         if user:
-            raise ApiException(ErrorCode.ALREADY_EXIST_MOBILE, "this mobile has been signed up, please login directly.")
+            raise ApiException(ErrorCode.ALREADY_EXIST_MOBILE, "该手机号已被注册")
 
         verification_code = redis_conn.get("verification_code:{}".format(mobile))
         if verification_code is None:
-            raise ApiException(ErrorCode.VERIFICATION_CODE_EXPIRE,
-                               "your verification code is expired, please request again.")
+            raise ApiException(ErrorCode.VERIFICATION_CODE_EXPIRE, "验证码已过期")
         if verification_code != args["verification_code"]:
-            raise ApiException(ErrorCode.VERIFICATION_CODE_NOT_MATCH, "wrong verification code.")
+            raise ApiException(ErrorCode.VERIFICATION_CODE_NOT_MATCH, "验证码错误")
 
         user = User.add_user(mobile, password)
         token = user.login_on(args["device-id"])
@@ -103,7 +103,12 @@ class Login(Resource):
 
         return {
             "status": 200,
-            "result": user_info
+            "result": {
+                'user': user_info,
+                'user_details': {
+                    'work_experiences': work_service.get_all_work_experiences()
+                }
+            }
         }
 
 

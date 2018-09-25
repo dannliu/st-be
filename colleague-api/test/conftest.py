@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """Defines fixtures available to all tests."""
-import os
 
 import pytest
 from sqlalchemy.exc import InternalError as SQLAInternalError
 
 from colleague.app import create_app
 from colleague.config import TestConfig
-from colleague.models import db as _db
+from colleague.models.user import db as _db
 
 
 @pytest.yield_fixture(scope='function')

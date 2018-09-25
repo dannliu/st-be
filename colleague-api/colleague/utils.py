@@ -26,6 +26,7 @@ class ErrorCode(object):
     ALREADY_EXIST_USER_ID = 2009
 
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
+    WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
 
 
 class ApiException(Exception):
@@ -71,6 +72,8 @@ def md5(secret, salt):
 
 
 def decode_cursor(cursor):
+    if isinstance(cursor, unicode):
+        cursor = cursor.encode('utf-8')
     return base64.urlsafe_b64decode(cursor)
 
 

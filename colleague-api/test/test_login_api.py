@@ -6,7 +6,7 @@ import flask_jwt_extended
 import pytest
 from flask import url_for
 
-from colleague.models import User, UserStatus
+from colleague.models.user import User, UserStatus
 from colleague.utils import ErrorCode
 
 

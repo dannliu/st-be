@@ -8,7 +8,7 @@ from werkzeug.exceptions import NotFound
 from .utils import ApiException
 from .config import settings
 from .extensions import jwt
-from .models import db
+from colleague.models.user import db
 
 
 class ColleagueApi(Api):
@@ -65,9 +65,9 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from .api import Register, Verification, Login, RefreshToken, Logout, UserDetail, UploadUserIcon
+    from colleague.resources.user import Register, Verification, Login, RefreshToken, Logout, UserDetail, UploadUserIcon
     from .resources.contacts import ContactList
-    from .resources.works import ApiWorkExperience
+    from .resources.works import ApiWorkExperience, ApiWorkExperienceUpdate, ApiWorkExperienceDelete
 
     api = ColleagueApi(app)
 
@@ -82,6 +82,8 @@ def register_blueprints(app):
 
     # Work related api
     api.add_resource(ApiWorkExperience, '/work_experience')
+    api.add_resource(ApiWorkExperienceUpdate, '/work_experience/update')
+    api.add_resource(ApiWorkExperienceDelete, '/work_experience/delete')
 
 
 def register_errorhandlers(app):

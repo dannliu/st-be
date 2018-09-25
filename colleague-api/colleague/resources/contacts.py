@@ -4,7 +4,7 @@
 from flask_restful import Resource, reqparse
 
 from colleague.acl import login_required
-from colleague.models import Relationships
+from colleague.models.user import Relationships
 from flask_jwt_extended import current_user
 from colleague.utils import encode_cursor
 

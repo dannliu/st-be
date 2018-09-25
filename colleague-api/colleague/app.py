@@ -65,9 +65,10 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from colleague.resources.user import Register, Verification, Login, RefreshToken, Logout, UserDetail, UploadUserIcon
-    from .resources.contacts import ContactList
+    from .resources.user import (Register, Verification, Login, RefreshToken, Logout, UserDetail, UploadUserIcon,
+                                 SearchUsers)
     from .resources.works import ApiWorkExperience, ApiWorkExperienceUpdate, ApiWorkExperienceDelete
+    from .resources.contacts import ContactList, RelationshipRequest
 
     api = ColleagueApi(app)
 
@@ -78,7 +79,9 @@ def register_blueprints(app):
     api.add_resource(Logout, '/logout')
     api.add_resource(UserDetail, '/user_detail')
     api.add_resource(UploadUserIcon, '/upload_avatar')
+    api.add_resource(SearchUsers, '/search/users')
     api.add_resource(ContactList, '/contact/list')
+    api.add_resource(RelationshipRequest, '/contact_request')
 
     # Work related api
     api.add_resource(ApiWorkExperience, '/work_experience')

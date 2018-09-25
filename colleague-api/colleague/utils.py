@@ -28,6 +28,9 @@ class ErrorCode(object):
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
     WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
 
+    ADD_RELATIONSHIP_ALREADY_CONNECTED = 2011
+    ADD_RELATIONSHIP_NOT_COMMON_COMPANY = 2012
+
 
 class ApiException(Exception):
     def __init__(self, status_code, error, http_status_code=200):

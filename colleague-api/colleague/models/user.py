@@ -5,15 +5,17 @@ from datetime import datetime
 import arrow
 from flask_jwt_extended import create_access_token, create_refresh_token
 from passlib.context import CryptContext
+from sqlalchemy import or_
 
 from colleague.config import settings
 from colleague.extensions import db
-from colleague.utils import ApiException, ErrorCode, decode_cursor, encode_cursor, list_to_dict
+from colleague.models.work import WorkExperience
+from colleague.utils import ApiException, ErrorCode, decode_cursor, list_to_dict
 
 pwd_context = CryptContext(
-        schemes=["pbkdf2_sha256"],
-        default="pbkdf2_sha256",
-        pbkdf2_sha256__default_rounds=5000
+    schemes=["pbkdf2_sha256"],
+    default="pbkdf2_sha256",
+    pbkdf2_sha256__default_rounds=5000
 )
 
 
@@ -43,6 +45,17 @@ class User(db.Model):
 
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_login_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    @staticmethod
+    def search_users(search_string):
+        if search_string.isdigit():
+            mobile = search_string
+            user = User.find_user_mobile(mobile)
+            if user:
+                return [user.to_dict()]
+        else:
+            users = User.query.filter(or_(User.user_name == search_string, User.user_id == search_string))
+            return [user.to_dict() for user in users]
 
     @staticmethod
     def find_user(user_id):
@@ -127,6 +140,7 @@ class User(db.Model):
 
     def to_dict(self):
         return {
+            "id": self.id,  # TODO: replace with user_id
             "mobile": self.mobile,
             "user_name": self.user_name,
             "gender": self.gender,
@@ -136,22 +150,21 @@ class User(db.Model):
 
 
 class ContactType(object):
-    Added = 1,
-    Recommened = 2,
+    Added = 1
+    Recommened = 2
 
 
 class ContactStatus(object):
-    Removed = 0,
-    Normal = 1,
+    Removed = 0
+    Normal = 1
 
 
-class Relationships(db.Model):
+class Relationship(db.Model):
     __tablename__ = 'relationships'
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
     uid_one = db.Column(db.BigInteger, nullable=False)
     uid_two = db.Column(db.BigInteger, nullable=False)
-    # todo: do we need to record the recommend user here?
-    status = db.Column(db.Integer, nullable=False, comment=u'0: 已删除, 1: 正常')
+    status = db.Column(db.Integer, nullable=False, comment=u'0: 已删除, 1: 正常', default=1)
     type = db.Column(db.Integer, nullable=False, comment=u'1: 自己添加, 2: 熟人推荐')
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment=u'第一次添加时间')
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, comment=u'更新时间')
@@ -160,17 +173,17 @@ class Relationships(db.Model):
     @staticmethod
     def get_by_cursor(from_uid, cursor, size):
         if cursor:
-            contacts = Relationships.query \
-                .filter(Relationships.uid_one == from_uid or Relationships.uid_two == from_uid,
-                        Relationships.status == ContactStatus.Normal) \
-                .order_by(db.desc(Relationships.updated_at)).offset(0).limit(size)
+            contacts = Relationship.query \
+                .filter(Relationship.uid_one == from_uid or Relationship.uid_two == from_uid,
+                        Relationship.status == ContactStatus.Normal) \
+                .order_by(db.desc(Relationship.updated_at)).offset(0).limit(size)
         else:
             last_update = decode_cursor(cursor)
-            contacts = Relationships.query \
-                .filter(Relationships.uid_one == from_uid or Relationships.uid_two,
-                        Relationships.status == ContactStatus.Normal,
-                        Relationships.updated_at < last_update) \
-                .order_by(db.desc(Relationships.updated_at)).offset(0).limit(size)
+            contacts = Relationship.query \
+                .filter(Relationship.uid_one == from_uid or Relationship.uid_two,
+                        Relationship.status == ContactStatus.Normal,
+                        Relationship.updated_at < last_update) \
+                .order_by(db.desc(Relationship.updated_at)).offset(0).limit(size)
         uids = set()
         for contact in contacts:
             uids.add(contact.uid_one)
@@ -189,3 +202,114 @@ class Relationships(db.Model):
                     'update_at': contact.updated_at
                 })
         return json_contacts
+
+    @staticmethod
+    def add(user_one, user_two, type):
+        relationship = Relationship.find_relationship(user_one, user_two)
+        if relationship is None:
+            uid_one, uid_two = sorted([user_one, user_two])
+            relationship = Relationship(uid_one=uid_one, uid_two=uid_two, type=type)
+            db.session.add(relationship)
+
+        # update to direct added
+        if type == ContactType.Added:
+            relationship.type = ContactType.Added
+        relationship.status = ContactStatus.Normal
+        relationship.updated_at = arrow.utcnow().naive
+
+        db.session.commit()
+
+    @staticmethod
+    def find_relationship(user_one, user_two):
+        uid_one, uid_two = sorted([user_one, user_two])
+        return Relationship.query.filter(Relationship.uid_one == uid_one,
+                                         Relationship.uid_two == uid_two).one_or_none()
+
+
+class RelationshipRequestStatus(object):
+    Pending = 0
+    Accept = 1
+    Reject = 2
+
+
+class UserRelationshipRequest(db.Model):
+    __tablename__ = 'user_relationship_requests'
+    id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
+    user_requester_id = db.Column(db.BigInteger, nullable=False)
+    user_recommending_id = db.Column(db.BigInteger, nullable=False)
+    user_being_recommended_id = db.Column(db.BigInteger, nullable=False)
+    type = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.Integer, nullable=False, default=0)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    end_at = db.Column(db.DateTime)
+
+    def to_dict(self):
+        return {
+            "request_id": self.id,
+            "requester": User.find_user(self.user_requester_id).to_dict(),
+            "recommending_user": User.find_user(self.user_recommending_id).to_dict(),
+            "being_recommended_user": User.find_user(self.user_being_recommended_id).to_dict(),
+            "type": self.type,
+            "status": self.status
+        }
+
+    @staticmethod
+    def get_pending_requests(user_id):
+        query = db.session.query(UserRelationshipRequest).filter(
+            UserRelationshipRequest.user_being_recommended_id == user_id,
+            UserRelationshipRequest.status == RelationshipRequestStatus.Pending)
+
+        return [_.to_dict() for _ in query]
+
+    @staticmethod
+    def add(**kwargs):
+        user_requester_id = kwargs["user_requester_id"]
+        user_recommending_id = kwargs["user_recommending_id"]
+        user_being_recommended_id = kwargs["user_being_recommended_id"]
+
+        relationship = Relationship.find_relationship(user_recommending_id, user_being_recommended_id)
+        if relationship and relationship.status == ContactStatus.Normal:
+            # TODO: add notification
+            raise ApiException(ErrorCode.ADD_RELATIONSHIP_NOT_COMMON_COMPANY, "could not add direct relationship.")
+
+        type = ContactType.Added if user_requester_id == user_recommending_id else ContactType.Recommened
+        if type == ContactType.Added:
+            # the two user must have been in at least one same company if add directly.
+            work_experiences_one = [_.company_id for _ in
+                                    WorkExperience.query.filter(WorkExperience.uid == user_recommending_id)]
+            work_experiences_two = [_.company_id for _ in
+                                    WorkExperience.query.filter(WorkExperience.uid == user_recommending_id)]
+            if len(set(work_experiences_one) & set(work_experiences_two)) == 0:
+                raise ApiException(ErrorCode.ADD_RELATIONSHIP_NOT_COMMON_COMPANY, "could not add direct relationship.")
+
+        requester = UserRelationshipRequest.query.filter(
+            UserRelationshipRequest.user_requester_id == user_requester_id,
+            UserRelationshipRequest.user_recommending_id == user_recommending_id,
+            UserRelationshipRequest.user_being_recommended_id == user_being_recommended_id,
+        ).one_or_none()
+
+        if requester is None:
+            requester = UserRelationshipRequest(
+                user_requester_id=user_requester_id,
+                user_recommending_id=user_recommending_id,
+                user_being_recommended_id=user_being_recommended_id,
+                type=type,
+                status=RelationshipRequestStatus.Pending
+            )
+            db.session.add(requester)
+
+        db.session.commit()
+
+        return requester.to_dict()
+
+    @staticmethod
+    def complete(request_id, accept):
+        # TODO: add notification
+        requester = UserRelationshipRequest.query.filter(UserRelationshipRequest.id == request_id).one_or_none()
+        if requester:
+            requester.status = RelationshipRequestStatus.Accept if accept else RelationshipRequestStatus.Reject
+            requester.end_at = arrow.utcnow().naive
+            db.session.commit()
+
+            if accept:
+                Relationship.add(requester.user_recommending_id, requester.user_being_recommended_id, requester.type)

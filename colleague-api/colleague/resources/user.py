@@ -133,6 +133,22 @@ class Logout(Resource):
     post = get
 
 
+class SearchUsers(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('user_name', type=unicode, location='args', required=False)
+
+    @login_required
+    def get(self):
+        args = self.reqparse.parse_args()
+        users = User.search_users(args["user_name"])
+
+        return {
+            "status": 200,
+            "result": users
+        }
+
+
 class UserDetail(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()

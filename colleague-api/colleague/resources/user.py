@@ -10,9 +10,8 @@ from werkzeug.utils import secure_filename
 from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
 from colleague.extensions import redis_conn
-from colleague.models.user import User
+from colleague.models.user import User, WorkExperience
 from colleague.utils import ApiException, ErrorCode, VerificationCode, md5
-from colleague.service import work_service
 
 
 class Register(Resource):
@@ -105,7 +104,7 @@ class Login(Resource):
             "result": {
                 'user': user_info,
                 'user_details': {
-                    'work_experiences': work_service.get_all_work_experiences(user.id)
+                    'work_experiences': WorkExperience.get_all_work_experiences(user.id)
                 }
             }
         }

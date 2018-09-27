@@ -144,7 +144,9 @@ class SearchUsers(Resource):
 
         return {
             "status": 200,
-            "result": users
+            "result": {
+                "users": users
+            }
         }
 
 

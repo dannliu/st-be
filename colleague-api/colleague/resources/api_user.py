@@ -10,7 +10,8 @@ from werkzeug.utils import secure_filename
 from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
 from colleague.extensions import redis_conn
-from colleague.models.user import User, WorkExperience
+from colleague.models.user import User
+from colleague.models.work import WorkExperience
 from colleague.utils import ApiException, ErrorCode, VerificationCode, md5
 
 

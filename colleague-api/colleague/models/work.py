@@ -2,7 +2,7 @@
 
 from colleague.extensions import db
 from datetime import datetime
-from colleague.utils import encode_cursor
+from colleague.utils import encode_id
 
 
 class Organization(db.Model):
@@ -31,7 +31,7 @@ class Organization(db.Model):
 
     def to_dict(self):
         return {
-            "id": encode_cursor(self.id),
+            "id": encode_id(self.id),
             "name": self.name,
             "icon": self.icon
         }
@@ -77,6 +77,13 @@ class WorkExperience(db.Model):
                                            WorkExperience.status == WorkExperienceStatus.Normal).all()
 
     @staticmethod
+    def get_company_ids(uid):
+        return [_[0] for _ in
+                WorkExperience.query.with_entities(db.distinct(WorkExperience.company_id)).filter(
+                        WorkExperience.uid == uid,
+                        WorkExperience.status == WorkExperienceStatus.Normal).all()]
+
+    @staticmethod
     def delete(uid, id):
         we = WorkExperience.find_by_uid_id(uid, id)
         if we:
@@ -102,7 +109,7 @@ class WorkExperience(db.Model):
 
     def to_dict(self):
         return {
-            "id": encode_cursor(self.id),
+            "id": encode_id(self.id),
             "start_year": self.start_year,
             "start_month": self.start_month,
             "end_year": self.end_year,

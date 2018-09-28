@@ -28,8 +28,9 @@ class ErrorCode(object):
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
     WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
 
-    ADD_RELATIONSHIP_ALREADY_CONNECTED = 2011
-    ADD_RELATIONSHIP_NOT_COMMON_COMPANY = 2012
+    RELATIONSHIP_ALREADY_CONNECTED = STError(2012, "他们已经是好友了")
+    ADD_RELATIONSHIP_NOT_COMMON_COMPANY = STError(2013, "只能添加你的同事")
+    NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")
 
 
 class ApiException(Exception):
@@ -74,13 +75,14 @@ def md5(secret, salt):
     return h.hexdigest()
 
 
-def decode_cursor(cursor):
+def decode_id(cursor):
+    # TODO Try to use SkipJack encryption
     if isinstance(cursor, unicode):
         cursor = cursor.encode('utf-8')
     return base64.urlsafe_b64decode(cursor)
 
 
-def encode_cursor(cursor):
+def encode_id(cursor):
     return base64.urlsafe_b64encode(str(cursor))
 
 

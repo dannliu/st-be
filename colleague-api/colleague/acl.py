@@ -12,7 +12,7 @@ from colleague.models.user import User
 
 class UserObject(object):
     def __init__(self, **kwargs):
-        self.user = User.find_user(kwargs.get('user_id'))
+        self.user = User.find(kwargs.get('user_id'))
         self.device_id = kwargs.get("device_id")
 
         # TODO: other attributes

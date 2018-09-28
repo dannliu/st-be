@@ -26,19 +26,18 @@ class UserStatus(object):
 
 
 class User(db.Model):
-    __tablename__ = 'users'
-
+    __tablename__ = "users"
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
     mobile = db.Column(db.String(50), nullable=False, index=True)
     password_hash = db.Column(db.String(512), nullable=False)
-
     user_name = db.Column(db.String(256))
     gender = db.Column(db.Integer)
     avatar = db.Column(db.String(1024))
     user_id = db.Column(db.Text)
-
     status = db.Column(db.Integer)
-
+    title = db.Column(db.String(1024), nullable=True)
+    company_id = db.Column(db.BigInteger, db.ForeignKey("organizations.id"), nullable=True)
+    company = db.relationship("Organization")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_login_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
@@ -54,8 +53,8 @@ class User(db.Model):
             return [user.to_dict() for user in users]
 
     @staticmethod
-    def find_user(user_id):
-        return User.query.filter(User.id == user_id).one_or_none()
+    def find(id):
+        return User.query.filter(User.id == id).one_or_none()
 
     @staticmethod
     def find_user_mobile(mobile):
@@ -143,3 +142,16 @@ class User(db.Model):
             "avatar": "{}/images/avatar/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else "",
             "user_id": self.user_id
         }
+
+
+class Endorsement(db.Model):
+    __tablename__ = 'endorsement'
+    id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
+    uid = db.Column(db.BigInteger, nullable=False, unique=True, index=True)
+    total_contacts = db.Column(db.Integer, nullable=False, default=0)
+    niubility = db.Column(db.Integer, nullable=False, default=0)
+    reliability = db.Column(db.Integer, nullable=False, default=0)
+
+    @staticmethod
+    def find_by_uid(uid):
+        return Endorsement.query.filter(Endorsement.uid == uid).one_or_none()

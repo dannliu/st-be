@@ -82,7 +82,6 @@ def register_blueprints(app):
     api.add_resource(SearchUsers, '/search/users')
     api.add_resource(ApiContacts, '/contacts')
     api.add_resource(ApiRelationshipRequest, '/contact_request')
-    # Work related api
     api.add_resource(ApiWorkExperience, '/work_experience')
 
 

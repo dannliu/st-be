@@ -126,12 +126,21 @@ class RelationshipRequest(db.Model):
         }
 
     @staticmethod
-    def get_pending_requests(user_id):
-        query = db.session.query(RelationshipRequest).filter(
-                RelationshipRequest.uid_acceptor == user_id,
-                RelationshipRequest.status == RelationshipRequestStatus.Pending)
+    def get_by_cursor(uid, last_id, size):
+        if last_id:
+            requests = RelationshipRequest.query \
+                .filter(RelationshipRequest.uidB == uid, RelationshipRequest.id < last_id) \
+                .order_by(db.desc(RelationshipRequest.id)) \
+                .offset(0) \
+                .limit(size)
+        else:
+            requests = RelationshipRequest.query \
+                .filter(RelationshipRequest.uidB == uid) \
+                .order_by(db.desc(RelationshipRequest.id)) \
+                .offset(0) \
+                .limit(size)
 
-        return [_.to_dict() for _ in query]
+        pass
 
     @staticmethod
     def add(uid, uidA, uidB):

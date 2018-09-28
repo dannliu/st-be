@@ -10,7 +10,6 @@ class STError(object):
         self.code = code
         self.message = message
 
-
 class ErrorCode(object):
     NON_EXIST_USER = 2001
 

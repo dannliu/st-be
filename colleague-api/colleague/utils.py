@@ -3,12 +3,14 @@ import hashlib
 
 from colleague.extensions import redis_conn
 import base64
+import arrow
 
 
 class STError(object):
     def __init__(self, code, message):
         self.code = code
         self.message = message
+
 
 class ErrorCode(object):
     NON_EXIST_USER = 2001
@@ -83,6 +85,10 @@ def decode_id(cursor):
 
 def encode_id(cursor):
     return base64.urlsafe_b64encode(str(cursor))
+
+
+def datetime_to_timestamp(dt):
+    return arrow.get(dt).timestamp
 
 
 def list_to_dict(objects, key):

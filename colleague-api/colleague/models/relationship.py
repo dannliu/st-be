@@ -6,7 +6,8 @@ import arrow
 from colleague.extensions import db
 from colleague.models.user import User
 from colleague.models.work import WorkExperience
-from colleague.utils import list_to_dict, decode_id, st_raise_error, ErrorCode
+from colleague.utils import (list_to_dict, decode_id, st_raise_error,
+                             ErrorCode, datetime_to_timestamp)
 
 
 class RelationshipRequestType(object):
@@ -57,7 +58,7 @@ class Relationship(db.Model):
         for contact in contacts:
             uids.add(contact.uid_one)
             uids.add(contact.uid_two)
-        users = User.find_user_by_ids(uids)
+        users = User.find_by_ids(uids)
         # todo: do we need to fetch the user from redis?
         dict_users = list_to_dict(users, "id")
         json_contacts = []
@@ -118,15 +119,16 @@ class RelationshipRequest(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "uid": self.uid,
-            "uidA": self.uidA,
-            "uidB": self.uidB,
+            "user": self.user.to_dict(),
+            "userA": self.userA.to_dict(),
+            "userB": self.userB.to_dict(),
             "type": self.type,
-            "status": self.status
+            "status": self.status,
+            "create_at": datetime_to_timestamp(self.created_at)
         }
 
     @staticmethod
-    def get_by_cursor(uid, last_id, size):
+    def find_by_cursor(uid, last_id, size=20):
         if last_id:
             requests = RelationshipRequest.query \
                 .filter(RelationshipRequest.uidB == uid, RelationshipRequest.id < last_id) \
@@ -139,8 +141,7 @@ class RelationshipRequest(db.Model):
                 .order_by(db.desc(RelationshipRequest.id)) \
                 .offset(0) \
                 .limit(size)
-
-        pass
+        return requests
 
     @staticmethod
     def add(uid, uidA, uidB):

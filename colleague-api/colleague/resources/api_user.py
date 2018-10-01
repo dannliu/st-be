@@ -17,19 +17,19 @@ from colleague.utils import ApiException, ErrorCode, VerificationCode, md5
 
 class Register(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('device-id', type=str, location='headers', required=True)
-        self.reqparse.add_argument('mobile', type=str, location='json', required=True)
-        self.reqparse.add_argument('password', type=str, location='json', required=True)
-        self.reqparse.add_argument('verification_code', type=str, location='json', required=True)
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('device-id', type=str, location='headers', required=True)
+        self.reqparser.add_argument('mobile', type=str, location='json', required=True)
+        self.reqparser.add_argument('password', type=str, location='json', required=True)
+        self.reqparser.add_argument('verification_code', type=str, location='json', required=True)
 
     def post(self):
-        args = self.reqparse.parse_args()
+        args = self.reqparser.parse_args()
 
         mobile = args["mobile"]
         password = args["password"]
 
-        user = User.find_user_mobile(mobile)
+        user = User.find_by_mobile(mobile)
         if user:
             raise ApiException(ErrorCode.ALREADY_EXIST_MOBILE, "该手机号已被注册")
 
@@ -50,11 +50,11 @@ class Register(Resource):
 
 class Verification(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('mobile', type=str, location='args', required=True)
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('mobile', type=str, location='args', required=True)
 
     def get(self):
-        args = self.reqparse.parse_args()
+        args = self.reqparser.parse_args()
 
         mobile = args["mobile"]
 
@@ -78,18 +78,18 @@ class Verification(Resource):
 
 class Login(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('device-id', dest='device_id', type=str,
-                                   location='headers', required=True)
-        self.reqparse.add_argument('mobile', type=str, location='json', required=True)
-        self.reqparse.add_argument('password', type=str, location='json', required=True)
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('device-id', dest='device_id', type=str,
+                                    location='headers', required=True)
+        self.reqparser.add_argument('mobile', type=str, location='json', required=True)
+        self.reqparser.add_argument('password', type=str, location='json', required=True)
 
     def post(self):
-        args = self.reqparse.parse_args()
+        args = self.reqparser.parse_args()
         device_id = args['device_id']
         mobile = args['mobile']
         password = args['password']
-        user = User.find_user_mobile(mobile)
+        user = User.find_by_mobile(mobile)
         if user is None:
             raise ApiException(ErrorCode.NON_EXIST_USER, "还没有注册，快去注册吧")
         elif not user.verify_password(password):
@@ -97,7 +97,7 @@ class Login(Resource):
         elif not user.is_available():
             raise ApiException(ErrorCode.USER_UNAVAILABLE, "用户已被禁止访问")
         token = user.login_on(device_id)
-        user_info = user.to_dict()
+        user_info = user.to_dict_with_mobile()
         user_info.update(token)
 
         return {
@@ -153,14 +153,14 @@ class SearchUsers(Resource):
 
 class UserDetail(Resource):
     def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('user_name', type=unicode, location='json', required=False)
-        self.reqparse.add_argument('gender', type=int, location='json', required=False)
-        self.reqparse.add_argument('user_id', type=unicode, location='json', required=False)
+        self.reqparser = reqparse.RequestParser()
+        self.reqparser.add_argument('user_name', type=unicode, location='json', required=False)
+        self.reqparser.add_argument('gender', type=int, location='json', required=False)
+        self.reqparser.add_argument('user_id', type=unicode, location='json', required=False)
 
     @login_required
     def post(self):
-        args = self.reqparse.parse_args()
+        args = self.reqparser.parse_args()
         user_info = current_user.user.update_user(**args)
 
         return {

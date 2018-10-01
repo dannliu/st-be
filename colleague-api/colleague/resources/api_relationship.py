@@ -2,11 +2,12 @@
 
 
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import current_user
 
 from colleague.acl import login_required
 from colleague.models.relationship import Relationship, RelationshipRequest
-from flask_jwt_extended import current_user
 from colleague.utils import encode_id, decode_id, st_raise_error, ErrorCode
+from colleague.service.relationship_service import get_relationship_requests
 from . import compose_response
 
 
@@ -35,11 +36,12 @@ class ApiContacts(Resource):
 class ApiRelationshipRequest(Resource):
     @login_required
     def get(self):
-        user_id = current_user.user.user_id
-        return {
-            "status": 200,
-            "results": RelationshipRequest.get_pending_requests(user_id)
-        }
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('cursor', type=unicode, location='args', required=False)
+        args = reqparser.parse_args()
+        last_request_id = decode_id(args['cursor']) if args.get('cursor') else None
+        requests = get_relationship_requests(current_user.user.id, last_request_id, 20)
+        return compose_response(result={"requests": requests})
 
     @login_required
     def put(self):

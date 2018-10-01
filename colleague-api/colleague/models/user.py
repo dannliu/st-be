@@ -37,7 +37,8 @@ class User(db.Model):
     status = db.Column(db.Integer)
     title = db.Column(db.String(1024), nullable=True)
     company_id = db.Column(db.BigInteger, db.ForeignKey("organizations.id"), nullable=True)
-    company = db.relationship("Organization")
+    company = db.relationship("colleague.models.work.Organization")
+    endorsement = db.relationship("Endorsement", uselist=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     last_login_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
@@ -45,7 +46,7 @@ class User(db.Model):
     def search_users(search_string):
         if search_string.isdigit():
             mobile = search_string
-            user = User.find_user_mobile(mobile)
+            user = User.find_by_mobile(mobile)
             if user:
                 return [user.to_dict()]
         else:
@@ -57,12 +58,12 @@ class User(db.Model):
         return User.query.filter(User.id == id).one_or_none()
 
     @staticmethod
-    def find_user_mobile(mobile):
+    def find_by_mobile(mobile):
         return User.query.filter(User.mobile == mobile).one_or_none()
 
     @staticmethod
-    def find_user_by_ids(uids):
-        return User.query.filter(User.id.in_(uids)).all()
+    def find_by_ids(ids):
+        return User.query.filter(User.id.in_(ids)).all()
 
     @staticmethod
     def add_user(mobile, password):
@@ -133,21 +134,31 @@ class User(db.Model):
         self.status = UserStatus.Logout
         db.session.commit()
 
+    @property
+    def avatar_url(self):
+        return "{}/images/avatar/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else ""
+
+    def to_dict_with_mobile(self):
+        d = self.to_dict()
+        d['mobile'] = self.mobile
+        return d
+
     def to_dict(self):
         return {
             "id": encode_id(self.id),
-            "mobile": self.mobile,  # TODO mobile should be only returned for login & register api
             "user_name": self.user_name,
             "gender": self.gender,
-            "avatar": "{}/images/avatar/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else "",
-            "user_id": self.user_id
+            "avatar": self.avatar_url,
+            "user_id": self.user_id,
+            "company": self.company.to_dict() if self.company else None,
+            "endorsement": self.endorsement.to_dict() if self.endorsement else None
         }
 
 
 class Endorsement(db.Model):
     __tablename__ = 'endorsement'
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    uid = db.Column(db.BigInteger, nullable=False, unique=True, index=True)
+    uid = db.Column(db.BigInteger, db.ForeignKey("users.id"), nullable=False, unique=True, index=True)
     total_contacts = db.Column(db.Integer, nullable=False, default=0)
     niubility = db.Column(db.Integer, nullable=False, default=0)
     reliability = db.Column(db.Integer, nullable=False, default=0)
@@ -155,3 +166,10 @@ class Endorsement(db.Model):
     @staticmethod
     def find_by_uid(uid):
         return Endorsement.query.filter(Endorsement.uid == uid).one_or_none()
+
+    def to_dict(self):
+        return {
+            "total_contacts": self.total_contacts,
+            "niubility_count": self.niubility,
+            "reliabilityCount": self.reliability
+        }

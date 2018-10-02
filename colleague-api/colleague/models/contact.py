@@ -7,7 +7,7 @@ from colleague.extensions import db
 from colleague.models.user import User
 from colleague.models.work import WorkExperience
 from colleague.utils import (list_to_dict, decode_id, st_raise_error,
-                             ErrorCode, datetime_to_timestamp)
+                             ErrorCode, datetime_to_timestamp, encode_id)
 
 
 class ContactStatus(object):
@@ -45,7 +45,7 @@ class Contact(db.Model):
     def find_by_cursor(from_uid, cursor, size):
         if cursor:
             contacts = Contact.query \
-                .filter(Contact.uidA == from_uid or Contact.uidB == from_uid,
+                .filter(db.or_(Contact.uidA == from_uid or Contact.uidB == from_uid),
                         Contact.status == ContactStatus.Connected) \
                 .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
         else:
@@ -70,7 +70,7 @@ class Contact(db.Model):
                 json_contacts.append({
                     'user': user.to_dict(),
                     'type': contact.type,
-                    'update_at': contact.updated_at
+                    'update_at': datetime_to_timestamp(contact.updated_at)
                 })
         return json_contacts
 
@@ -118,7 +118,7 @@ class ContactRequest(db.Model):
 
     def to_dict(self):
         return {
-            "id": self.id,
+            "id": encode_id(self.id),
             "user": self.user.to_dict(),
             "userA": self.userA.to_dict(),
             "userB": self.userB.to_dict(),
@@ -131,16 +131,16 @@ class ContactRequest(db.Model):
     def find_by_cursor(uid, last_id, size=20):
         if last_id:
             requests = ContactRequest.query \
-                .filter(ContactRequest.uidB == uid,
-                        ContactRequest.status == ContactRequestStatus.Accepted or ContactRequestStatus == ContactRequestStatus.Pending,
-                        ContactRequest.id < last_id) \
+                .filter(ContactRequest.uidB == uid) \
+                .filter((ContactRequest.status == ContactRequestStatus.Accepted) | (ContactRequestStatus == ContactRequestStatus.Pending)) \
+                .filter(ContactRequest.id < last_id) \
                 .order_by(db.desc(ContactRequest.id)) \
                 .offset(0) \
                 .limit(size).all()
         else:
             requests = ContactRequest.query \
-                .filter(ContactRequest.uidB == uid,
-                        ContactRequest.status == ContactRequestStatus.Accepted or ContactRequest.status == ContactRequestStatus.Pending) \
+                .filter(ContactRequest.uidB == uid) \
+                .filter((ContactRequest.status == ContactRequestStatus.Accepted) | (ContactRequest.status == ContactRequestStatus.Pending)) \
                 .order_by(db.desc(ContactRequest.id)) \
                 .offset(0) \
                 .limit(size).all()
@@ -186,3 +186,4 @@ class ContactRequest(db.Model):
             db.session.commit()
             if accept:
                 Contact.add(request.uidA, request.uidB, request.type)
+                return request.to_dict()

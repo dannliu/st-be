@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 
-from colleague.models.relationship import RelationshipRequest
+from colleague.models.contact import ContactRequest
 from colleague.models.user import User
-from colleague.utils import list_to_dict
+from colleague.utils import list_to_dict, encode_id
 
 
-def get_relationship_requests(uid, last_request_id, size):
-    requests = RelationshipRequest.find_by_cursor(uid, last_request_id, size)
+def get_contact_requests(uid, last_request_id, size):
+    requests = ContactRequest.find_by_cursor(uid, last_request_id, size)
     uids = set()
     for request in requests:
         uids.add(request.uid)
@@ -22,4 +22,13 @@ def get_relationship_requests(uid, last_request_id, size):
             request.user = user
             request.userA = userA
             request.userB = userB
-    return [_.to_dict() for _ in requests]
+    next_cursor = None
+    has_more = False
+    if len(requests) == size:
+        next_cursor = encode_id(requests[-1].id)
+        has_next = True
+    return {
+        "next_cursor": next_cursor,
+        "has_more": has_more,
+        "requests": [_.to_dict() for _ in requests]
+    }

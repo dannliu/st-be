@@ -88,7 +88,17 @@ def encode_id(cursor):
 
 
 def datetime_to_timestamp(dt):
-    return arrow.get(dt).timestamp
+    t = arrow.get(dt)
+    return t.timestamp + t.microsecond / 1000000.0
+
+
+def timestamp_to_str(timestamp):
+    # use str will round the float point to 2
+    return "{:.6f}".format(timestamp)
+
+
+def timestamp_to_datetime(timestamp):
+    return arrow.get(timestamp).naive
 
 
 def list_to_dict(objects, key):

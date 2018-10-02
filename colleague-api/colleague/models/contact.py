@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
 
 from datetime import datetime
+
 import arrow
 
 from colleague.extensions import db
-from colleague.models.user import User
 from colleague.models.work import WorkExperience
-from colleague.utils import (list_to_dict, decode_id, st_raise_error,
-                             ErrorCode, datetime_to_timestamp, encode_id)
+from colleague.utils import (st_raise_error, ErrorCode, datetime_to_timestamp,
+                             encode_id)
 
 
 class ContactStatus(object):
@@ -42,43 +42,25 @@ class Contact(db.Model):
     removed_at = db.Column(db.DateTime, nullable=True)
 
     @staticmethod
-    def find_by_cursor(from_uid, cursor, size):
-        if cursor:
+    def find_by_cursor(from_uid, last_update_date, size):
+        if last_update_date:
             contacts = Contact.query \
-                .filter(db.or_(Contact.uidA == from_uid or Contact.uidB == from_uid),
-                        Contact.status == ContactStatus.Connected) \
-                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
-        else:
-            last_update = decode_id(cursor)
-            contacts = Contact.query \
-                .filter(Contact.uidA == from_uid or Contact.uidB,
+                .filter((Contact.uidA == from_uid) | (Contact.uidB == from_uid),
                         Contact.status == ContactStatus.Connected,
-                        Contact.updated_at < last_update) \
-                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size)
-        uids = set()
-        for contact in contacts:
-            uids.add(contact.uidA)
-            uids.add(contact.uidB)
-        users = User.find_by_ids(uids)
-        # todo: do we need to fetch the user from redis?
-        dict_users = list_to_dict(users, "id")
-        json_contacts = []
-        for contact in contacts:
-            uid = contact.uidA == from_uid and contact.uidB or contact.uidA
-            user = dict_users.get(uid)
-            if user:
-                json_contacts.append({
-                    'user': user.to_dict(),
-                    'type': contact.type,
-                    'update_at': datetime_to_timestamp(contact.updated_at)
-                })
-        return json_contacts
+                        Contact.updated_at < last_update_date) \
+                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size).all()
+        else:
+            contacts = Contact.query \
+                .filter((Contact.uidA == from_uid) | (Contact.uidB == from_uid),
+                        Contact.status == ContactStatus.Connected) \
+                .order_by(db.desc(Contact.updated_at)).offset(0).limit(size).all()
+        return contacts
 
     @staticmethod
     def add(uidA, uidB, type):
         contact = Contact.find_by_uid(uidA, uidB)
         if contact is None:
-            uidA, uidB = sorted([uidA, uidB])
+            uidA, uidB = (uidA, uidB) if uidA < uidB else (uidB, uidA)
             contact = Contact(uidA=uidA, uidB=uidB, type=type)
             db.session.add(contact)
         # 由于联系人的请求有两种来源：自己添加和朋友推荐
@@ -91,7 +73,7 @@ class Contact(db.Model):
 
     @staticmethod
     def find_by_uid(uidA, uidB):
-        uidA, uidB = sorted([uidA, uidB])
+        uidA, uidB = (uidA, uidB) if uidA < uidB else (uidB, uidA)
         return Contact.query.filter(Contact.uidA == uidA,
                                     Contact.uidB == uidB).one_or_none()
 
@@ -132,7 +114,8 @@ class ContactRequest(db.Model):
         if last_id:
             requests = ContactRequest.query \
                 .filter(ContactRequest.uidB == uid) \
-                .filter((ContactRequest.status == ContactRequestStatus.Accepted) | (ContactRequestStatus == ContactRequestStatus.Pending)) \
+                .filter((ContactRequest.status == ContactRequestStatus.Accepted) | (
+                    ContactRequestStatus == ContactRequestStatus.Pending)) \
                 .filter(ContactRequest.id < last_id) \
                 .order_by(db.desc(ContactRequest.id)) \
                 .offset(0) \
@@ -140,7 +123,8 @@ class ContactRequest(db.Model):
         else:
             requests = ContactRequest.query \
                 .filter(ContactRequest.uidB == uid) \
-                .filter((ContactRequest.status == ContactRequestStatus.Accepted) | (ContactRequest.status == ContactRequestStatus.Pending)) \
+                .filter((ContactRequest.status == ContactRequestStatus.Accepted) | (
+                    ContactRequest.status == ContactRequestStatus.Pending)) \
                 .order_by(db.desc(ContactRequest.id)) \
                 .offset(0) \
                 .limit(size).all()

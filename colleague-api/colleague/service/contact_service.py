@@ -4,8 +4,41 @@ import arrow
 
 from colleague.models.contact import (ContactRequest, ContactRequestStatus, Contact)
 from colleague.models.user import User
-from colleague.utils import list_to_dict, encode_id
+from colleague.utils import (list_to_dict, encode_id, datetime_to_timestamp,
+                             timestamp_to_str)
 from colleague.extensions import db
+
+
+def get_contacts(uid, last_update_date, size):
+    contacts = Contact.find_by_cursor(uid, last_update_date, size)
+    next_cursor = None
+    has_more = False
+    if len(contacts) == size:
+        has_more = True
+        update_timestamp = datetime_to_timestamp(contacts[-1].updated_at)
+        next_cursor = encode_id(timestamp_to_str(update_timestamp))
+    uids = set()
+    for contact in contacts:
+        uids.add(contact.uidA)
+        uids.add(contact.uidB)
+    users = User.find_by_ids(uids)
+    dict_users = list_to_dict(users, "id")
+    json_contacts = []
+    for contact in contacts:
+        uid = contact.uidA == uid and contact.uidB or contact.uidA
+        user = dict_users.get(uid)
+        if user:
+            json_contacts.append({
+                'id': encode_id(contact.id),
+                'user': user.to_dict(),
+                'type': contact.type,
+                'update_date': datetime_to_timestamp(contact.updated_at)
+            })
+    return {
+        "has_more": has_more,
+        "next_cursor": next_cursor,
+        "contacts": json_contacts
+    }
 
 
 def get_contact_requests(uid, last_request_id, size):

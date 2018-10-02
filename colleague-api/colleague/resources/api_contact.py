@@ -1,36 +1,28 @@
 # -*- coding:utf-8 -*-
 
 
-from flask_restful import Resource, reqparse
 from flask_jwt_extended import current_user
+from flask_restful import Resource, reqparse
 
 from colleague.acl import login_required
-from colleague.models.contact import Contact, ContactRequest
-from colleague.utils import encode_id, decode_id, st_raise_error, ErrorCode
+from colleague.models.contact import ContactRequest
 from colleague.service import contact_service
+from colleague.utils import decode_id, st_raise_error, ErrorCode, timestamp_to_datetime
 from . import compose_response
 
 
 class ApiContacts(Resource):
-    SIZE = 10
+    SIZE = 1
 
     @login_required
     def get(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('cursor', type=unicode, location='args', required=False)
         args = reqparser.parse_args()
-        # todo: Need to add endorsement information from to_user
-        contacts = Contact.find_by_cursor(current_user.user.user_id, args.get('cursor'), ApiContacts.SIZE)
-        next_cursor = None
-        if contacts:
-            next_cursor = encode_id(contacts[-1].get('update_at'))
-        return {
-            'status': 200,
-            'result': {
-                'next_cursor': next_cursor,
-                'contacts': contacts
-            }
-        }
+        last_timestamp = decode_id(args['cursor']) if args.get('cursor') else None
+        last_update_date = timestamp_to_datetime(last_timestamp)
+        contacts = contact_service.get_contacts(current_user.user.id, last_update_date, ApiContacts.SIZE)
+        return compose_response(result=contacts)
 
 
 class ApiContactRequest(Resource):

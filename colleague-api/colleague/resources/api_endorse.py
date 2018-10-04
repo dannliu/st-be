@@ -43,9 +43,9 @@ class ApiEndorseComment(Resource):
     def post(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uid', type=unicode, location='json', required=True)
-        reqparser.add_argument('text', type=int, location='json', required=True)
+        reqparser.add_argument('text', type=unicode, location='json', required=True)
         args = reqparser.parse_args()
         to_uid = decode_id(args.get('uid'))
         EndorseComment.update(to_uid, current_user.user.id, args.get('text'))
         endorsement = user_service.get_user_endorsement(to_uid, current_user.user.id)
-        return compose_response(result=endorsement)
+        return compose_response(result=endorsement, message="评论成功")

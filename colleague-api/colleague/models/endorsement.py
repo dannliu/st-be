@@ -79,8 +79,8 @@ class UserEndorse(db.Model):
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
     uid = db.Column(db.BigInteger, nullable=False, comment=u"to uid")
     from_uid = db.Column(db.BigInteger, nullable=False, comment=u"from uid")
-    type = db.Column(db.SMALLINT, nullable=False, comment="1: 大牛, 2: 靠谱")
-    status = db.Column(db.SMALLINT, nullable=False, comment="0: 开启, 1: 取消")
+    type = db.Column(db.SMALLINT, nullable=False, comment=u"1: 大牛, 2: 靠谱")
+    status = db.Column(db.SMALLINT, nullable=False, comment=u"0: 开启, 1: 取消")
     create_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     update_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     db.UniqueConstraint(uid, from_uid, type)
@@ -100,7 +100,7 @@ class UserEndorse(db.Model):
                                            UserEndorse.from_uid == from_uid,
                                            UserEndorse.type == type).one_or_none()
         endorse_status = EndorseStatus.Supported if status else EndorseStatus.Removed
-        if endorse and endorse.status != endorse_status:
+        if endorse and endorse.status == endorse_status:
             # duplicate request
             return
         if endorse_status == EndorseStatus.Removed and not endorse:

@@ -28,6 +28,7 @@ class ApiContacts(Resource):
 class ApiContactRequest(Resource):
     @login_required
     def get(self):
+        # 获取联系人请求列表
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('cursor', type=unicode, location='args', required=False)
         args = reqparser.parse_args()
@@ -37,7 +38,7 @@ class ApiContactRequest(Resource):
 
     @login_required
     def put(self):
-        # Request a new relationship
+        # 请求建立联系人关系
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uidA', type=unicode, location='json', required=True)
         reqparser.add_argument('uidB', type=unicode, location='json', required=True)
@@ -46,12 +47,14 @@ class ApiContactRequest(Resource):
         uidB = int(decode_id(args['uidB']))
         if uidB == current_user.user.id:
             st_raise_error(ErrorCode.NOT_ALLOWED_ADD_SELF)
-        request = ContactRequest.add(current_user.user.id, uidA, uidB)
+        ContactRequest.add(current_user.user.id, uidA, uidB)
 
         return compose_response(message="请求发送成功")
 
     @login_required
     def post(self):
+        # 接受或者删除联系人申请
+        # TODO: We need check whether two users were once in the same company?
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('id', type=unicode, location='json', required=True)
         reqparser.add_argument('accept', type=bool, location='json', required=True)

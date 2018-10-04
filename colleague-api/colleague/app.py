@@ -65,10 +65,13 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    from .resources.api_user import (Register, Verification, Login, RefreshToken, Logout, UserDetail, UploadUserIcon,
-                                     SearchUsers)
+    from .resources.api_user import (
+        Register, Verification, Login, RefreshToken, Logout,
+        UserDetail, UploadUserIcon, SearchUsers)
     from .resources.api_work import ApiWorkExperience
     from .resources.api_contact import ApiContacts, ApiContactRequest
+    from .resources.api_endorse import (
+        ApiEndorseNiubility, ApiEndorseReliability, ApiEndorseComment)
 
     api = ColleagueApi(app)
 
@@ -83,6 +86,9 @@ def register_blueprints(app):
     api.add_resource(ApiContacts, '/contacts')
     api.add_resource(ApiContactRequest, '/contact_request')
     api.add_resource(ApiWorkExperience, '/work_experience')
+    api.add_resource(ApiEndorseNiubility, '/endorse/niubility')
+    api.add_resource(ApiEndorseReliability, '/endorse/reliability')
+    api.add_resource(ApiEndorseComment, '/endorse/comment')
 
 
 def register_errorhandlers(app):

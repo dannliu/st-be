@@ -153,23 +153,3 @@ class User(db.Model):
             "company": self.company.to_dict() if self.company else None,
             "endorsement": self.endorsement.to_dict() if self.endorsement else None
         }
-
-
-class Endorsement(db.Model):
-    __tablename__ = 'endorsement'
-    id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    uid = db.Column(db.BigInteger, db.ForeignKey("users.id"), nullable=False, unique=True, index=True)
-    total_contacts = db.Column(db.Integer, nullable=False, default=0)
-    niubility = db.Column(db.Integer, nullable=False, default=0)
-    reliability = db.Column(db.Integer, nullable=False, default=0)
-
-    @staticmethod
-    def find_by_uid(uid):
-        return Endorsement.query.filter(Endorsement.uid == uid).one_or_none()
-
-    def to_dict(self):
-        return {
-            "total_contacts": self.total_contacts,
-            "niubility_count": self.niubility,
-            "reliabilityCount": self.reliability
-        }

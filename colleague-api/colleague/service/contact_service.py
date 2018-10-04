@@ -4,6 +4,7 @@ import arrow
 
 from colleague.models.contact import (ContactRequest, ContactRequestStatus, Contact)
 from colleague.models.user import User
+from colleague.models.endorsement import Endorsement
 from colleague.utils import (list_to_dict, encode_id, datetime_to_timestamp,
                              timestamp_to_str)
 from colleague.extensions import db
@@ -67,6 +68,9 @@ def accept_contact_request(id, uid, accept):
         if accept:
             Contact.add(request.uidA, request.uidB, request.type)
             _set_user_for_requests([request])
+            # Update the endorsement total contacts
+            Endorsement.update_total_contacts_count(request.uidA, 1)
+            Endorsement.update_total_contacts_count(request.uidB, 1)
             return request.to_dict()
 
 

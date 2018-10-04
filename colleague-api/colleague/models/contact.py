@@ -154,20 +154,4 @@ class ContactRequest(db.Model):
             request = ContactRequest(uid=uid, uidA=uidA, uidB=uidB, type=type,
                                      status=ContactRequestStatus.Pending)
             db.session.add(request)
-
         db.session.commit()
-
-        return request.to_dict()
-
-    @staticmethod
-    def complete(uid, id, accept):
-        # You must filter with id and uidB to ensure that this is done by the uidB
-        request = ContactRequest.query.filter(ContactRequest.id == id,
-                                              ContactRequest.uidB == uid).one_or_none()
-        if request and request.status == ContactRequestStatus.Pending:
-            request.status = ContactRequestStatus.Accepted if accept else ContactRequestStatus.Rejected
-            request.end_at = arrow.utcnow().naive
-            db.session.commit()
-            if accept:
-                Contact.add(request.uidA, request.uidB, request.type)
-                return request.to_dict()

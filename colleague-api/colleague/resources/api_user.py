@@ -12,6 +12,7 @@ from colleague.config import settings
 from colleague.extensions import redis_conn
 from colleague.models.user import User
 from colleague.models.work import WorkExperience
+from colleague.models.endorsement import Endorsement
 from colleague.utils import ApiException, ErrorCode, VerificationCode, md5
 
 
@@ -40,6 +41,7 @@ class Register(Resource):
             raise ApiException(ErrorCode.VERIFICATION_CODE_NOT_MATCH, "验证码错误")
 
         user = User.add_user(mobile, password)
+        Endorsement.add_new_one(user.id)
         token = user.login_on(args["device-id"])
 
         return {

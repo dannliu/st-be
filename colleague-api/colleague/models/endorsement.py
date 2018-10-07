@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
-import arrow
 from datetime import datetime
+
+import arrow
 
 from colleague.extensions import db
 

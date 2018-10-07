@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import datetime
 import os
-import dotenv
 
+import dotenv
 from confire import Configuration, environ_setting
 
 dotenv.load_dotenv(dotenv.find_dotenv(".env", raise_error_if_not_found=True, usecwd=True))

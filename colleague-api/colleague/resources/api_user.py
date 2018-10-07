@@ -2,7 +2,6 @@
 import os
 
 from flask import request
-
 from flask_jwt_extended import current_user
 from flask_restful import Resource, reqparse
 from werkzeug.utils import secure_filename
@@ -10,10 +9,11 @@ from werkzeug.utils import secure_filename
 from colleague.acl import login_required, refresh_token_required
 from colleague.config import settings
 from colleague.extensions import redis_conn
+from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
 from colleague.models.work import WorkExperience
-from colleague.models.endorsement import Endorsement
-from colleague.utils import ApiException, ErrorCode, VerificationCode, md5
+from colleague.utils import (ApiException, ErrorCode, VerificationCode, md5,
+                             st_raise_error)
 
 
 class Register(Resource):
@@ -32,13 +32,13 @@ class Register(Resource):
 
         user = User.find_by_mobile(mobile)
         if user:
-            raise ApiException(ErrorCode.ALREADY_EXIST_MOBILE, "该手机号已被注册")
+            raise st_raise_error(ErrorCode.ALREADY_EXIST_MOBILE)
 
         verification_code = redis_conn.get("verification_code:{}".format(mobile))
         if verification_code is None:
-            raise ApiException(ErrorCode.VERIFICATION_CODE_EXPIRE, "验证码已过期")
+            raise st_raise_error(ErrorCode.VERIFICATION_CODE_EXPIRE)
         if verification_code != args["verification_code"]:
-            raise ApiException(ErrorCode.VERIFICATION_CODE_NOT_MATCH, "验证码错误")
+            raise st_raise_error(ErrorCode.VERIFICATION_CODE_NOT_MATCH)
 
         user = User.add_user(mobile, password)
         Endorsement.add_new_one(user.id)
@@ -93,11 +93,11 @@ class Login(Resource):
         password = args['password']
         user = User.find_by_mobile(mobile)
         if user is None:
-            raise ApiException(ErrorCode.NON_EXIST_USER, "还没有注册，快去注册吧")
+            st_raise_error(ErrorCode.NOT_REGISTERED)
         elif not user.verify_password(password):
-            raise ApiException(ErrorCode.USER_PASSWORD_WRONG, "密码错误")
+            raise st_raise_error(ErrorCode.USER_PASSWORD_WRONG)
         elif not user.is_available():
-            raise ApiException(ErrorCode.USER_UNAVAILABLE, "用户已被禁止访问")
+            raise st_raise_error(ErrorCode.USER_UNAVAILABLE)
         token = user.login_on(device_id)
         user_info = user.to_dict_with_mobile()
         user_info.update(token)
@@ -188,3 +188,11 @@ class UploadUserIcon(Resource):
             "status": 200,
             "result": user_info
         }
+
+
+class UserProfile(Resource):
+    @login_required
+    def get(self):
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('uid', type=unicode, location='json', required=True)
+        args = reqparser.parse_args()

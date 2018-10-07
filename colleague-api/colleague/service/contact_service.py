@@ -2,12 +2,12 @@
 
 import arrow
 
+from colleague.extensions import db
 from colleague.models.contact import (ContactRequest, ContactRequestStatus, Contact)
-from colleague.models.user import User
 from colleague.models.endorsement import Endorsement
+from colleague.models.user import User
 from colleague.utils import (list_to_dict, encode_id, datetime_to_timestamp,
                              timestamp_to_str)
-from colleague.extensions import db
 
 
 def get_contacts(uid, last_update_date, size):

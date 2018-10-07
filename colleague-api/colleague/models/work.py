@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 
-from colleague.extensions import db
 from datetime import datetime
+
+from colleague.extensions import db
 from colleague.utils import encode_id
 
 

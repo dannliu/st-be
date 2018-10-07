@@ -5,10 +5,10 @@ from flask_jwt_extended.exceptions import JWTExtendedException
 from flask_restful import Api
 from werkzeug.exceptions import NotFound
 
-from .utils import ApiException
+from colleague.models.user import db
 from .config import settings
 from .extensions import jwt
-from colleague.models.user import db
+from .utils import ApiException
 
 
 class ColleagueApi(Api):

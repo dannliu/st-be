@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+import base64
 import hashlib
 
-from colleague.extensions import redis_conn
-import base64
 import arrow
+
+from colleague.extensions import redis_conn
 
 
 class STError(object):
@@ -13,26 +14,24 @@ class STError(object):
 
 
 class ErrorCode(object):
-    NON_EXIST_USER = 2001
+    NOT_REGISTERED = STError(2001, "还没有注册，快去注册吧")
 
-    VERIFICATION_CODE_EXPIRE = 2002
-    VERIFICATION_CODE_NOT_MATCH = 2003
+    VERIFICATION_CODE_EXPIRE = STError(2002, '验证码已过期')
+    VERIFICATION_CODE_NOT_MATCH = STError(2003, '验证码错误')
     VERIFICATION_CODE_MAX_REQUEST = 2004
 
-    USER_PASSWORD_WRONG = 2005
+    USER_PASSWORD_WRONG = (2005, "用户名或者密码错误")
     DEVICE_MISMATCH = 2006
-    USER_UNAVAILABLE = 2007
+    USER_UNAVAILABLE = STError(2007, '用户已被禁止访问')
 
-    ALREADY_EXIST_MOBILE = 2008
-    ALREADY_EXIST_USER_ID = 2009
+    ALREADY_EXIST_MOBILE = STError(2008, '该手机号已被注册')
+    ALREADY_EXIST_USER_ID = STError(2009, '该id已被注册，换一个新的吧')
 
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
     WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
-
     RELATIONSHIP_ALREADY_CONNECTED = STError(2012, "他们已经是好友了")
     ADD_RELATIONSHIP_NOT_COMMON_COMPANY = STError(2013, "只能添加你的同事")
     NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")
-
     ENDORSE_TYPE_INVALID = STError(2014, "你要背的书我们还没有提供哦")
 
 

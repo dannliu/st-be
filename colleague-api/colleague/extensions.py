@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
+from flask_sqlalchemy import SQLAlchemy
+
 from .config import settings
 
-from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 import redis

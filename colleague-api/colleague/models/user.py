@@ -8,7 +8,7 @@ from passlib.context import CryptContext
 
 from colleague.config import settings
 from colleague.extensions import db
-from colleague.utils import ApiException, ErrorCode, encode_id
+from colleague.utils import ErrorCode, encode_id, st_raise_error
 
 pwd_context = CryptContext(
         schemes=["pbkdf2_sha256"],
@@ -85,7 +85,7 @@ class User(db.Model):
                 if key == 'user_id':
                     exist_user_id = User.query.filter(User.user_id == value).one_or_none()
                     if exist_user_id:
-                        raise ApiException(ErrorCode.ALREADY_EXIST_USER_ID, "please user other user id.")
+                        st_raise_error(ErrorCode.ALREADY_EXIST_USER_ID)
                     self.user_id = value
                 else:
                     setattr(self, key, value)

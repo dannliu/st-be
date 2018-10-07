@@ -5,7 +5,6 @@ from flask_script import Manager, Shell
 
 from colleague.app import app, db
 
-
 manager = Manager(app)
 
 

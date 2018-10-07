@@ -2,6 +2,8 @@
 
 from colleague.models.endorsement import (
     EndorseComment, UserEndorse, Endorsement, EndorseType)
+from colleague.models.user import (User)
+from colleague.utils import st_raise_error, ErrorCode
 
 
 def get_user_endorsement(uid, from_uid):
@@ -18,3 +20,9 @@ def get_user_endorsement(uid, from_uid):
         if endorse_reliability:
             json_endorsement['is_reliability'] = True
         return json_endorsement
+
+
+def get_user_profile(uid):
+    user = User.find(uid)
+    if not user:
+        st_raise_error(ErrorCode.NON_EXIST_USER)

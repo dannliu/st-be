@@ -12,8 +12,9 @@ from colleague.extensions import redis_conn
 from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
 from colleague.models.work import WorkExperience
-from colleague.utils import (ApiException, ErrorCode, VerificationCode, md5,
-                             st_raise_error)
+from colleague.utils import (ErrorCode, VerificationCode, md5, st_raise_error, decode_id)
+from colleague.service import user_service
+from . import compose_response
 
 
 class Register(Resource):
@@ -62,7 +63,7 @@ class Verification(Resource):
 
         verification_code = VerificationCode(mobile)
         if verification_code.request_count() >= settings["MAX_VERIFICATION_CODE_REQUEST_COUNT"]:
-            raise ApiException(ErrorCode.VERIFICATION_CODE_MAX_REQUEST, "please request later.")
+            raise st_raise_error(ErrorCode.VERIFICATION_CODE_MAX_REQUEST)
 
         code = verification_code.get_code()
         if not code:
@@ -194,5 +195,8 @@ class UserProfile(Resource):
     @login_required
     def get(self):
         reqparser = reqparse.RequestParser()
-        reqparser.add_argument('uid', type=unicode, location='json', required=True)
+        reqparser.add_argument('uid', type=unicode, location='args', required=True)
         args = reqparser.parse_args()
+        uid = decode_id(args['uid'])
+        user_profile = user_service.get_user_profile(uid)
+        return compose_response(result=user_profile)

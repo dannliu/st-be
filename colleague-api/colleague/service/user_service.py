@@ -1,9 +1,13 @@
 # -*- coding:utf-8 -*-
 
+from flask_jwt_extended import current_user
+
 from colleague.models.endorsement import (
     EndorseComment, UserEndorse, Endorsement, EndorseType)
 from colleague.models.user import (User)
+from colleague.models.endorsement import EndorseComment
 from colleague.utils import st_raise_error, ErrorCode
+from colleague.service import work_service
 
 
 def get_user_endorsement(uid, from_uid):
@@ -25,4 +29,12 @@ def get_user_endorsement(uid, from_uid):
 def get_user_profile(uid):
     user = User.find(uid)
     if not user:
-        st_raise_error(ErrorCode.NON_EXIST_USER)
+        st_raise_error(ErrorCode.USER_NOT_EXIST)
+    work_experiences = work_service.get_work_experiences(uid)
+    endorsement = get_user_endorsement(uid, current_user.user.id)
+    latest_comment = EndorseComment.find_latest_by_uid(uid)
+    json_user = user.to_dict()
+    json_user['endorsement'] = endorsement
+    json_user['work_experiences'] = work_experiences
+    json_user['latest_comment'] = latest_comment.to_dict()
+    return json_user

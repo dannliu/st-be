@@ -6,6 +6,7 @@ from flask_restful import Resource, reqparse
 from colleague.acl import login_required
 from colleague.models.work import WorkExperience, Organization
 from colleague.utils import ErrorCode, st_raise_error, decode_id
+from colleague.service import work_service
 
 
 class ApiWorkExperience(Resource):
@@ -14,7 +15,7 @@ class ApiWorkExperience(Resource):
     def get(self):
         return {
             'status': 200,
-            'result': {"work_experiences": WorkExperience.get_all_work_experiences(current_user.user.id)}
+            'result': {"work_experiences": work_service.get_work_experiences(current_user.user.id)}
         }
 
     @login_required
@@ -55,7 +56,7 @@ class ApiWorkExperience(Resource):
         WorkExperience.add(work_experience)
         return {
             'status': 200,
-            'result': {"work_experiences": WorkExperience.get_all_work_experiences(current_user.user.id)}
+            'result': {"work_experiences": work_service.get_work_experiences(current_user.user.id)}
         }
 
     @login_required
@@ -100,7 +101,7 @@ class ApiWorkExperience(Resource):
         work_experience.update()
         return {
             'status': 200,
-            'result': {"work_experiences": WorkExperience.get_all_work_experiences(current_user.user.id)}
+            'result': {"work_experiences": work_service.get_work_experiences(current_user.user.id)}
         }
 
     @login_required
@@ -112,5 +113,5 @@ class ApiWorkExperience(Resource):
         WorkExperience.delete(current_user.user.id, decode_id(id))
         return {
             'status': 200,
-            'result': {"work_experiences": WorkExperience.get_all_work_experiences(current_user.user.id)}
+            'result': {"work_experiences": work_service.get_work_experiences(current_user.user.id)}
         }

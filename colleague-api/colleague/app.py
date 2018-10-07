@@ -67,7 +67,7 @@ def register_extensions(app):
 def register_blueprints(app):
     from .resources.api_user import (
         Register, Verification, Login, RefreshToken, Logout,
-        UserDetail, UploadUserIcon, SearchUsers)
+        UserDetail, UploadUserIcon, SearchUsers, UserProfile)
     from .resources.api_work import ApiWorkExperience
     from .resources.api_contact import ApiContacts, ApiContactRequest
     from .resources.api_endorse import (
@@ -80,7 +80,10 @@ def register_blueprints(app):
     api.add_resource(Login, '/login')
     api.add_resource(RefreshToken, '/refresh_token')
     api.add_resource(Logout, '/logout')
+    # The api for updating current user information
     api.add_resource(UserDetail, '/user_detail')
+    # The user information for viewing other user
+    api.add_resource(UserProfile, '/user_profile')
     api.add_resource(UploadUserIcon, '/upload_avatar')
     api.add_resource(SearchUsers, '/search/users')
     api.add_resource(ApiContacts, '/contacts')

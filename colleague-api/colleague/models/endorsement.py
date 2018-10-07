@@ -5,6 +5,7 @@ from datetime import datetime
 import arrow
 
 from colleague.extensions import db
+from colleague.utils import (encode_id, datetime_to_timestamp)
 
 
 class EndorseType:
@@ -123,8 +124,10 @@ class UserEndorse(db.Model):
 class EndorseComment(db.Model):
     __tablename__ = 'endorse_comment'
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    uid = db.Column(db.BigInteger, nullable=False, comment=u"to uid")
-    from_uid = db.Column(db.BigInteger, nullable=False, comment=u"from uid")
+    uid = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False, comment=u"to uid")
+    # user = db.relationship('colleague.models.user.User', foreign_keys=[uid])
+    from_uid = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False, comment=u"from uid")
+    from_user = db.relationship('colleague.models.user.User', foreign_keys=from_uid, lazy="selectin")
     text = db.Column(db.TEXT, nullable=True)
     create_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     update_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -143,5 +146,21 @@ class EndorseComment(db.Model):
 
     @staticmethod
     def find_by_from_uid(uid, from_uid):
-        return EndorseComment.query.filter(EndorseComment.uid == uid,
-                                           EndorseComment.from_uid == from_uid).one_or_none()
+        return EndorseComment.query \
+            .filter(EndorseComment.uid == uid, EndorseComment.from_uid == from_uid) \
+            .one_or_none()
+
+    @staticmethod
+    def find_latest_by_uid(uid):
+        return EndorseComment.query \
+            .filter(EndorseComment.uid == uid) \
+            .order_by(db.desc(EndorseComment.id)) \
+            .first()
+
+    def to_dict(self):
+        return {
+            'id': encode_id(self.id),
+            'fromUser': self.from_user.to_dict(),
+            'text': self.text,
+            'update_at': datetime_to_timestamp(self.update_at)
+        }

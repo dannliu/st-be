@@ -14,11 +14,12 @@ class STError(object):
 
 
 class ErrorCode(object):
+    USER_NOT_EXIST = STError(2000, "用户不存在")
     NOT_REGISTERED = STError(2001, "还没有注册，快去注册吧")
 
     VERIFICATION_CODE_EXPIRE = STError(2002, '验证码已过期')
     VERIFICATION_CODE_NOT_MATCH = STError(2003, '验证码错误')
-    VERIFICATION_CODE_MAX_REQUEST = 2004
+    VERIFICATION_CODE_MAX_REQUEST = STError(2004, '验证码请求过于频繁，请稍后再试')
 
     USER_PASSWORD_WRONG = (2005, "用户名或者密码错误")
     DEVICE_MISMATCH = 2006
@@ -33,6 +34,7 @@ class ErrorCode(object):
     ADD_RELATIONSHIP_NOT_COMMON_COMPANY = STError(2013, "只能添加你的同事")
     NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")
     ENDORSE_TYPE_INVALID = STError(2014, "你要背的书我们还没有提供哦")
+
 
 
 class ApiException(Exception):

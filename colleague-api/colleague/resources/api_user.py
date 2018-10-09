@@ -11,9 +11,9 @@ from colleague.config import settings
 from colleague.extensions import redis_conn
 from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
-from colleague.models.work import WorkExperience
-from colleague.utils import (ErrorCode, VerificationCode, md5, st_raise_error, decode_id)
-from colleague.service import user_service
+from colleague.service import user_service, work_service
+from colleague.utils import (ErrorCode, VerificationCode, md5,
+                             st_raise_error, decode_id)
 from . import compose_response
 
 
@@ -102,16 +102,8 @@ class Login(Resource):
         token = user.login_on(device_id)
         user_info = user.to_dict_with_mobile()
         user_info.update(token)
-
-        return {
-            "status": 200,
-            "result": {
-                'user': user_info,
-                'user_details': {
-                    'work_experiences': WorkExperience.get_all_work_experiences(user.id)
-                }
-            }
-        }
+        user_info['work_experiences'] = work_service.get_work_experiences(user.id)
+        return compose_response(result=user_info)
 
 
 class RefreshToken(Resource):
@@ -170,7 +162,6 @@ class UserDetail(Resource):
             "status": 200,
             "result": user_info
         }
-
 
 class UploadUserIcon(Resource):
     @login_required

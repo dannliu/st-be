@@ -10,6 +10,7 @@ redis
 psycopg2
 python-dotenv
 passlib
+pycrypto
 
 # test
 factory-boy

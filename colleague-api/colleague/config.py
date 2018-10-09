@@ -14,13 +14,16 @@ class Config(Configuration):
 
     secret_key = environ_setting('SECRET_KEY', required=True)
 
+    aes_key = environ_setting("AES_KEY", required=True)
+    aes_iv = environ_setting("AES_IV", required=True)
+
     db_host = environ_setting("DB_HOST")
     db_port = environ_setting("DB_PORT", 5432, required=False)
     db_name = environ_setting("DB_NAME", required=True)
     db_user = environ_setting("DB_USER")
     db_pass = environ_setting("DB_PASS", "", required=False)
     sqlalchemy_database_uri = 'postgresql://{}:{}@{}:{}/{}'.format(
-        db_user, db_pass, db_host, db_port, db_name
+            db_user, db_pass, db_host, db_port, db_name
     )
 
     redis_host = environ_setting('REDIS_HOST', required=True)
@@ -47,6 +50,8 @@ class Config(Configuration):
             "SQLALCHEMY_ECHO": False,
             "SQLALCHEMY_TRACK_MODIFICATIONS": True,
             'SECRET_KEY': self.get('secret_key'),
+            'AES_KEY': self.get('aes_key'),
+            'AES_IV': self.get('aes_iv'),
             'JWT_SECRET_KEY': self.get('JWT_SECRET_KEY'),
             'BUNDLE_ERRORS': True,
             "JWT_ACCESS_TOKEN_EXPIRES": datetime.timedelta(days=self.get('JWT_ACCESS_TOKEN_EXPIRES')),
@@ -64,3 +69,4 @@ if api_env == 'testing':
     settings = TestConfig.load()
 else:
     settings = Config.load()
+    print settings

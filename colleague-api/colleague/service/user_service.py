@@ -36,5 +36,6 @@ def get_user_profile(uid):
     json_user = user.to_dict()
     json_user['endorsement'] = endorsement
     json_user['work_experiences'] = work_experiences
-    json_user['latest_comment'] = latest_comment.to_dict()
+    if latest_comment:
+        json_user['latest_comment'] = latest_comment.to_dict()
     return json_user

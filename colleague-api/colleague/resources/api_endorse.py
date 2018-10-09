@@ -38,6 +38,15 @@ class ApiEndorseReliability(Resource):
         return compose_response(result=endorsement)
 
 
+def ApiEndorseUser(Resource):
+    @login_required
+    def get(self):
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('uid', type=unicode, location='json', required=True)
+        args = reqparser.parse_args()
+        to_uid = decode_id(args.get('uid'))
+
+
 class ApiEndorseComment(Resource):
     @login_required
     def post(self):

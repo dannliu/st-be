@@ -150,6 +150,7 @@ class User(db.Model):
             "gender": self.gender,
             "avatar": self.avatar_url,
             "user_id": self.user_id,
+            "title": self.title,
             "company": self.company.to_dict() if self.company else None,
             "endorsement": self.endorsement.to_dict() if self.endorsement else None
         }

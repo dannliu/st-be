@@ -4,7 +4,10 @@ import hashlib
 
 import arrow
 
+from Crypto.Cipher import AES
+
 from colleague.extensions import redis_conn
+from colleague.config import settings
 
 
 class STError(object):
@@ -34,7 +37,6 @@ class ErrorCode(object):
     ADD_RELATIONSHIP_NOT_COMMON_COMPANY = STError(2013, "只能添加你的同事")
     NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")
     ENDORSE_TYPE_INVALID = STError(2014, "你要背的书我们还没有提供哦")
-
 
 
 class ApiException(Exception):
@@ -83,11 +85,22 @@ def decode_id(cursor):
     # TODO Try to use SkipJack encryption
     if isinstance(cursor, unicode):
         cursor = cursor.encode('utf-8')
-    return base64.urlsafe_b64decode(cursor)
+    raw = base64.urlsafe_b64decode(cursor)
+    obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
+    data = obj.decrypt(raw)
+    return data.rstrip('\t')
 
 
 def encode_id(cursor):
-    return base64.urlsafe_b64encode(str(cursor))
+    if isinstance(cursor, unicode):
+        cursor = cursor.encode('utf-8')
+    else:
+        cursor = str(cursor)
+    left = len(cursor) % 16
+    left = 0 if left == 0 else (16 - left)
+    data = cursor + ''.join(['\t'] * left)
+    obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
+    return base64.urlsafe_b64encode(obj.encrypt(data))
 
 
 def datetime_to_timestamp(dt):

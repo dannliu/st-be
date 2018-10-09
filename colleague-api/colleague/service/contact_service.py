@@ -33,7 +33,7 @@ def get_contacts(uid, last_update_date, size):
                 'id': encode_id(contact.id),
                 'user': user.to_dict(),
                 'type': contact.type,
-                'update_date': datetime_to_timestamp(contact.updated_at)
+                'update_at': datetime_to_timestamp(contact.updated_at)
             })
     return {
         "has_more": has_more,

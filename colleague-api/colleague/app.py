@@ -86,11 +86,17 @@ def register_blueprints(app):
     api.add_resource(UserProfile, '/user_profile')
     api.add_resource(UploadUserIcon, '/upload_avatar')
     api.add_resource(SearchUsers, '/search/users')
+    # 联系人，获取联系人列表
     api.add_resource(ApiContacts, '/contacts')
+    # 联系人请求 列表，添加好友，接受/拒绝申请
     api.add_resource(ApiContactRequest, '/contact_request')
+    # 工作经历，添加，修改，删除
     api.add_resource(ApiWorkExperience, '/work_experience')
+    # 背书大牛
     api.add_resource(ApiEndorseNiubility, '/endorse/niubility')
+    # 背书靠谱
     api.add_resource(ApiEndorseReliability, '/endorse/reliability')
+    # 背书评论
     api.add_resource(ApiEndorseComment, '/endorse/comment')
 
 

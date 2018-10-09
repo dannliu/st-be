@@ -5,7 +5,7 @@ from datetime import datetime
 import arrow
 
 from colleague.extensions import db
-from colleague.utils import (encode_id, datetime_to_timestamp)
+from colleague.utils import (encode_id, datetime_to_timestamp, ErrorCode, st_raise_error)
 
 
 class EndorseType:
@@ -16,7 +16,7 @@ class EndorseType:
 
     @staticmethod
     def check(type):
-        type == EndorseType.Niubility or type == EndorseType.Reliability
+        return type == EndorseType.Niubility or type == EndorseType.Reliability
 
 
 class EndorseStatus:
@@ -79,8 +79,9 @@ class Endorsement(db.Model):
 class UserEndorse(db.Model):
     __tablename__ = 'user_endorse'
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    uid = db.Column(db.BigInteger, nullable=False, comment=u"to uid")
-    from_uid = db.Column(db.BigInteger, nullable=False, comment=u"from uid")
+    uid = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False, comment=u"to uid")
+    from_uid = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False, comment=u"from uid")
+    fromUser = db.relationship('colleague.models.user.User', foreign_keys=from_uid, lazy="selectin")
     type = db.Column(db.SMALLINT, nullable=False, comment=u"1: 大牛, 2: 靠谱")
     status = db.Column(db.SMALLINT, nullable=False, comment=u"0: 开启, 1: 取消")
     create_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -95,6 +96,33 @@ class UserEndorse(db.Model):
                     UserEndorse.type == type,
                     UserEndorse.status == EndorseStatus.Supported) \
             .one_or_none()
+
+    @staticmethod
+    def find_by_cursor(uid, type, latest_id, size):
+        if latest_id:
+            return UserEndorse.query \
+                .filter(UserEndorse.uid == uid,
+                        UserEndorse.type == type,
+                        UserEndorse.status == EndorseStatus.Supported,
+                        UserEndorse.id > latest_id) \
+                .order_by(db.desc(UserEndorse.id)) \
+                .offset(0).limit(size).all()
+        else:
+            return UserEndorse.query \
+                .filter(UserEndorse.uid == uid,
+                        UserEndorse.type == type,
+                        UserEndorse.status == EndorseStatus.Supported) \
+                .order_by(db.desc(UserEndorse.id)) \
+                .offset(0).limit(size).all()
+
+    def to_dict(self):
+        return {
+            'id': encode_id(self.id),
+            'from_user': self.fromUser.to_dict(),
+            'type': self.type,
+            'create_at': datetime_to_timestamp(self.create_at)
+        }
+
 
     @staticmethod
     def update(uid, from_uid, type, status):
@@ -160,7 +188,7 @@ class EndorseComment(db.Model):
     def to_dict(self):
         return {
             'id': encode_id(self.id),
-            'fromUser': self.from_user.to_dict(),
+            'from_user': self.from_user.to_dict(),
             'text': self.text,
             'update_at': datetime_to_timestamp(self.update_at)
         }

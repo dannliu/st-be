@@ -8,13 +8,13 @@ from flask_jwt_extended.exceptions import NoAuthorizationError
 
 from colleague.extensions import jwt
 from colleague.models.user import User
+from colleague.utils import decode_id
 
 
 class UserObject(object):
     def __init__(self, **kwargs):
-        self.user = User.find(kwargs.get('user_id'))
+        self.user = User.find(decode_id(kwargs.get('user_id')))
         self.device_id = kwargs.get("device_id")
-
         # TODO: other attributes
 
 

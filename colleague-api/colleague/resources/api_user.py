@@ -153,17 +153,14 @@ class SearchUsers(Resource):
 
 
 class UserDetail(Resource):
-    def __init__(self):
-        self.reqparser = reqparse.RequestParser()
-        self.reqparser.add_argument('user_name', type=unicode, location='json', required=False)
-        self.reqparser.add_argument('gender', type=int, location='json', required=False)
-        self.reqparser.add_argument('user_id', type=unicode, location='json', required=False)
-
     @login_required
     def post(self):
-        args = self.reqparser.parse_args()
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('user_name', type=unicode, location='json', required=False)
+        reqparser.add_argument('gender', type=int, location='json', required=False)
+        reqparser.add_argument('colleague_id', type=unicode, location='json', required=False)
+        args = reqparser.parse_args()
         user_info = current_user.user.update_user(**args)
-
         return {
             "status": 200,
             "result": user_info
@@ -177,7 +174,6 @@ class UploadUserIcon(Resource):
         img_name = secure_filename(img.filename)
         ext = img_name.split('.')[-1]
         user_id = current_user.user.id
-
         img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
         saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
         img.save(saved_path)

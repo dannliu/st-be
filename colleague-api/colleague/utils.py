@@ -31,7 +31,8 @@ class ErrorCode(object):
     USER_UNAVAILABLE = STError(2007, '用户已被禁止访问')
 
     ALREADY_EXIST_MOBILE = STError(2008, '该手机号已被注册')
-    ALREADY_EXIST_USER_ID = STError(2009, '该id已被注册，换一个新的吧')
+    ALREADY_EXIST_COLLEAGUE_ID = STError(2009, '该id已被注册，换一个新的吧')
+    COLLEAGUE_ID_ALREADY_SET = STError(2010, '同事号只能设置一次')
 
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
     WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
@@ -84,9 +85,11 @@ def md5(secret, salt):
 
 
 def decode_id(cursor):
-    # TODO Try to use SkipJack encryption
+    if cursor is None:
+        return None
     if isinstance(cursor, unicode):
         cursor = cursor.encode('utf-8')
+    cursor += '=' * (-len(cursor) % 4)
     raw = base64.urlsafe_b64decode(cursor)
     obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
     data = obj.decrypt(raw)
@@ -94,15 +97,17 @@ def decode_id(cursor):
 
 
 def encode_id(cursor):
+    if cursor is None:
+        return None
     if isinstance(cursor, unicode):
         cursor = cursor.encode('utf-8')
     else:
         cursor = str(cursor)
     left = len(cursor) % 16
     left = 0 if left == 0 else (16 - left)
-    data = cursor + ''.join(['\t'] * left)
+    data = cursor + '\t' * left
     obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
-    return base64.urlsafe_b64encode(obj.encrypt(data))
+    return base64.urlsafe_b64encode(obj.encrypt(data)).rstrip('==')
 
 
 def datetime_to_timestamp(dt):

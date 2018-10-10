@@ -33,7 +33,7 @@ class User(db.Model):
     user_name = db.Column(db.String(256))
     gender = db.Column(db.Integer)
     avatar = db.Column(db.String(1024))
-    user_id = db.Column(db.Text)
+    colleague_id = db.Column(db.String(255), nullable=False, comment=u'同事id')
     status = db.Column(db.Integer)
     title = db.Column(db.String(1024), nullable=True)
     company_id = db.Column(db.BigInteger, db.ForeignKey("organizations.id"), nullable=True)
@@ -79,19 +79,20 @@ class User(db.Model):
             return
 
         for key, value in kwargs.iteritems():
-            if key in ["password", "user_name", "gender", "user_id", "avatar"] and value:
+            if key in ["password", "user_name", "gender", "colleague_id", "avatar"] and value:
                 if key == 'password':
                     self.hash_password(value)
-                if key == 'user_id':
+                if key == 'colleague_id':
+                    if self.colleague_id:
+                        st_raise_error(ErrorCode.COLLEAGUE_ID_ALREADY_SET)
                     exist_user_id = User.query.filter(User.user_id == value).one_or_none()
                     if exist_user_id:
-                        st_raise_error(ErrorCode.ALREADY_EXIST_USER_ID)
+                        st_raise_error(ErrorCode.ALREADY_EXIST_COLLEAGUE_ID)
                     self.user_id = value
                 else:
                     setattr(self, key, value)
 
         db.session.commit()
-
         return self.to_dict()
 
     def hash_password(self, password):
@@ -115,7 +116,7 @@ class User(db.Model):
 
     def _generate_token_metadata(self, device_id):
         return {
-            'user_id': self.id,
+            'user_id': encode_id(self.id),
             'device_id': device_id,
             'timestamp': arrow.get(self.last_login_at).timestamp
         }
@@ -149,7 +150,7 @@ class User(db.Model):
             "user_name": self.user_name,
             "gender": self.gender,
             "avatar": self.avatar_url,
-            "user_id": self.user_id,
+            "colleague_id": self.colleague_id,
             "title": self.title,
             "company": self.company.to_dict() if self.company else None,
             "endorsement": self.endorsement.to_dict() if self.endorsement else None

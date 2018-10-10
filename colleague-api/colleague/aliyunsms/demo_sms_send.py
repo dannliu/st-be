@@ -37,6 +37,7 @@ def send_sms_code(mobile, code):
     resp = send_sms(uuid.uuid4(), mobile, "我的同事", "SMS_143850045", params)
     result = False
     try:
+        logging.info(resp)
         resp = json.loads(resp)
         result = (resp.get('Code') == 'OK')
     except Exception, e:

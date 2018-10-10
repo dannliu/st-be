@@ -22,3 +22,13 @@ def get_user_profile(uid):
     if latest_comment:
         json_user['latest_comment'] = latest_comment.to_dict()
     return json_user
+
+
+def save_password(mobile, password):
+    """
+    Create new user or reset user's password
+    :param mobile: mobile
+    :param password: password
+    :return: user info with token information
+    """
+    pass

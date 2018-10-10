@@ -66,12 +66,11 @@ class User(db.Model):
         return User.query.filter(User.id.in_(ids)).all()
 
     @staticmethod
-    def add_user(mobile, password):
+    def add(mobile, password):
         user = User(mobile=mobile, status=UserStatus.Confirmed)
         user.hash_password(password)
         db.session.add(user)
         db.session.commit()
-
         return user
 
     def update_user(self, **kwargs):

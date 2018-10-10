@@ -26,8 +26,8 @@ class ErrorCode(object):
     VERIFICATION_CODE_MAX_REQUEST = STError(2004, '验证码请求过于频繁，请稍后再试')
     VERIFICATION_CODE_SEND_FAILED = STError(2005, '验证码发送失败，请稍后重试')
 
-    USER_PASSWORD_WRONG = (2005, "用户名或者密码错误")
-    DEVICE_MISMATCH = 2006
+    USER_PASSWORD_WRONG = STError(2005, "用户名或者密码错误")
+    DEVICE_MISMATCH = STError(2006, "用户登录设备发生变化")
     USER_UNAVAILABLE = STError(2007, '用户已被禁止访问')
 
     ALREADY_EXIST_MOBILE = STError(2008, '该手机号已被注册')

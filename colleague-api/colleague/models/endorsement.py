@@ -34,7 +34,7 @@ class Endorsement(db.Model):
     reliability = db.Column(db.Integer, nullable=False, default=0)
 
     @staticmethod
-    def add_new_one(uid):
+    def add(uid):
         # When create a new user, must create a endorsement accordingly
         endorsement = Endorsement(uid=uid)
         db.session.add(endorsement)

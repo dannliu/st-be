@@ -12,7 +12,7 @@ from . import compose_response
 
 
 class ApiContacts(Resource):
-    SIZE = 1
+    SIZE = 100
 
     @login_required
     def get(self):
@@ -42,12 +42,13 @@ class ApiContactRequest(Resource):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uidA', type=unicode, location='json', required=True)
         reqparser.add_argument('uidB', type=unicode, location='json', required=True)
+        reqparser.add_argument('comment', type=unicode, location='json', required=False)
         args = reqparser.parse_args()
         uidA = int(decode_id(args['uidA']))
         uidB = int(decode_id(args['uidB']))
         if uidB == current_user.user.id:
             st_raise_error(ErrorCode.NOT_ALLOWED_ADD_SELF)
-        ContactRequest.add(current_user.user.id, uidA, uidB)
+        ContactRequest.add(current_user.user.id, uidA, uidB, args.get('comment'))
 
         return compose_response(message="请求发送成功")
 

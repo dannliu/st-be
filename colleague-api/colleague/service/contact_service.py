@@ -26,8 +26,8 @@ def get_contacts(uid, last_update_date, size):
     dict_users = list_to_dict(users, "id")
     json_contacts = []
     for contact in contacts:
-        uid = contact.uidA == uid and contact.uidB or contact.uidA
-        user = dict_users.get(uid)
+        cuid = contact.uidB if contact.uidA == uid else contact.uidA
+        user = dict_users.get(cuid)
         if user:
             json_contacts.append({
                 'id': encode_id(contact.id),

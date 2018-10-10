@@ -94,6 +94,7 @@ class ContactRequest(db.Model):
     uidA = db.Column(db.BigInteger, db.ForeignKey("users.id"), name="uid_a", nullable=False, comment=u"被推荐人")
     uidB = db.Column(db.BigInteger, db.ForeignKey("users.id"), name="uid_b", nullable=False, comment=u"被添加人")
     type = db.Column(db.Integer, nullable=False, comment=u"1：添加，2：推荐")
+    comment = db.Column(db.Text, nullable=True, comment=u'如果由第三方推荐，推荐语')
     status = db.Column(db.Integer, nullable=False, default=0, comment=u"0:pending, 1: 接受, 2:拒绝")
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     end_at = db.Column(db.DateTime, comment=u"接受/拒绝 时间")
@@ -106,6 +107,7 @@ class ContactRequest(db.Model):
             "userB": self.userB.to_dict(),
             "type": self.type,
             "status": self.status,
+            "comment": self.comment,
             "create_at": datetime_to_timestamp(self.created_at)
         }
 
@@ -131,7 +133,7 @@ class ContactRequest(db.Model):
         return requests
 
     @staticmethod
-    def add(uid, uidA, uidB):
+    def add(uid, uidA, uidB, comment):
         relationship = Contact.find_by_uid(uidA, uidB)
         if relationship and relationship.status == ContactStatus.Connected:
             st_raise_error(ErrorCode.RELATIONSHIP_ALREADY_CONNECTED)
@@ -152,6 +154,6 @@ class ContactRequest(db.Model):
 
         if request is None:
             request = ContactRequest(uid=uid, uidA=uidA, uidB=uidB, type=type,
-                                     status=ContactRequestStatus.Pending)
+                                     comment=comment, status=ContactRequestStatus.Pending)
             db.session.add(request)
         db.session.commit()

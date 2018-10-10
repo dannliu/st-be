@@ -69,4 +69,3 @@ if api_env == 'testing':
     settings = TestConfig.load()
 else:
     settings = Config.load()
-    print settings

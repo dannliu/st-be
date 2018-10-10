@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import base64
 import hashlib
+import random
 
 import arrow
 
@@ -23,6 +24,7 @@ class ErrorCode(object):
     VERIFICATION_CODE_EXPIRE = STError(2002, '验证码已过期')
     VERIFICATION_CODE_NOT_MATCH = STError(2003, '验证码错误')
     VERIFICATION_CODE_MAX_REQUEST = STError(2004, '验证码请求过于频繁，请稍后再试')
+    VERIFICATION_CODE_SEND_FAILED = STError(2005, '验证码发送失败，请稍后重试')
 
     USER_PASSWORD_WRONG = (2005, "用户名或者密码错误")
     DEVICE_MISMATCH = 2006
@@ -122,3 +124,10 @@ def list_to_dict(objects, key):
     for object in objects:
         dict_objects[getattr(object, key)] = object
     return dict_objects
+
+
+def generate_random_verification_code():
+    nums = []
+    for i in range(6):
+        nums.append(str(random.randint(0, 9)))
+    return "".join(nums)

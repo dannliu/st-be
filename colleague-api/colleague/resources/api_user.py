@@ -13,7 +13,8 @@ from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
 from colleague.service import user_service, work_service
 from colleague.utils import (ErrorCode, VerificationCode, md5,
-                             st_raise_error, decode_id)
+                             st_raise_error, decode_id, generate_random_verification_code)
+from colleague.aliyunsms.demo_sms_send import send_sms_code
 from . import compose_response
 
 
@@ -52,12 +53,11 @@ class Register(Resource):
 
 
 class Verification(Resource):
-    def __init__(self):
-        self.reqparser = reqparse.RequestParser()
-        self.reqparser.add_argument('mobile', type=str, location='args', required=True)
 
     def get(self):
-        args = self.reqparser.parse_args()
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('mobile', type=str, location='args', required=True)
+        args = reqparser.parse_args()
 
         mobile = args["mobile"]
 
@@ -68,7 +68,13 @@ class Verification(Resource):
         code = verification_code.get_code()
         if not code:
             # get and send sms code
-            code = mobile[-6:]
+            if os.getenv("API_ENV") == "dev" and mobile.startswith('190'):
+                code = mobile[-6:]
+            else:
+                code = generate_random_verification_code()
+                result = send_sms_code(mobile, code)
+                if not result:
+                    st_raise_error(ErrorCode.VERIFICATION_CODE_EXPIRE)
             verification_code.set_code(code)
 
         return {
@@ -162,6 +168,7 @@ class UserDetail(Resource):
             "status": 200,
             "result": user_info
         }
+
 
 class UploadUserIcon(Resource):
     @login_required

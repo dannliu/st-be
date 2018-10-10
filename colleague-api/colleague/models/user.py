@@ -28,12 +28,12 @@ class UserStatus(object):
 class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    mobile = db.Column(db.String(50), nullable=False, index=True)
+    mobile = db.Column(db.String(50), nullable=False, unique=True, index=True)
     password_hash = db.Column(db.String(512), nullable=False)
     user_name = db.Column(db.String(256))
     gender = db.Column(db.Integer)
     avatar = db.Column(db.String(1024))
-    colleague_id = db.Column(db.String(255), nullable=False, comment=u'同事id')
+    colleague_id = db.Column(db.String(255), unique=True, nullable=False, comment=u'同事id')
     status = db.Column(db.Integer)
     title = db.Column(db.String(1024), nullable=True)
     company_id = db.Column(db.BigInteger, db.ForeignKey("organizations.id"), nullable=True)
@@ -85,10 +85,10 @@ class User(db.Model):
                 if key == 'colleague_id':
                     if self.colleague_id:
                         st_raise_error(ErrorCode.COLLEAGUE_ID_ALREADY_SET)
-                    exist_user_id = User.query.filter(User.user_id == value).one_or_none()
-                    if exist_user_id:
+                    exist_colleague_id = User.query.filter(User.colleague_id == value).one_or_none()
+                    if exist_colleague_id:
                         st_raise_error(ErrorCode.ALREADY_EXIST_COLLEAGUE_ID)
-                    self.user_id = value
+                    self.colleague_id = value
                 else:
                     setattr(self, key, value)
 

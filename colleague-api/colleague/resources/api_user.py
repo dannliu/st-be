@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from datetime import datetime
 
 from flask import request
 from flask_jwt_extended import current_user
@@ -174,11 +175,21 @@ class UploadUserIcon(Resource):
         img_name = secure_filename(img.filename)
         ext = img_name.split('.')[-1]
         user_id = current_user.user.id
+        date = datetime.now()
+        date_dir = "{}/{}/{}".format(date.year, date.month, date.day)
+        saved_dir = os.path.join(settings['UPLOAD_FOLDER'], date_dir)
+        if not os.path.exists(saved_dir):
+            try:
+                # Don't use os.path.exists, two processes may create the folder
+                # at the same time
+                os.makedirs(saved_dir)
+            except:
+                pass
         img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
-        saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
+        saved_path = os.path.join(saved_dir, img_file)
         img.save(saved_path)
 
-        user_info = current_user.user.update_user(avatar=img_file)
+        user_info = current_user.user.update_user(avatar=os.path.join(date_dir, img_file))
         return {
             "status": 200,
             "result": user_info

@@ -68,7 +68,7 @@ def register_blueprints(app):
     from .resources.api_user import (
         Register, Verification, Login, RefreshToken, Logout,
         UserDetail, UploadUserIcon, SearchUsers, UserProfile)
-    from .resources.api_work import ApiWorkExperience
+    from .resources.api_work import (ApiWorkExperience, ApiCompanySearch)
     from .resources.api_contact import ApiContacts, ApiContactRequest
     from .resources.api_endorse import (
         ApiEndorseNiubility, ApiEndorseReliability, ApiEndorseComment)
@@ -86,6 +86,7 @@ def register_blueprints(app):
     api.add_resource(UserProfile, '/user_profile')
     api.add_resource(UploadUserIcon, '/upload_avatar')
     api.add_resource(SearchUsers, '/search/users')
+    api.add_resource(ApiCompanySearch, '/search/company')
     # 联系人，获取联系人列表
     api.add_resource(ApiContacts, '/contacts')
     # 联系人请求 列表，添加好友，接受/拒绝申请

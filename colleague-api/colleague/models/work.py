@@ -10,9 +10,11 @@ class Organization(db.Model):
     __tablename__ = 'organizations'
 
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(256))
+    name = db.Column(db.String(255))
     icon = db.Column(db.TEXT)
     verified = db.Column(db.Boolean)
+    alias = db.Column(db.String(255))
+    info = db.Column(db.Text)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     @staticmethod
@@ -29,6 +31,13 @@ class Organization(db.Model):
     @staticmethod
     def find_by_id(id):
         return Organization.query.filter(Organization.id == id).one_or_none()
+
+    @staticmethod
+    def like(keyword, count):
+        like_query = "%{}%".format(keyword)
+        return Organization.query \
+            .filter(Organization.name.like(like_query)) \
+            .offset(0).limit(count).all()
 
     def to_dict(self):
         return {

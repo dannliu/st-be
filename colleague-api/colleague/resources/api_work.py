@@ -7,6 +7,16 @@ from colleague.acl import login_required
 from colleague.models.work import WorkExperience, Organization
 from colleague.utils import ErrorCode, st_raise_error, decode_id
 from colleague.service import work_service
+from . import compose_response
+
+
+class ApiCompanySearch(Resource):
+    def get(self):
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('keyword', type=unicode, location='args', required=False)
+        args = reqparser.parse_args()
+        companies = work_service.search_company(args.get('keyword'))
+        return compose_response(result={'companies': companies})
 
 
 class ApiWorkExperience(Resource):

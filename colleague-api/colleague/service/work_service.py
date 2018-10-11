@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 
 from colleague.models.work import WorkExperience
+from colleague.models.work import Organization
+
 
 def get_work_experiences(uid):
     def cmp(w1, w2):
@@ -16,3 +18,13 @@ def get_work_experiences(uid):
     work_experiences = WorkExperience.find_all_for_user(uid)
     work_experiences.sort(cmp=cmp)
     return [we.to_dict() for we in work_experiences]
+
+
+def search_company(keyword, count = 10):
+    if not keyword:
+        return []
+    striped_keyword = keyword.strip()
+    if len(striped_keyword) == 0:
+        return []
+    companies = Organization.like(striped_keyword, count)
+    return [_.to_dict() for _ in companies]

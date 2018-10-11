@@ -3,7 +3,7 @@
 from flask_jwt_extended import current_user
 
 from colleague.models.endorsement import EndorseComment
-from colleague.models.user import (User)
+from colleague.models.user import User
 from colleague.service import work_service
 from colleague.service.endorse_service import get_user_endorsement
 from colleague.utils import st_raise_error, ErrorCode
@@ -21,4 +21,12 @@ def get_user_profile(uid):
     json_user['work_experiences'] = work_experiences
     if latest_comment:
         json_user['latest_comment'] = latest_comment.to_dict()
+    return json_user
+
+
+def get_login_user_profile(uid):
+    # fetch the user info from db,
+    # just in case the info has been updated somewhere
+    json_user = User.find(uid).to_dict_with_mobile()
+    json_user['work_experiences'] = work_service.get_work_experiences(uid)
     return json_user

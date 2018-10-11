@@ -142,7 +142,7 @@ def test_login_required_api_with_invalid_device(client, user):
     rv = client.get(url_for('testuser'), headers=headers)
 
     data = json.loads(rv.data)
-    assert data["status"] == ErrorCode.DEVICE_MISMATCH
+    assert data["status"] == ErrorCode.DEVICE_MISMATCH.code
 
 
 def test_login_required_api_with_regenerated_token(client, user):
@@ -209,7 +209,7 @@ def test_refresh_token_with_invalid_device(client, user):
     }
     rv = client.get(url_for('refreshtoken'), headers=headers)
     data = json.loads(rv.data)
-    assert data["status"] == ErrorCode.DEVICE_MISMATCH
+    assert data["status"] == ErrorCode.DEVICE_MISMATCH.code
 
 
 def test_refresh_token_with_valid_access_token(client, user):
@@ -235,9 +235,9 @@ def test_refresh_token_with_faked_token(client, user):
 def test_logout(client, user):
     access_token, refresh_token = get_token_by_login(client)
     headers = {
-            'device-id': 'test-device-id',
-            'Authorization': 'Bearer {}'.format(access_token)
-        }
+        'device-id': 'test-device-id',
+        'Authorization': 'Bearer {}'.format(access_token)
+    }
     rv = client.get(url_for('logout'), headers=headers)
     data = json.loads(rv.data)
     assert data["status"] == 200
@@ -279,14 +279,14 @@ def test_logout_with_invalid_device(client, user):
     }
     rv = client.get(url_for('logout'), headers=headers)
     data = json.loads(rv.data)
-    assert data["status"] == ErrorCode.DEVICE_MISMATCH
+    assert data["status"] == ErrorCode.DEVICE_MISMATCH.code
 
     # assert access token is still valid
     headers['device-id'] = 'test-device-id'
     rv = client.get(url_for('testuser'), headers=headers)
     data = json.loads(rv.data)
     assert data["user"] == user.id
-    
+
 
 def get_token_by_login(client):
     headers = {

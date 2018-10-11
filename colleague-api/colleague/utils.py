@@ -26,15 +26,17 @@ class ErrorCode(object):
     VERIFICATION_CODE_MAX_REQUEST = STError(2004, '验证码请求过于频繁，请稍后再试')
     VERIFICATION_CODE_SEND_FAILED = STError(2005, '验证码发送失败，请稍后重试')
 
-    USER_PASSWORD_WRONG = (2005, "用户名或者密码错误")
-    DEVICE_MISMATCH = 2006
+    USER_PASSWORD_WRONG = STError(2005, "用户名或者密码错误")
+    DEVICE_MISMATCH = STError(2006, "用户登录设备发生变化")
     USER_UNAVAILABLE = STError(2007, '用户已被禁止访问')
 
     ALREADY_EXIST_MOBILE = STError(2008, '该手机号已被注册')
-    ALREADY_EXIST_USER_ID = STError(2009, '该id已被注册，换一个新的吧')
+    ALREADY_EXIST_COLLEAGUE_ID = STError(2009, '该id已被注册，换一个新的吧')
+    COLLEAGUE_ID_ALREADY_SET = STError(2010, '同事号只能设置一次')
 
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
     WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
+    WORK_EXPERIENCE_CAN_NOT_BE_EXTINCT = STError(2012, "至少需要保留一条工作经历")
     RELATIONSHIP_ALREADY_CONNECTED = STError(2012, "已经是联系人了")
     ADD_RELATIONSHIP_NOT_COMMON_COMPANY = STError(2013, "只能添加你的同事")
     NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")
@@ -84,9 +86,11 @@ def md5(secret, salt):
 
 
 def decode_id(cursor):
-    # TODO Try to use SkipJack encryption
+    if cursor is None:
+        return None
     if isinstance(cursor, unicode):
         cursor = cursor.encode('utf-8')
+    cursor += '=' * (-len(cursor) % 4)
     raw = base64.urlsafe_b64decode(cursor)
     obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
     data = obj.decrypt(raw)
@@ -94,15 +98,17 @@ def decode_id(cursor):
 
 
 def encode_id(cursor):
+    if cursor is None:
+        return None
     if isinstance(cursor, unicode):
         cursor = cursor.encode('utf-8')
     else:
         cursor = str(cursor)
     left = len(cursor) % 16
     left = 0 if left == 0 else (16 - left)
-    data = cursor + ''.join(['\t'] * left)
+    data = cursor + '\t' * left
     obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
-    return base64.urlsafe_b64encode(obj.encrypt(data))
+    return base64.urlsafe_b64encode(obj.encrypt(data)).rstrip('==')
 
 
 def datetime_to_timestamp(dt):

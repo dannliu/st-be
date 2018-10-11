@@ -3,7 +3,6 @@
 from flask_jwt_extended import current_user
 from flask_restful import Resource, reqparse
 
-import colleague.service.endorse_service
 from colleague.acl import login_required
 from colleague.models.endorsement import UserEndorse, EndorseType, EndorseComment
 from colleague.service import user_service, endorse_service
@@ -15,6 +14,9 @@ class ApiEndorseNiubility(Resource):
 
     @login_required
     def get(self):
+        """
+            Get user list who thinks `uid` is niubility
+        """
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uid', type=unicode, location='args', required=True)
         reqparser.add_argument('cursor', type=unicode, location='args', required=False)
@@ -27,6 +29,9 @@ class ApiEndorseNiubility(Resource):
 
     @login_required
     def post(self):
+        """
+        Update the niubility status for `uid`
+        """
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uid', type=unicode, location='json', required=True)
         reqparser.add_argument('status', type=bool, location='json', required=True)
@@ -34,13 +39,16 @@ class ApiEndorseNiubility(Resource):
         to_uid = decode_id(args.get('uid'))
         status = args.get('status')
         UserEndorse.update(to_uid, current_user.user.id, EndorseType.Niubility, status)
-        endorsement = colleague.service.endorse_service.get_user_endorsement(to_uid, current_user.user.id)
-        return compose_response(result=endorsement)
+        # endorsement = endorse_service.get_user_endorsement(to_uid, current_user.user.id)
+        return compose_response(result=user_service.get_user_profile(to_uid))
 
 
 class ApiEndorseReliability(Resource):
     @login_required
     def get(self):
+        """
+            Get user list who thinks `uid` is reliability
+        """
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uid', type=unicode, location='args', required=True)
         reqparser.add_argument('cursor', type=unicode, location='args', required=False)
@@ -53,6 +61,9 @@ class ApiEndorseReliability(Resource):
 
     @login_required
     def post(self):
+        """
+        Update the reliability status for `uid`
+        """
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uid', type=unicode, location='json', required=True)
         reqparser.add_argument('status', type=bool, location='json', required=True)
@@ -60,8 +71,8 @@ class ApiEndorseReliability(Resource):
         to_uid = decode_id(args.get('uid'))
         status = args.get('status')
         UserEndorse.update(to_uid, current_user.user.id, EndorseType.Reliability, status)
-        endorsement = colleague.service.endorse_service.get_user_endorsement(to_uid, current_user.user.id)
-        return compose_response(result=endorsement)
+        # endorsement = colleague.service.endorse_service.get_user_endorsement(to_uid, current_user.user.id)
+        return compose_response(result=user_service.get_user_profile(to_uid))
 
 
 class ApiEndorseComment(Resource):
@@ -73,5 +84,5 @@ class ApiEndorseComment(Resource):
         args = reqparser.parse_args()
         to_uid = decode_id(args.get('uid'))
         EndorseComment.update(to_uid, current_user.user.id, args.get('text'))
-        endorsement = colleague.service.endorse_service.get_user_endorsement(to_uid, current_user.user.id)
-        return compose_response(result=endorsement, message="评论成功")
+        # endorsement = colleague.service.endorse_service.get_user_endorsement(to_uid, current_user.user.id)
+        return compose_response(result=user_service.get_user_profile(to_uid), message="评论成功")

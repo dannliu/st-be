@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
+from datetime import datetime
 
 from flask import request
 from flask_jwt_extended import current_user
@@ -12,6 +13,7 @@ from colleague.extensions import redis_conn
 from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
 from colleague.service import user_service, work_service
+from colleague.extensions import db
 from colleague.utils import (ErrorCode, VerificationCode, md5,
                              st_raise_error, decode_id, generate_random_verification_code)
 from colleague.aliyunsms.demo_sms_send import send_sms_code
@@ -19,22 +21,17 @@ from . import compose_response
 
 
 class Register(Resource):
-    def __init__(self):
-        self.reqparser = reqparse.RequestParser()
-        self.reqparser.add_argument('device-id', type=str, location='headers', required=True)
-        self.reqparser.add_argument('mobile', type=str, location='json', required=True)
-        self.reqparser.add_argument('password', type=str, location='json', required=True)
-        self.reqparser.add_argument('verification_code', type=str, location='json', required=True)
 
     def post(self):
-        args = self.reqparser.parse_args()
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('device-id', type=str, location='headers', required=True)
+        reqparser.add_argument('mobile', type=str, location='json', required=True)
+        reqparser.add_argument('password', type=str, location='json', required=True)
+        reqparser.add_argument('verification_code', type=str, location='json', required=True)
+        args = reqparser.parse_args()
 
         mobile = args["mobile"]
         password = args["password"]
-
-        user = User.find_by_mobile(mobile)
-        if user:
-            raise st_raise_error(ErrorCode.ALREADY_EXIST_MOBILE)
 
         verification_code = redis_conn.get("verification_code:{}".format(mobile))
         if verification_code is None:
@@ -42,14 +39,20 @@ class Register(Resource):
         if verification_code != args["verification_code"]:
             raise st_raise_error(ErrorCode.VERIFICATION_CODE_NOT_MATCH)
 
-        user = User.add_user(mobile, password)
-        Endorsement.add_new_one(user.id)
+        user = User.find_by_mobile(mobile)
+        message = ""
+        if user is None:
+            user = User.add(mobile, password)
+            Endorsement.add(user.id)
+            message = "注册成功"
+        else:
+            user.hash_password(password)
+            db.session.commit()
+            message = "密码已重置"
         token = user.login_on(args["device-id"])
-
-        return {
-            "status": 200,
-            "result": token
-        }
+        json_user = user_service.get_login_user_profile(user.id)
+        json_user.update(token)
+        return compose_response(result=json_user, message=message)
 
 
 class Verification(Resource):
@@ -74,15 +77,9 @@ class Verification(Resource):
                 code = generate_random_verification_code()
                 result = send_sms_code(mobile, code)
                 if not result:
-                    st_raise_error(ErrorCode.VERIFICATION_CODE_EXPIRE)
+                    st_raise_error(ErrorCode.VERIFICATION_CODE_SEND_FAILED)
             verification_code.set_code(code)
-
-        return {
-            "status": 200,
-            "result": {
-                "verification_code": code
-            }
-        }
+        return compose_response(message="验证码已发送")
 
 
 class Login(Resource):
@@ -106,10 +103,9 @@ class Login(Resource):
         elif not user.is_available():
             raise st_raise_error(ErrorCode.USER_UNAVAILABLE)
         token = user.login_on(device_id)
-        user_info = user.to_dict_with_mobile()
-        user_info.update(token)
-        user_info['work_experiences'] = work_service.get_work_experiences(user.id)
-        return compose_response(result=user_info)
+        json_user = user_service.get_login_user_profile(user.id)
+        json_user.update(token)
+        return compose_response(result=json_user, message="登录成功")
 
 
 class RefreshToken(Resource):
@@ -125,45 +121,31 @@ class RefreshToken(Resource):
 
 class Logout(Resource):
     @login_required
-    def get(self):
+    def post(self):
         current_user.user.logout()
-        return {
-            "status": 200
-        }
-
-    post = get
+        return compose_response()
 
 
 class SearchUsers(Resource):
-    def __init__(self):
-        self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('user_name', type=unicode, location='args', required=False)
 
     @login_required
     def get(self):
-        args = self.reqparse.parse_args()
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('user_name', type=unicode, location='args', required=False)
+        args = reqparser.parse_args()
         users = User.search_users(args["user_name"])
-
-        return {
-            "status": 200,
-            "result": {
-                "users": users
-            }
-        }
+        return compose_response(result={"users": users})
 
 
 class UserDetail(Resource):
-    def __init__(self):
-        self.reqparser = reqparse.RequestParser()
-        self.reqparser.add_argument('user_name', type=unicode, location='json', required=False)
-        self.reqparser.add_argument('gender', type=int, location='json', required=False)
-        self.reqparser.add_argument('user_id', type=unicode, location='json', required=False)
-
     @login_required
     def post(self):
-        args = self.reqparser.parse_args()
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('user_name', type=unicode, location='json', required=False)
+        reqparser.add_argument('gender', type=int, location='json', required=False)
+        reqparser.add_argument('colleague_id', type=unicode, location='json', required=False)
+        args = reqparser.parse_args()
         user_info = current_user.user.update_user(**args)
-
         return {
             "status": 200,
             "result": user_info
@@ -177,12 +159,21 @@ class UploadUserIcon(Resource):
         img_name = secure_filename(img.filename)
         ext = img_name.split('.')[-1]
         user_id = current_user.user.id
-
+        date = datetime.now()
+        date_dir = "{}/{}/{}".format(date.year, date.month, date.day)
+        saved_dir = os.path.join(settings['UPLOAD_FOLDER'], date_dir)
+        if not os.path.exists(saved_dir):
+            try:
+                # Don't use os.path.exists, two processes may create the folder
+                # at the same time
+                os.makedirs(saved_dir)
+            except:
+                pass
         img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
-        saved_path = os.path.join(settings['UPLOAD_FOLDER'], img_file)
+        saved_path = os.path.join(saved_dir, img_file)
         img.save(saved_path)
 
-        user_info = current_user.user.update_user(avatar=img_file)
+        user_info = current_user.user.update_user(avatar=os.path.join(date_dir, img_file))
         return {
             "status": 200,
             "result": user_info

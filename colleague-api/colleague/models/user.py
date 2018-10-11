@@ -94,6 +94,11 @@ class User(db.Model):
         db.session.commit()
         return self.to_dict()
 
+    def update_title(self, company_id, title):
+        self.company_id = company_id
+        self.title = title
+        db.session.commit()
+
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
 

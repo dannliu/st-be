@@ -10,7 +10,7 @@ class Organization(db.Model):
     __tablename__ = 'organizations'
 
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
-    name = db.Column(db.String(255))
+    name = db.Column(db.String(255), unique=True, index=True)
     icon = db.Column(db.TEXT)
     verified = db.Column(db.Boolean)
     alias = db.Column(db.String(255))
@@ -18,19 +18,21 @@ class Organization(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     @staticmethod
-    def add(name, icon=None, verified=False):
-        og = Organization.query.filter(Organization.name == name).one_or_none()
-        if og:
-            return og
-        else:
-            og = Organization(name=name, icon=icon, verified=verified)
-            db.session.add(og)
-            db.session.commit()
-            return og
+    def add(new_one):
+        db.session.add(new_one)
+        db.session.commit()
 
     @staticmethod
-    def find_by_id(id):
+    def update():
+        db.session.commit()
+
+    @staticmethod
+    def find(id):
         return Organization.query.filter(Organization.id == id).one_or_none()
+
+    @staticmethod
+    def find_by_name(name):
+        return Organization.query.filter(Organization.name == name).one_or_none()
 
     @staticmethod
     def like(keyword, count):
@@ -43,7 +45,8 @@ class Organization(db.Model):
         return {
             "id": encode_id(self.id),
             "name": self.name,
-            "icon": self.icon
+            "icon": self.icon,
+            "alias": self.alias
         }
 
 

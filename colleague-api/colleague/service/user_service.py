@@ -3,7 +3,7 @@
 from flask_jwt_extended import current_user
 
 from colleague.models.endorsement import EndorseComment
-from colleague.models.user import (User)
+from colleague.models.user import User
 from colleague.service import work_service
 from colleague.service.endorse_service import get_user_endorsement
 from colleague.utils import st_raise_error, ErrorCode
@@ -24,11 +24,9 @@ def get_user_profile(uid):
     return json_user
 
 
-def save_password(mobile, password):
-    """
-    Create new user or reset user's password
-    :param mobile: mobile
-    :param password: password
-    :return: user info with token information
-    """
-    pass
+def get_login_user_profile(uid):
+    # fetch the user info from db,
+    # just in case the info has been updated somewhere
+    json_user = User.find(uid).to_dict_with_mobile()
+    json_user['work_experiences'] = work_service.get_work_experiences(uid)
+    return json_user

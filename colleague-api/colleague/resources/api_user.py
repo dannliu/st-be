@@ -50,7 +50,7 @@ class Register(Resource):
             db.session.commit()
             message = "密码已重置"
         token = user.login_on(args["device-id"])
-        json_user = user.to_dict()
+        json_user = user_service.get_login_user_profile(user.id)
         json_user.update(token)
         return compose_response(result=json_user, message=message)
 
@@ -103,10 +103,9 @@ class Login(Resource):
         elif not user.is_available():
             raise st_raise_error(ErrorCode.USER_UNAVAILABLE)
         token = user.login_on(device_id)
-        user_info = user.to_dict_with_mobile()
-        user_info.update(token)
-        user_info['work_experiences'] = work_service.get_work_experiences(user.id)
-        return compose_response(result=user_info, message="登录成功")
+        json_user = user_service.get_login_user_profile(user.id)
+        json_user.update(token)
+        return compose_response(result=json_user, message="登录成功")
 
 
 class RefreshToken(Resource):

@@ -36,6 +36,7 @@ class ErrorCode(object):
 
     COMPANY_INFO_MISSED = STError(2010, "请填写正确的公司信息")
     WORK_EXPERIENCE_NOT_EXIST = STError(2011, "工作经历不存在")
+    WORK_EXPERIENCE_CAN_NOT_BE_EXTINCT = STError(2012, "至少需要保留一条工作经历")
     RELATIONSHIP_ALREADY_CONNECTED = STError(2012, "已经是联系人了")
     ADD_RELATIONSHIP_NOT_COMMON_COMPANY = STError(2013, "只能添加你的同事")
     NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")

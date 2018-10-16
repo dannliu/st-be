@@ -28,7 +28,7 @@ class Config(Configuration):
 
     redis_host = environ_setting('REDIS_HOST', required=True)
     redis_port = int(environ_setting('REDIS_PORT', 6379, required=False))
-
+    redis_db = int(environ_setting('REDIS_DB', 0, required=True))
     jwt_secret_key = environ_setting("JWT_SECRET_KEY", required=True)
     jwt_access_token_expires = int(environ_setting("JWT_ACCESS_TOKEN_EXPIRES", default=30, required=False))  # days
     jwt_refresh_token_expires = int(environ_setting("JWT_REFRESH_TOKEN_EXPIRES", default=365, required=False))  # days

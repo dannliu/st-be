@@ -8,15 +8,16 @@ from flask_restful import Resource, reqparse
 from werkzeug.utils import secure_filename
 
 from colleague.acl import login_required, refresh_token_required
+from colleague.aliyunsms.demo_sms_send import send_sms_code
 from colleague.config import settings
+from colleague.extensions import db
 from colleague.extensions import redis_conn
 from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
-from colleague.service import user_service, work_service
-from colleague.extensions import db
+from colleague.service import user_service
 from colleague.utils import (ErrorCode, VerificationCode, md5,
                              st_raise_error, decode_id, generate_random_verification_code)
-from colleague.aliyunsms.demo_sms_send import send_sms_code
+from colleague.rongcloud import token_service
 from . import compose_response
 
 
@@ -189,3 +190,16 @@ class UserProfile(Resource):
         uid = decode_id(args['uid'])
         user_profile = user_service.get_user_profile(uid)
         return compose_response(result=user_profile)
+
+
+class RongCloud(Resource):
+    """Get RongCloud token
+    https://www.rongcloud.cn/docs/ios.html
+    """
+
+    @login_required
+    def get(self):
+        token = token_service.get_rc_token(current_user.user)
+        if token is None:
+            st_raise_error(ErrorCode.RCTOKEN_FETCH_ERROR)
+        return compose_response(result={"token": token})

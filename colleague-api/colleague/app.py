@@ -67,7 +67,7 @@ def register_extensions(app):
 def register_blueprints(app):
     from .resources.api_user import (
         Register, Verification, Login, RefreshToken, Logout,
-        UserDetail, UploadUserIcon, SearchUsers, UserProfile)
+        UserDetail, UploadUserIcon, SearchUsers, UserProfile, RongCloud)
     from .resources.api_work import (ApiWorkExperience, ApiCompanySearch)
     from .resources.api_contact import ApiContacts, ApiContactRequest
     from .resources.api_endorse import (
@@ -82,10 +82,13 @@ def register_blueprints(app):
     api.add_resource(Logout, '/logout')
     # The api for updating current user information
     api.add_resource(UserDetail, '/user_detail')
-    # The user information for viewing other user
+    # 获取用户profile
     api.add_resource(UserProfile, '/user_profile')
+    # 上传头像
     api.add_resource(UploadUserIcon, '/upload_avatar')
+    # 添加用户搜索
     api.add_resource(SearchUsers, '/search/users')
+    # 搜索公司
     api.add_resource(ApiCompanySearch, '/search/company')
     # 联系人，获取联系人列表
     api.add_resource(ApiContacts, '/contacts')
@@ -99,6 +102,8 @@ def register_blueprints(app):
     api.add_resource(ApiEndorseReliability, '/endorse/reliability')
     # 背书评论
     api.add_resource(ApiEndorseComment, '/endorse/comment')
+    # 获取融云token
+    api.add_resource(RongCloud, '/im/token')
 
 
 def register_errorhandlers(app):

@@ -50,7 +50,8 @@ class User(db.Model):
             if user:
                 return [user.to_dict()]
         else:
-            users = User.query.filter(db.or_(User.user_name == search_string, User.user_id == search_string))
+            users = User.query.filter(db.or_(User.user_name == search_string,
+                                             User.colleague_id == search_string))
             return [user.to_dict() for user in users]
 
     @staticmethod

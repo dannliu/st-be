@@ -27,6 +27,17 @@ def get_user_endorse(uid, type, latest_id, size=20):
     return cursor_data(has_more, next_cursor, 'endorsements', json_endorsements)
 
 
+def get_endorse_comments(uid, latest_id, size=20):
+    comments = EndorseComment.find_by_cursor(uid, latest_id, size)
+    has_more = False
+    next_cursor = None
+    if len(comments) == size:
+        has_more = True
+        next_cursor = encode_id(comments[-1].id)
+    json_comments = [item.to_dict() for item in comments]
+    return cursor_data(has_more, next_cursor, 'comments', json_comments)
+
+
 def get_user_endorsement(uid, from_uid):
     """
     Get the overall endorsement state

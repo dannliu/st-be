@@ -33,7 +33,7 @@ class User(db.Model):
     user_name = db.Column(db.String(256))
     gender = db.Column(db.Integer)
     avatar = db.Column(db.String(1024))
-    colleague_id = db.Column(db.String(255), unique=True, nullable=False, comment=u'同事id')
+    colleague_id = db.Column(db.String(255), unique=True, nullable=True, comment=u'同事id')
     status = db.Column(db.Integer)
     title = db.Column(db.String(1024), nullable=True)
     company_id = db.Column(db.BigInteger, db.ForeignKey("organizations.id"), nullable=True)

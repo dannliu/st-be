@@ -11,6 +11,7 @@ psycopg2
 python-dotenv
 passlib
 pycrypto
+requests
 
 # test
 factory-boy

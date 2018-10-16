@@ -33,7 +33,7 @@ class User(db.Model):
     user_name = db.Column(db.String(256))
     gender = db.Column(db.Integer)
     avatar = db.Column(db.String(1024))
-    colleague_id = db.Column(db.String(255), unique=True, nullable=False, comment=u'同事id')
+    colleague_id = db.Column(db.String(255), unique=True, nullable=True, comment=u'同事id')
     status = db.Column(db.Integer)
     title = db.Column(db.String(1024), nullable=True)
     company_id = db.Column(db.BigInteger, db.ForeignKey("organizations.id"), nullable=True)
@@ -50,7 +50,8 @@ class User(db.Model):
             if user:
                 return [user.to_dict()]
         else:
-            users = User.query.filter(db.or_(User.user_name == search_string, User.user_id == search_string))
+            users = User.query.filter(db.or_(User.user_name == search_string,
+                                             User.colleague_id == search_string))
             return [user.to_dict() for user in users]
 
     @staticmethod

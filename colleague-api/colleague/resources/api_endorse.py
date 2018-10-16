@@ -76,6 +76,19 @@ class ApiEndorseReliability(Resource):
 
 
 class ApiEndorseComment(Resource):
+
+    @login_required
+    def get(self):
+        reqparser = reqparse.RequestParser()
+        reqparser.add_argument('uid', type=unicode, location='args', required=True)
+        reqparser.add_argument('cursor', type=unicode, location='args', required=False)
+        args = reqparser.parse_args()
+        uid = decode_id(args.get('uid'))
+        cursor = args.get('cursor')
+        cursor = int(decode_id(cursor)) if cursor is not None else None
+        comments = endorse_service.get_endorse_comments(uid, cursor)
+        return compose_response(result=comments)
+
     @login_required
     def post(self):
         reqparser = reqparse.RequestParser()

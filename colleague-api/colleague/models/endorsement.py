@@ -123,7 +123,6 @@ class UserEndorse(db.Model):
             'create_at': datetime_to_timestamp(self.create_at)
         }
 
-
     @staticmethod
     def update(uid, from_uid, type, status):
         endorse = UserEndorse.query.filter(UserEndorse.uid == uid,
@@ -157,33 +156,64 @@ class EndorseComment(db.Model):
     from_uid = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False, comment=u"from uid")
     from_user = db.relationship('colleague.models.user.User', foreign_keys=from_uid, lazy="selectin")
     text = db.Column(db.TEXT, nullable=True)
+    status = db.Column(db.SMALLINT, nullable=False, default=0, comment=u'0: supported, 1: removed')
     create_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     update_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     db.UniqueConstraint(uid, from_uid)
 
     @staticmethod
     def update(uid, from_uid, text):
-        comment = EndorseComment.query.filter(EndorseComment.uid == uid,
-                                              EndorseComment.from_uid == from_uid).one_or_none()
+        """
+        Update the endorse comment, if text is empty, means user removed the
+        endorse comment
+        :param uid:
+        :param from_uid:
+        :param text: comment
+        :return:
+        """
+        comment = EndorseComment.query \
+            .filter(EndorseComment.uid == uid,
+                    EndorseComment.from_uid == from_uid).one_or_none()
         if not comment:
             comment = EndorseComment(uid=uid, from_uid=from_uid)
             db.session.add(comment)
         comment.update_at = arrow.utcnow().naive
+        if text is not None:
+            text = text.strip()
         comment.text = text
+        comment.status = EndorseStatus.Supported if len(text) > 0 else EndorseStatus.Removed
         db.session.commit()
 
     @staticmethod
     def find_by_from_uid(uid, from_uid):
         return EndorseComment.query \
-            .filter(EndorseComment.uid == uid, EndorseComment.from_uid == from_uid) \
+            .filter(EndorseComment.uid == uid,
+                    EndorseComment.from_uid == from_uid) \
             .one_or_none()
 
     @staticmethod
     def find_latest_by_uid(uid):
         return EndorseComment.query \
-            .filter(EndorseComment.uid == uid) \
+            .filter(EndorseComment.uid == uid,
+                    EndorseComment.status == EndorseStatus.Supported) \
             .order_by(db.desc(EndorseComment.id)) \
             .first()
+
+    @staticmethod
+    def find_by_cursor(uid, latest_id, size):
+        if latest_id:
+            return EndorseComment.query \
+                .filter(EndorseComment.uid == uid,
+                        EndorseComment.status == EndorseStatus.Supported,
+                        EndorseComment.id > latest_id) \
+                .order_by(db.desc(EndorseComment.id)) \
+                .offset(0).limit(size).all()
+        else:
+            return EndorseComment.query \
+                .filter(EndorseComment.uid == uid,
+                        EndorseComment.status == EndorseStatus.Supported) \
+                .order_by(db.desc(EndorseComment.id)) \
+                .offset(0).limit(size).all()
 
     def to_dict(self):
         return {

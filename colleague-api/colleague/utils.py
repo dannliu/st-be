@@ -42,6 +42,8 @@ class ErrorCode(object):
     NOT_ALLOWED_ADD_SELF = STError(2013, "不能添加自己为好友")
     ENDORSE_TYPE_INVALID = STError(2014, "你要背的书我们还没有提供哦")
 
+    RCTOKEN_FETCH_ERROR = STError(2015, "获取token失败")
+
 
 class ApiException(Exception):
     def __init__(self, status_code, error, http_status_code=200):

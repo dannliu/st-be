@@ -4,9 +4,8 @@ from flask_jwt_extended import current_user
 from flask_restful import Resource, reqparse
 
 from colleague.acl import login_required
-from colleague.models.work import WorkExperience, Organization
-from colleague.utils import ErrorCode, st_raise_error, decode_id
 from colleague.service import work_service, user_service
+from colleague.utils import ErrorCode, st_raise_error, decode_id
 from . import compose_response
 
 

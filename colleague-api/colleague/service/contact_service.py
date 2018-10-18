@@ -8,6 +8,7 @@ from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
 from colleague.utils import (list_to_dict, encode_id, datetime_to_timestamp,
                              timestamp_to_str)
+from colleague.service import rc_service
 
 
 def get_contacts(uid, last_update_date, size):
@@ -66,11 +67,17 @@ def accept_contact_request(id, uid, accept):
         request.end_at = arrow.utcnow().naive
         db.session.commit()
         if accept:
-            Contact.add(request.uidA, request.uidB, request.type)
+            result = Contact.add(request.uidA, request.uidB, request.type)
             _set_user_for_requests([request])
-            # Update the endorsement total contacts
-            Endorsement.update_total_contacts_count(request.uidA, 1)
-            Endorsement.update_total_contacts_count(request.uidB, 1)
+            if result:
+                # Update the endorsement total contacts
+                Endorsement.update_total_contacts_count(request.uidA, 1)
+                Endorsement.update_total_contacts_count(request.uidB, 1)
+                message = "已成为联系人"
+                uidA = encode_id(request.uidA)
+                uidB = encode_id(request.uidB)
+                rc_service.send_private_notification(uidA, uidB, message)
+                rc_service.send_private_notification(uidB, uidA, message)
             return request.to_dict()
 
 

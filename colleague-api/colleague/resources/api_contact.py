@@ -6,7 +6,8 @@ from flask_restful import Resource, reqparse
 
 from colleague.acl import login_required
 from colleague.models.contact import ContactRequest
-from colleague.service import contact_service
+from colleague.models.user import User
+from colleague.service import contact_service, rc_service
 from colleague.utils import decode_id, st_raise_error, ErrorCode, timestamp_to_datetime
 from . import compose_response
 
@@ -48,8 +49,15 @@ class ApiContactRequest(Resource):
         uidB = int(decode_id(args['uidB']))
         if uidB == current_user.user.id:
             st_raise_error(ErrorCode.NOT_ALLOWED_ADD_SELF)
-        ContactRequest.add(current_user.user.id, uidA, uidB, args.get('comment'))
-
+        result = ContactRequest.add(current_user.user.id, uidA, uidB, args.get('comment'))
+        if result:
+            if current_user.user.id == uidA:
+                message = "{}请求添加你为联系人".format(current_user.user.user_name)
+            else:
+                userA = User.find(uidA)
+                message = "{}给你推荐了{}".format(current_user.user.user_name, userA.user_name)
+            rc_service.send_system_notification(rc_service.RCSystemUser.T100001,
+                                                args['uidB'], message)
         return compose_response(message="请求发送成功")
 
     @login_required

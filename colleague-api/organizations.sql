@@ -20,24 +20,24 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: organizations; Type: TABLE; Schema: public; Owner: shutu
+-- Name: organizations; Type: TABLE; Schema: public; Owner: x4
 --
 
 CREATE TABLE public.organizations (
     id bigint NOT NULL,
-    name character varying(256) NOT NULL,
+    name character varying(256),
     icon character varying(1024),
-    created_at timestamp without time zone DEFAULT now() NOT NULL,
+    created_at timestamp without time zone NOT NULL,
     verified boolean,
-    alias character varying(256),
+    alias character varying(255),
     info text
 );
 
 
-ALTER TABLE public.organizations OWNER TO shutu;
+ALTER TABLE public.organizations OWNER TO x4;
 
 --
--- Name: organizations_id_seq; Type: SEQUENCE; Schema: public; Owner: shutu
+-- Name: organizations_id_seq; Type: SEQUENCE; Schema: public; Owner: x4
 --
 
 CREATE SEQUENCE public.organizations_id_seq
@@ -48,24 +48,24 @@ CREATE SEQUENCE public.organizations_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.organizations_id_seq OWNER TO shutu;
+ALTER TABLE public.organizations_id_seq OWNER TO x4;
 
 --
--- Name: organizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: shutu
+-- Name: organizations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: x4
 --
 
 ALTER SEQUENCE public.organizations_id_seq OWNED BY public.organizations.id;
 
 
 --
--- Name: organizations id; Type: DEFAULT; Schema: public; Owner: shutu
+-- Name: organizations id; Type: DEFAULT; Schema: public; Owner: x4
 --
 
 ALTER TABLE ONLY public.organizations ALTER COLUMN id SET DEFAULT nextval('public.organizations_id_seq'::regclass);
 
 
 --
--- Data for Name: organizations; Type: TABLE DATA; Schema: public; Owner: shutu
+-- Data for Name: organizations; Type: TABLE DATA; Schema: public; Owner: x4
 --
 
 COPY public.organizations (id, name, icon, created_at, verified, alias, info) FROM stdin;
@@ -118,6 +118,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7257	TechNow	https://www.baijingapp.com//uploads/company/11/110911/20180917/1537171015_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	TechNow	行业=应用；文化娱乐-视频|融资状态=未知|地区=印度|公司规模=15-50人|网址=http://www.tmtnow.com/
 7258	浙江执御信息技术有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160817/1471397989_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	JollyChic	行业=电商；应用|融资状态=C轮|地区=浙江省 杭州市|公司规模=500-2000人|网址=http://www.jollycorp.com
 7259	南京道成网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160125/1453707227_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	道成科技	行业=应用|融资状态=未知|地区=江苏省 南京市|公司规模=50-150人|网址=http://www.thinkyeah.com
+7331	北京万戈尔科技有限公司	https://www.baijingapp.com//uploads/company/02/27021/20151113/1447386349_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	vungle	行业=开发者服务-推广|融资状态=B轮|地区=北京市 朝阳区|公司规模=150-500人|网址=www.vungle.cn
 7260	北京比邻弘科科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20170505/1493976458_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	量江湖	行业=开发者服务-推广,追踪|融资状态=C轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://asm.liangjianghu.com
 7261	上海聚市网络科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180315/1521085024_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	9130游戏	行业=游戏-研发,渠道|融资状态=未知|地区=上海市 嘉定区|公司规模=50-150人|网址=http://www.sh9130.com/
 7262	北京龙创悦动网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151226/1451122761_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	龙创悦动	行业=游戏-研发|融资状态=天使轮|地区=北京市 海淀区|公司规模=50-150人|网址=http://im30.net
@@ -189,7 +190,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7328	杭州腾展科技股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160106/1452064993_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	腾展叮咚（Dingtone）	行业=应用|融资状态=新三板|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.dingtone.me
 7329	北京众联极享科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20151123/1448267081_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	茄子快传	行业=游戏-研发；应用|融资状态=战略投资|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.ushareit.com
 7330	上海幻意网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151119/1447916767_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	魔亚数位	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人|网址=http://www.morlia.com
-7331	北京万戈尔科技有限公司	https://www.baijingapp.com//uploads/company/02/27021/20151113/1447386349_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	vungle	行业=开发者服务-推广|融资状态=B轮|地区=北京市 朝阳区|公司规模=150-500人|网址=www.vungle.cn
 7332	成都游熊科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180117/1516172167_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GameBear	行业=游戏-研发,发行；应用|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=http://www.gamebeartech.com/
 7333	深圳智享互联科技有限公司	https://www.baijingapp.com//uploads/company/03/31606/20160421/1461233469_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Smarter	行业=应用；电商；开发者服务-云服务,推广,变现,数据服务|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.mobismarter.com
 7334	福州白鲸网络科技有限公司	https://www.baijingapp.com//uploads/company/00/972/20171229/1514532014_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	白鲸出海	行业=开发者服务-行业媒体|融资状态=A轮|地区=福建省 福州市|公司规模=15-50人|网址=www.baijingapp.com
@@ -285,6 +285,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7424	珠海沙盒网络科技有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170613/1497323650_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	珠海沙盒网络科技有限公司	行业=游戏-发行,渠道|融资状态=A轮|地区=广东省 珠海市|公司规模=15-50人|网址=http://www.mcpeonline.com
 7425	深圳创酷互动信息技术有限公司	https://www.baijingapp.com//uploads/company/08/89502/20170401/1491015482_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	创酷互动	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.szckhd.com
 7426	游艺春秋网络科技（北京）有限公司	https://www.baijingapp.com//uploads/company/06/61728/20170217/1487317591_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	游艺春秋网络科技（北京）有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.iccgame.com/
+7567	悠悠岛工作室	https://www.baijingapp.com//uploads/scrapy/158/2014121011c70a45.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	悠悠岛工作室	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下|网址=http://www.yoyodao.cn/
 7427	智线云科技（北京）有限公司	https://www.baijingapp.com//uploads/company/00/6002/20170124/1485243708_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Zingfront智线	行业=开发者服务-推广,数据服务|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://zingfront.cn
 7428	YouAppi	https://www.baijingapp.com//uploads/company/09/90633/20170620/1497939195_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	YouAppi	行业=开发者服务-推广,变现|融资状态=未知|地区=美国|公司规模=150-500人|网址=http://www.youappi.com
 7429	玖万里网络科技（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160822/1471859273_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	玖万里网络科技（上海）有限公司	行业=游戏-研发|融资状态=A轮|地区=上海市 静安区|公司规模=50-150人|网址=http://www.90km.com
@@ -426,7 +427,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7564	杭州电魂网络科技股份有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522222453_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州电魂网络科技股份有限公司	行业=游戏-研发,发行,渠道|融资状态=IPO|地区=浙江省 杭州市|公司规模=500-2000人|网址=http://www.dianhun.cn
 7565	成都龙渊网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160801/1470045739_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	龙渊网络	行业=游戏-研发|融资状态=B轮|地区=四川省 成都市|公司规模=150-500人|网址=http://www.ilongyuan.cn
 7566	福州掌游信息科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522290317_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州掌游信息科技有限公司	行业=游戏-研发；应用|融资状态=未知|地区=福建省 福州市|公司规模=50-150人|网址=https://www.36you.cn/
-7567	悠悠岛工作室	https://www.baijingapp.com//uploads/scrapy/158/2014121011c70a45.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	悠悠岛工作室	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下|网址=http://www.yoyodao.cn/
 7568	苏州蜗牛数字科技股份有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431416830_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蜗牛游戏	行业=游戏-研发,发行|融资状态=B轮|地区=江苏省 苏州市|公司规模=2000人以上|网址=http://www.snail.com
 7569	北京安奇智联科技有限公司	https://www.baijingapp.com//uploads/company/00/3671/20150508/1431067980_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	闪传	行业=应用；区块链|融资状态=战略投资|地区=北京市 朝阳区|公司规模=15-50人|网址=https://www.shanchuan.cn
 7570	广州有迈信息科技有限公司	https://www.baijingapp.com//uploads/company/00/2784/20150410/1428649812_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	YouMobi	行业=开发者服务-推广,变现|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.youmobi.com
@@ -474,6 +474,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7612	Paymentwall	https://www.baijingapp.com//uploads/company/00/1123/20150520/1432103456_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Paymentwall	行业=开发者服务-支付|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=www.paymentwall.com
 7613	Caping	https://www.baijingapp.com//uploads/company/00/6002/20160516/1463390264_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Caping	行业=应用|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.caping.co.id
 7614	广州极趣网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160516/1463389895_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	极趣网络	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.93pk.com
+13811	成都超越团队	https://www.baijingapp.com//uploads/scrapy/496/20141029e5773d67.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都超越团队	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
 7615	深圳市游科互动科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160516/1463380706_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GameScience（游戏科学）	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.gamesci.com.cn
 7616	广州自由自在品牌管理有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160429/1461900580_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	自由自在跨境购	行业=电商|融资状态=上市公司|地区=广东省 广州市|公司规模=150-500人|网址=http://kuajing.freeaswind.com.cn
 7617	上海领秀电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160426/1461639834_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱奢汇	行业=电商|融资状态=上市公司|地区=上海市 虹口区|公司规模=50-150人|网址=http://www.iluxday.com
@@ -544,6 +545,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7682	深圳市鼎一网络科技有限公司	https://www.baijingapp.com//uploads/company/11/110911/20180816/1534402758_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	鼎一网络	行业=应用；文化娱乐-视频；开发者服务-推广,变现|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=www.xxoogo.com
 7683	Yumore Media Limited	https://www.baijingapp.com//uploads/company/03/33911/20180629/1530245358_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Yumore Media Limited	行业=开发者服务-推广|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.yumoremedia.com
 7684	成都凯瑞佳信息技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180608/1528444326_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GL	行业=开发者服务-翻译,测试|融资状态=未知|地区=四川省 成都市|公司规模=15人以下|网址=建设中
+13967	花火游戏	https://www.baijingapp.com//uploads/scrapy/554/20141014e9655355.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	花火游戏	行业=游戏-研发|融资状态=未知|地区=山西省 太原市|公司规模=15人以下
 7685	一网互通（北京）科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180521/1526873140_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	ONESIGHT	行业=开发者服务-推广|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=www.onesight.cn
 7686	杭州玄籍营销策划有限公司	https://www.baijingapp.com//uploads/company/10/100761/20180509/1525852657_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Mobgeek	行业=游戏-发行；开发者服务-推广,变现,统计,追踪|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=www. admobgeek.com 
 7687	咸宁方片互动网络有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180507/1525675124_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	方片互动	行业=游戏-研发,发行|融资状态=未知|地区=湖北省 咸宁市|公司规模=50-150人|网址=http://www.fpwan.com/
@@ -757,6 +759,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7894	Nestia	https://www.baijingapp.com//uploads/company/09/94674/20180307/1520392364_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Nestia	行业=应用|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=https://www.nestia.com/
 7895	IBM SmartCamp	https://www.baijingapp.com//uploads/company/09/94674/20180305/1520235691_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	IBM	行业=开发者服务-云服务,推广|融资状态=未知|地区=北京市 海淀区|公司规模=2000人以上|网址=https://www.ibm.com/cn-zh/
 7896	深圳点猫科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180301/1519871705_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	编程猫	行业=教育|融资状态=战略投资|地区=广东省 深圳市|公司规模=150-500人|网址=https://www.codemao.cn/
+13968	慧典科技	https://www.baijingapp.com//uploads/scrapy/553/20141014c11bfe52.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	慧典科技	行业=游戏-研发|融资状态=未知|地区=湖南省 长沙市|公司规模=50-150人
 7897	传神语联网网络科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451194175_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	传神翻译	行业=开发者服务-翻译|融资状态=A轮|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.transn.com/index.html
 7898	深圳市越疆科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180222/1519286887_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	越疆科技	行业=人工智能|融资状态=A+轮|地区=广东省 深圳市|公司规模=150-500人|网址=https://www.dobot.cc/
 7899	北京飞睿网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180327/1522116745_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	飞睿网络科技	行业=游戏-渠道；开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=www.flyingree.com
@@ -829,6 +832,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7966	唐山锋狼科技有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161125/1480057603_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	锋狼科技	行业=游戏-研发,发行,渠道|融资状态=未知|地区=河北省 唐山市|公司规模=15-50人
 7967	上海游陆信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161124/1479975557_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海游陆信息科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 闵行区|公司规模=15-50人|网址=http://ulugame.com
 7968	Moblie V5	https://www.baijingapp.com//uploads/company/06/61728/20161123/1479898326_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Moblie V5	行业=应用|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
+7993	Showbox	https://www.baijingapp.com//uploads/company/03/36709/20160713/1468372297_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Showbox	行业=游戏-渠道；开发者服务-推广|融资状态=未知|地区=新加坡|公司规模=15-50人|网址=www.goshowbox.co
 7969	青岛大卫骆驼网络科技有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161115/1479181024_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	青岛大卫骆驼网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=山东省 青岛市|公司规模=15-50人|网址=www.cn-adg.com/China/cn/Index.aspx
 7970	深圳市快美妆科技有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161026/1477446141_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	快美妆	行业=应用；文化娱乐-视频|融资状态=A+轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.kuaimeizhuang.com
 7971	广州本易互联网科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161026/1477444551_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	始记APP	行业=应用；文化娱乐-其他|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.dsjapp.cn
@@ -853,7 +857,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 7990	GameWorld.in.th	https://www.baijingapp.com//uploads/company/02/26969/20160726/1469517326_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GameWorld.in.th	行业=开发者服务-翻译|融资状态=未知|地区=泰国|公司规模=15-50人|网址=http://www.gameworld.in.th
 7991	红杉资本顾问咨询（北京）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214431937100.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	红杉资本中国	行业=投资|融资状态=未知|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.sequoiacap.cn
 7992	合肥乐堂动漫信息技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522390748_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	合肥乐堂动漫信息技术有限公司	行业=游戏-研发,发行；文化娱乐-动漫|融资状态=IPO|地区=安徽省 合肥市|公司规模=150-500人|网址=http://www.joymeng.com
-7993	Showbox	https://www.baijingapp.com//uploads/company/03/36709/20160713/1468372297_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Showbox	行业=游戏-渠道；开发者服务-推广|融资状态=未知|地区=新加坡|公司规模=15-50人|网址=www.goshowbox.co
 7994	Playstrap Games	https://www.baijingapp.com//uploads/company/02/26969/20160711/1468231321_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Playstrap Games	行业=游戏-研发|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=http://www.playstrap.com
 7995	福州市兜乐网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160707/1467880474_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Doule 兜乐科技	行业=游戏-研发,发行|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://www.91doule.com
 7996	成都贝格畅斯科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160630/1467253373_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Bigchance	行业=开发者服务-推广,其他|融资状态=C轮|地区=四川省 成都市|公司规模=50-150人|网址=http://appvii.com
@@ -970,6 +973,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8107	北京爱空气科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160216/1455591031_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京爱空气科技有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.airburg.cn
 8108	广东步步高电子工业有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160713/1468406865_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	VIVO	行业=手机与硬件|融资状态=未知|地区=广东省 东莞市|公司规模=2000人以上|网址=http://www.vivo.com.cn
 8109	深圳橙子自动化有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160216/1455587301_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳橙子自动化有限公司	行业=手机与硬件；人工智能|融资状态=B轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.ioranges.cn
+8296	YC Play FZ-LLC	https://www.baijingapp.com//uploads/company/11/110911/20180809/1533779621_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	YCPLAY	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=www.ycplay.com
 8110	北京蚂蜂窝网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455521879_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京蚂蜂窝网络科技有限公司	行业=应用；旅游|融资状态=D轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.mafengwo.cn
 8111	丽铂姿贸易（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455520211_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	丽铂姿贸易（上海）有限公司	行业=电商|融资状态=C轮|地区=上海市 长宁区|公司规模=15-50人|网址=http://www.reebonz.cn
 8112	杭州泰一指尚科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160802/1470121819_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	泰一指尚	行业=人工智能；开发者服务-其他|融资状态=并购|地区=浙江省 杭州市|公司规模=150-500人|网址=http://www.adtime.com
@@ -1157,7 +1161,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8293	一加科技	https://www.baijingapp.com//uploads/company/11/110911/20180917/1537156133_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	一加手机	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=https://www.oneplus.com/cn/
 8294	厦门精艺达翻译服务有限公司	https://www.baijingapp.com//uploads/company/11/112336/20180829/1535531749_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	精艺达翻译公司	行业=开发者服务-翻译|融资状态=未知|地区=福建省 厦门市|公司规模=150-500人|网址=www.mts.cn
 8295	中腾信金融信息服务（上海）有限公司	https://www.baijingapp.com//uploads/company/11/110911/20180810/1533865790_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中腾信	行业=金融|融资状态=未知|地区=上海市 虹口区|公司规模=2000人以上|网址=http://www.chinatopcredit.com/
-8296	YC Play FZ-LLC	https://www.baijingapp.com//uploads/company/11/110911/20180809/1533779621_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	YCPLAY	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=www.ycplay.com
 8297	Apexo CO.,Limited	https://www.baijingapp.com//uploads/company/10/100862/20180808/1533702994_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Apexo	行业=游戏-研发；应用|融资状态=未知|地区=香港 九龙城区|公司规模=15-50人|网址=http://apexotech.com/
 8298	北京网易有道计算机系统有限公司	https://www.baijingapp.com//uploads/company/11/110911/20180806/1533521020_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	有道智选	行业=开发者服务-推广|融资状态=未知|地区=北京市 海淀区|公司规模=500-2000人|网址=https://zhixuan.youdao.com/
 8299	北京破晓互动科技有限责任公司	https://www.baijingapp.com//uploads/company/11/110332/20180718/1531904560_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	破晓互动	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.xbreak.cn
@@ -1182,6 +1185,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8318	广东公信智能会议股份有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522311483_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	公信会议	行业=手机与硬件|融资状态=未知|地区=广东省 佛山市|公司规模=50-150人|网址=http://www.gonsin.com.cn
 8319	杭州虚现科技有限公司	https://www.baijingapp.com//uploads/company/10/100761/20180328/1522224921_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	KAT	行业=游戏-发行,渠道；手机与硬件|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.katvr.com
 8320	上海聪盛网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100761/20180327/1522123244_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	聪盛网络	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 闵行区|公司规模=50-150人|网址=http://www.kingnet.com
+8345	Intowow	https://www.baijingapp.com//uploads/company/09/94674/20180201/1517455020_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Intowow	行业=游戏-渠道；开发者服务-变现|融资状态=未知|地区=台湾 台北市|公司规模=15-50人|网址=http://www.intowow.com/
 8321	北京海瀑网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100761/20180327/1522121084_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海瀑网络	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=https://www.tianyancha.com
 8322	深圳市信元欣悦投资管理有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180327/1522115787_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	信元资本	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://xyxyvc.com
 8323	上海璞缇客信息技术有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180323/1521795585_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	璞缇客	行业=人工智能；旅游|融资状态=未知|地区=上海市 静安区|公司规模=50-150人|网址=https://www.putike.cn/
@@ -1206,7 +1210,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8342	Avocarrot	https://www.baijingapp.com//uploads/company/03/36349/20180205/1517819483_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Glispa Connect	行业=开发者服务-推广,变现,其他|融资状态=未知|地区=德国|公司规模=150-500人|网址=https://www.glispaconnect.com
 8343	天津华永无线科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180202/1517567142_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天津华永无线科技有限公司	行业=应用；开发者服务-推广|融资状态=未知|地区=天津市 塘沽区|公司规模=50-150人|网址=http://info.vlifepaper.com/company.html
 8344	Bebi Media Limited	https://www.baijingapp.com//uploads/company/09/99709/20180202/1517557004_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Bebi Media Limited	行业=游戏-渠道|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人|网址=www.bebi.com
-8345	Intowow	https://www.baijingapp.com//uploads/company/09/94674/20180201/1517455020_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Intowow	行业=游戏-渠道；开发者服务-变现|融资状态=未知|地区=台湾 台北市|公司规模=15-50人|网址=http://www.intowow.com/
 8346	深圳市仁清卓越投资有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180129/1517219517_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	仁清卓越	行业=电商|融资状态=A轮|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.rockphone.cn/
 8347	河南北斋信息科技有限公司	https://www.baijingapp.com//uploads/company/09/99423/20180128/1517117668_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	河南北斋信息科技有限公司	行业=文化娱乐-动漫,其他；其他|融资状态=未知|地区=河南省 郑州市|公司规模=15人以下|网址=www.beizhaidesign.com
 8348	郑州米宅科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180125/1516851100_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	米宅	行业=房产家居|融资状态=未知|地区=河南省 郑州市|公司规模=50-150人|网址=http://www.mizhai.com/
@@ -1254,6 +1257,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8391	羚羊科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20170925/1506306356_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	羚羊科技有限公司	行业=应用；物流；共享经济|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=www.dubike.ae
 8392	成都完美人生科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20170828/1503908277_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都完美人生科技有限公司	行业=电商；医疗健康|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=http://www.perfect-all.com
 8393	北京奇迹时代科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20170914/1505380111_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京奇迹时代科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=http://amazingame.cn/
+8418	广州红圈信息科技有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170721/1500602082_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	wingsdk	行业=开发者服务-统计,支付,数据服务|融资状态=未知|地区=广东省 广州市|公司规模=15人以下|网址=http://www.wingsdk.com
 8394	PhenixGamesLimited	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522231821_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	PhenixGamesLimited	行业=游戏-研发,发行,渠道；投资；开发者服务-推广,其他|融资状态=未知|地区=香港 九龙城区|公司规模=50-150人|网址=http://www.phenixgames.com.hk
 8395	南京厚建云计算有限公司	https://www.baijingapp.com//uploads/company/09/94629/20170906/1504668634_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	南京厚建云计算有限公司	行业=开发者服务-云服务,支付,其他|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.ddapp.com/
 8396	砰砰工作室	https://www.baijingapp.com//uploads/company/00/6002/20170831/1504160437_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	砰砰工作室	行业=游戏-研发|融资状态=未知|地区=海南省 海口市|公司规模=15人以下|网址=http://www.boomsterstudio.com
@@ -1278,7 +1282,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8415	上海成蹊信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20170104/1483517331_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成蹊网络	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.dafuhao-ol.com
 8416	上海阅文信息技术有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170721/1500622610_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	阅文集团	行业=应用；文化娱乐-网络文学|融资状态=未知|地区=上海市 浦东新区|公司规模=500-2000人|网址=http://www.yuewen.com/
 8417	杭州魅狐网络技术有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170721/1500606659_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海狐海淘	行业=电商；应用|融资状态=A轮|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.haihu.com
-8418	广州红圈信息科技有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170721/1500602082_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	wingsdk	行业=开发者服务-统计,支付,数据服务|融资状态=未知|地区=广东省 广州市|公司规模=15人以下|网址=http://www.wingsdk.com
 8419	Edge226	https://www.baijingapp.com//uploads/company/09/92159/20170720/1500537682_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Edge226	行业=开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=https://www.edge226.com/cn/
 8420	福州市魔娱软件有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170720/1500533829_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	魔娱软件	行业=应用|融资状态=未知|地区=福建省 福州市|公司规模=15人以下|网址=暂无
 8421	GEMFIVE	https://www.baijingapp.com//uploads/company/09/91370/20170719/1500432412_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GEMFIVE	行业=电商；应用|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.gemfive.com/my
@@ -1375,6 +1378,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8512	杭州晟帛贸易有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161026/1477447702_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	如涵电商	行业=电商|融资状态=B轮|地区=浙江省 杭州市|公司规模=500-2000人|网址=http://www.liblin.com.cn
 8513	蜜星（北京）文化发展有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161026/1477445121_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蜜星	行业=文化娱乐-视频|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
 8514	上海七牛信息技术有限公司	https://www.baijingapp.com//uploads/company/06/62608/20161024/1477304808_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	七牛云	行业=开发者服务-云服务|融资状态=E轮|地区=上海市 浦东新区|公司规模=150-500人|网址=http://www.qiniu.com/
+8539	Magic Star Maze	https://www.baijingapp.com//uploads/company/03/39388/20160818/1471507026_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Magic Star Maze	行业=游戏-研发|融资状态=未知|地区=江苏省 南京市|公司规模=15人以下|网址=待完善
 8515	杭州鹈鹕网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161025/1477363597_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	鹈鹕网络	行业=其他|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.timogroup.com/
 8516	Unitop General Merchandise Inc.	https://www.baijingapp.com//uploads/company/03/34782/20161021/1477020459_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Unitop General Merchandise Inc.	行业=电商；消费升级|融资状态=未知|地区=菲律宾|公司规模=15-50人|网址=www.unitop.com.ph
 8517	佛山市点石互动网络有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160419/1461051002_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Adpotato	行业=开发者服务-推广,变现,统计,追踪|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.adpotato.com
@@ -1399,7 +1403,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8536	北京轻卡科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160824/1472021356_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京轻卡科技有限公司	行业=应用；医疗健康|融资状态=天使轮|地区=北京市 昌平区|公司规模=15人以下|网址=http://www.i-calorie.com
 8537	北京东方嘉禾文化发展股份有限公司	https://www.baijingapp.com//uploads/company/03/39329/20160816/1471329537_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GOCHINATV	行业=开发者服务-推广|融资状态=未知|地区=北京市 东城区|公司规模=500-2000人|网址=http://corp.gochinatv.com
 8538	上海伴月网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160823/1471932454_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海伴月网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 宝山区|公司规模=15人以下|网址=待完善
-8539	Magic Star Maze	https://www.baijingapp.com//uploads/company/03/39388/20160818/1471507026_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Magic Star Maze	行业=游戏-研发|融资状态=未知|地区=江苏省 南京市|公司规模=15人以下|网址=待完善
 8540	摩托罗拉移动技术（中国）有限公司北京分公司	https://www.baijingapp.com//uploads/company/02/26969/20160818/1471491765_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	摩托罗拉移动技术（中国）有限公司北京分公司	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.motorola.com.cn
 8541	Turboc Dev	https://www.baijingapp.com//uploads/company/00/6002/20160815/1471256514_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Turboc Dev	行业=应用|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.brandyturboc.com
 8542	Legogo	https://www.baijingapp.com//uploads/company/00/6002/20160814/1471163874_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Legogo	行业=应用|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.enosishermes.com
@@ -1412,11 +1415,9 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8549	厦门同步网络有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522306540_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	同步推	行业=应用|融资状态=并购|地区=福建省 厦门市|公司规模=150-500人|网址=http://www.tongbu.com
 8550	掌赢信息科技（上海）有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150422/1429689562_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	掌赢科技	行业=应用|融资状态=天使轮|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.chatgame.me
 8551	掌阅科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151225/1451033757_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	掌阅科技股份有限公司	行业=应用|融资状态=IPO|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.zhangyue.com
-8552	广州唯品会信息科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215122238849.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	唯品会	行业=投资|融资状态=战略投资|地区=广东省 广州市|公司规模=150-500人|网址=http://www.vip.com
 8553	上海云锋投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215072138666.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	云锋基金	行业=投资|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.yfc.cn
 8554	亚商集团	https://www.baijingapp.com//uploads/company/investor/2016072215012038426.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	亚商资本	行业=投资|融资状态=未知|地区=上海市 长宁区|公司规模=50-150人|网址=http://www.abccapital.cn
 8555	江西省出版集团公司	https://www.baijingapp.com//uploads/company/investor/2016072214492137683.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中文传媒	行业=投资|融资状态=未知|地区=江西省 南昌市|公司规模=150-500人|网址=http://www.jxpp.com
-8556	北京奇虎科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214480937508.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	奇虎360	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.360.cn
 8557	浙江红点投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214465437423.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	红点投资Redpoint Ventures	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.redpoint.com
 8558	深圳市创新投资集团有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214432737168.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深创投	行业=投资|融资状态=未知|地区=山东省 威海市|公司规模=150-500人|网址=http://www.szvc.com.cn
 8559	江西开创数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160722/1469157663_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江西开创数码科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=江西省 赣州市|公司规模=15-50人|网址=http://www.relaxgame.com.cn
@@ -1496,6 +1497,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8632	真意环球（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160425/1461566311_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	真意环球（北京）科技有限公司	行业=开发者服务-翻译,测试,其他|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=待定
 8633	北京环滔信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160425/1461564369_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	欢逃游	行业=旅游；开发者服务-其他|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.huantaoyou.com
 8634	福建恒通保进出口贸易有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160425/1461551101_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	8090购	行业=电商|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://www.8090go.com
+8772	北京险峰华兴投资咨询有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160303/1456994804_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	险峰长青	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://k2vc.com
 8635	深圳市顺风车网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160422/1461307482_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	闪发车	行业=应用；物流；消费升级；汽车交通|融资状态=天使轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.sfc365.com
 8636	成都白云互动科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160422/1461307057_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	白云互动	行业=应用；电商|融资状态=Pre-A|地区=四川省 成都市|公司规模=50-150人|网址=http://www.buyinhand.com
 8637	上海汇航捷讯网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160422/1461306752_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	运去哪	行业=电商|融资状态=战略投资|地区=上海市 黄浦区|公司规模=50-150人|网址=http://www.yunquna.com
@@ -1519,6 +1521,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8655	Taptica International Ltd.	https://www.baijingapp.com//uploads/company/10/100852/20180327/1522132115_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Taptica International Ltd.	行业=开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://cn.taptica.com
 8656	GameBank株式会社	https://www.baijingapp.com//uploads/company/02/26969/20160414/1460614842_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GameBank株式会社	行业=游戏-研发,发行|融资状态=未知|地区=日本|公司规模=50-150人|网址=https://www.gamebank.co.jp
 8657	Aarki Inc	https://www.baijingapp.com//uploads/company/02/26969/20160413/1460528524_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Aarki Inc	行业=开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.aarki.com
+13969	福建优联文化发展有限公司	https://www.baijingapp.com//uploads/scrapy/551/201410146cf02a36.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建优联文化发展有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人
 8658	深圳市斑马鱼科技服务有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160406/1459915594_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市斑马鱼科技服务有限公司	行业=开发者服务-推广|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=待完善
 8659	万界（上海）网络股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160330/1459323193_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	万界（上海）网络股份有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=http://www.jooyuu.com
 8660	苏州爱说网络信息有限公司	https://www.baijingapp.com//uploads/company/03/34216/20160412/1460449013_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱说	行业=应用；开发者服务-其他|融资状态=未知|地区=江苏省 南京市|公司规模=15-50人|网址=http://www.ai-shuo.cn
@@ -1588,10 +1591,10 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8724	美业邦（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160317/1458202144_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	美业邦（北京）科技有限公司	行业=应用；消费升级|融资状态=A+轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.beautybond.cn
 8725	深圳市讯信互动科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160317/1458199855_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	lemonmobi	行业=开发者服务-推广|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.lemonmobi.com
 8726	广州市豆点信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160317/1458183391_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州市豆点信息科技有限公司	行业=开发者服务-推广|融资状态=A轮|地区=广东省 广州市|公司规模=15-50人|网址=http://www.doimob.com
+8932	深圳爱淘城网络科技股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160129/1454057045_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱淘城	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.atcsell.com
 8727	星锐互娱（北京）科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160317/1458178699_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	星锐互娱	行业=游戏-研发；应用；文化娱乐-网络文学|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.xingruihuyu.com
 8728	深圳市掌闻互动科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522317265_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市掌闻互动科技有限公司	行业=开发者服务-其他|融资状态=A轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.zhangwenhudong.com
 8729	上海星游纪信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160316/1458113602_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	星游纪	行业=游戏-发行,渠道|融资状态=A轮|地区=上海市 普陀区|公司规模=15-50人|网址=http://www.gamepoch.com
-8730	西安极客移动信息科技股份有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522317602_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	文件大师	行业=应用|融资状态=未知|地区=陕西省 西安市|公司规模=50-150人|网址=http://www.xageek.com
 8731	石家庄掌门软件技术开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160315/1458028796_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	掌门游戏	行业=游戏-研发|融资状态=未知|地区=河北省 石家庄市|公司规模=15-50人|网址=http://zmplay.com
 8732	北京微克科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160315/1458028353_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	微克游戏	行业=游戏-研发,发行,渠道|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=http://www.weckj.com
 8733	上海同欢网络科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160315/1458028032_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	同欢游戏	行业=游戏-研发|融资状态=天使轮|地区=上海市 普陀区|公司规模=15-50人|网址=http://www.toofun.net
@@ -1633,7 +1636,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8769	中山市桔子互联智能科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160304/1457063899_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中山市桔子互联智能科技有限公司	行业=应用；手机与硬件；人工智能|融资状态=未知|地区=广东省 中山市|公司规模=500-2000人|网址=http://orangelink.cn
 8770	萨基姆通讯（中国）电子有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160304/1457063016_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	萨基姆通讯（中国）电子有限公司	行业=开发者服务-云服务|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.sagemcom.cn
 8771	广州君行网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160304/1457059418_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州君行网络科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.oair.com/index.php
-8772	北京险峰华兴投资咨询有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160303/1456994804_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	险峰长青	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://k2vc.com
 8773	福州趣读网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160303/1456994608_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州趣读网络科技有限公司	行业=文化娱乐-其他|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://sm.qudu99.com
 8774	深圳市中天安驰有限责任公司	https://www.baijingapp.com//uploads/company/02/26969/20160303/1456989109_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市中天安驰有限责任公司	行业=手机与硬件|融资状态=A轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.aidriving.com
 8775	深圳市倍泰健康测量分析技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160303/1456977767_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市倍泰健康测量分析技术有限公司	行业=手机与硬件|融资状态=C轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.belter.com.cn
@@ -1679,6 +1681,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8815	上海庆科信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160226/1456454918_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海庆科信息技术有限公司	行业=手机与硬件|融资状态=B轮|地区=上海市 普陀区|公司规模=50-150人|网址=http://www.mxchip.com
 8816	深圳市欧瑞博科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160226/1456453370_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市欧瑞博科技有限公司	行业=应用；手机与硬件；人工智能|融资状态=B轮|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.orvibo.com
 8817	北京天善资本投资管理有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456388510_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京天善资本投资管理有限公司	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=待定
+8999	深圳睿讴科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453369901_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	rrioo睿讴科技	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.rrioo.com
 8818	杭州云链网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160225/1456380795_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州云链网络技术有限公司	行业=应用；手机与硬件|融资状态=A轮|地区=浙江省 湖州市|公司规模=15-50人|网址=http://cloudchain.cn
 8819	厦门联合物流有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456370616_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门联合物流有限公司	行业=物流|融资状态=D轮及以上|地区=福建省 厦门市|公司规模=150-500人|网址=http://www.unilogistics.com.cn
 8820	北京普缇客科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160224/1456301860_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	达令	行业=电商；应用|融资状态=战略投资|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.daling.com
@@ -1793,7 +1796,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8929	杭州云豆科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160201/1454310183_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州云豆科技有限公司	行业=手机与硬件；医疗健康|融资状态=Pre-A|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.doouya.com
 8930	珠海云麦科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522375503_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	云麦科技	行业=应用；手机与硬件；医疗健康|融资状态=B+轮|地区=广东省 珠海市|公司规模=15-50人|网址=http://www.iyunmai.com
 8931	广州视友网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160201/1454293485_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州视友网络科技有限公司	行业=应用|融资状态=天使轮|地区=广东省 广州市|公司规模=15-50人|网址=http://seeu.im
-8932	深圳爱淘城网络科技股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160129/1454057045_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱淘城	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.atcsell.com
 8933	北京陌上花科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160129/1454054604_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京陌上花科技有限公司	行业=消费升级；人工智能|融资状态=B+轮|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.dress-plus.com
 8934	杭州思亿欧网络科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160129/1454054399_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州思亿欧网络科技股份有限公司	行业=开发者服务-其他|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.sem.com.cn
 8935	福建云阅网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160129/1454037522_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建云阅网络科技有限公司	行业=应用；文化娱乐-网络文学|融资状态=天使轮|地区=福建省 福州市|公司规模=15-50人|网址=http://www.iyunyue.com
@@ -1832,13 +1834,13 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8968	极致行动科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160123/1453519895_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	极致行动科技有限公司	行业=游戏-研发|融资状态=未知|地区=台湾 台北市|公司规模=15-50人|网址=http://m.qme.tw
 8969	Light In The Box Limited	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453518165_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	兰亭集势	行业=电商|融资状态=并购|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.lightinthebox.com
 8970	上海玄霆娱乐信息科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180403/1522727814_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海玄霆娱乐信息科技有限公司	行业=应用；文化娱乐-网络文学|融资状态=IPO|地区=上海市 浦东新区|公司规模=150-500人|网址=www.qidian.com
-8971	江苏四海商舟电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453517577_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江苏四海商舟电子商务有限公司	行业=电商|融资状态=B轮|地区=江苏省 南京市|公司规模=150-500人|网址=http://www.thebizark.com
 8972	北京艾德思奇科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160123/1453517605_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京艾德思奇科技有限公司	行业=开发者服务-推广,变现|融资状态=A轮|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.adsage.cn
 8973	深圳华强文化科技集团股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160802/1470121346_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华强方特	行业=游戏-研发；文化娱乐-影视,动漫|融资状态=A轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.fantawild.com
 8974	中俄商城（大洋）国际集团有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453515194_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中俄商城（大洋）国际集团有限公司	行业=电商|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.dayangtrade.ru
 8975	深圳市一达通企业服务有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453513247_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市一达通企业服务有限公司	行业=电商|融资状态=并购|地区=广东省 深圳市|公司规模=50-150人|网址=http://onetouch.alibaba.com
 8976	厦门正品汇电子商务股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453512551_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门正品汇电子商务股份有限公司	行业=电商|融资状态=未知|地区=福建省 厦门市|公司规模=500-2000人|网址=http://www.topzph.com
 8977	上海派道网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453511754_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海派道网络科技有限公司	行业=电商|融资状态=未知|地区=上海市 浦东新区|公司规模=150-500人|网址=http://cn.pedeall.com
+9022	科大讯飞股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160128/1453975458_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	科大讯飞	行业=应用|融资状态=上市公司|地区=安徽省 合肥市|公司规模=2000人以上|网址=http://www.iflytek.com
 8978	杭州杰恩西网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453510991_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州杰恩西网络技术有限公司	行业=电商|融资状态=天使轮|地区=浙江省 湖州市|公司规模=50-150人|网址=http://www.c2j.co.jp
 8979	诚迈科技（南京）股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160123/1453480300_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	诚迈科技（南京）股份有限公司	行业=手机与硬件；开发者服务-其他|融资状态=D轮及以上|地区=江苏省 南京市|公司规模=2000人以上|网址=http://www.amtxm.com
 8980	厦门九尾狐信息科技有限公司	https://www.baijingapp.com//uploads/company/02/29918/20160122/1453467266_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门九尾狐信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=50-150人|网址=http://www.2134.net
@@ -1861,7 +1863,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 8996	杭州迅煋科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160122/1453429328_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	SwiftStar	行业=游戏-研发；应用；开发者服务-其他|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.swiftstar.net
 8997	深圳市传智基业科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453388565_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市传智基业科技有限公司	行业=应用；手机与硬件|融资状态=天使轮|地区=广东省 深圳市|公司规模=15人以下|网址=http://www.c-z.cc
 8998	北京帕罗奥图科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453387527_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京帕罗奥图科技有限公司	行业=手机与硬件；人工智能|融资状态=A+轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.altotech.us
-8999	深圳睿讴科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453369901_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	rrioo睿讴科技	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.rrioo.com
+9184	Guru Inc	https://www.baijingapp.com//uploads/company/00/6002/20151231/1451545920_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Guru Inc	行业=应用|融资状态=未知|地区=天津市 宝坻区|公司规模=15-50人|网址=http://yogamonkey.fit
 9000	蔓德普适（北京）信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453366383_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蔓德普适（北京）信息技术有限公司	行业=手机与硬件；开发者服务-数据服务|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.mindpush.cn
 9001	成都唯此互动科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160121/1453365862_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都唯此互动科技有限公司	行业=应用；文化娱乐-视频|融资状态=天使轮|地区=四川省 成都市|公司规模=15-50人|网址=http://www.weici.im
 9002	北京飞译网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160121/1453365470_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京飞译网络技术有限公司	行业=应用；开发者服务-翻译|融资状态=B轮|地区=北京市 海淀区|公司规模=50-150人|网址=https://www.flitto.com.cn
@@ -1885,7 +1887,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9019	Art Games Studios	https://www.baijingapp.com//uploads/company/00/2486/20160120/1453261060_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Art Games Studios	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 9020	Peach Studio	https://www.baijingapp.com//uploads/company/00/6002/20160120/1453257184_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Peach Studio	行业=游戏-研发；其他|融资状态=未知|地区=上海市 黄浦区|公司规模=50-150人|网址=http://www.peach-studio.com
 9021	上海格锐数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453257127_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海格锐数码科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人|网址=待定
-9022	科大讯飞股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160128/1453975458_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	科大讯飞	行业=应用|融资状态=上市公司|地区=安徽省 合肥市|公司规模=2000人以上|网址=http://www.iflytek.com
 9023	艾莱斯（北京）科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160120/1453254838_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	艾莱斯（北京）科技发展有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.ariesgames.net
 9024	厦门触游网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160120/1453221602_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门触游网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=福建省 厦门市|公司规模=50-150人|网址=http://www.touchyoo.com
 9025	杭州匹诺曹科技有限公司	https://www.baijingapp.com//uploads/company/00/2486/20160119/1453198099_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州匹诺曹科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.hzpnc.com/
@@ -1978,6 +1979,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9113	华益天信科技（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160112/1452610724_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华益天信科技（北京）有限公司	行业=游戏-研发,渠道；开发者服务-推广|融资状态=A轮|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.huayigame.cn
 9114	金华码虫网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160112/1452588741_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	金华码虫网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 金华市|公司规模=15-50人|网址=http://t5830777201435681.5858.com/
 9115	南京炉石网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160112/1452587948_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	炉石游戏	行业=游戏-研发|融资状态=天使轮|地区=江苏省 南京市|公司规模=15-50人|网址=http://www.lushiyouxi.com
+9852	Clickky	https://www.baijingapp.com//uploads/company/02/26969/20161110/1478759367_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Clickky	行业=开发者服务-推广,其他|融资状态=未知|地区=美国|公司规模=50-150人|网址=https://clickky.biz
 9116	南京图观网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160112/1452585263_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	南京图观网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 南京市|公司规模=15-50人|网址=http://www.tonegames.com
 9117	Mad Head Limited	https://www.baijingapp.com//uploads/company/00/6002/20160112/1452584024_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	MadHead	行业=游戏-研发|融资状态=A轮|地区=香港 沙田区|公司规模=150-500人|网址=http://www.madhead.com
 9118	天津皿鎏软件有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160112/1452583713_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天津皿鎏软件有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 杨浦区|公司规模=50-150人|网址=http://www.mineloader.com
@@ -2046,7 +2048,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9181	上海零境网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160102/1451700968_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海零境网络科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=上海市 闵行区|公司规模=50-150人|网址=http://www.sh-lingjing.com
 9182	杭州拓米科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451555538_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州拓米科技有限公司	行业=游戏-研发,渠道；开发者服务-推广|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.tuo3.com
 9183	大连文森特软件科技有限公司北京分公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451550132_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连文森特软件科技有限公司北京分公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.pataw.cn
-9184	Guru Inc	https://www.baijingapp.com//uploads/company/00/6002/20151231/1451545920_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Guru Inc	行业=应用|融资状态=未知|地区=天津市 宝坻区|公司规模=15-50人|网址=http://yogamonkey.fit
 9185	广州市擎天柱网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451543621_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	擎天柱	行业=游戏-研发|融资状态=B轮|地区=广东省 广州市|公司规模=150-500人|网址=http://corp.175game.com
 9186	深圳市梵町网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451531834_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市梵町网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.fantingame.com
 9187	玩拾科技股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20151231/1451529276_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	LEGAME 乐游戏	行业=游戏-发行,渠道|融资状态=未知|地区=台湾 台北市|公司规模=50-150人|网址=http://www.legame.tw
@@ -2055,7 +2056,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9190	北京暮色森林科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151230/1451466678_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京暮色森林科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.duskforest.com
 9191	深圳市一面网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151230/1451464732_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市一面网络技术有限公司	行业=其他|融资状态=Pre-A轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.tupai.me
 9192	上海霜狼信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151230/1451462668_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	霜狼游戏	行业=游戏-研发|融资状态=天使轮|地区=上海市 闵行区|公司规模=15-50人|网址=http://www.ifrostwolf.com
-9193	深圳市有棵树科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151230/1451456217_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	有棵树	行业=电商|融资状态=C轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.youkeshu.com
 9194	天舍（上海）文化传媒有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160802/1470104436_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天舍游戏	行业=游戏-研发；人工智能|融资状态=战略投资|地区=上海市 徐汇区|公司规模=15-50人|网址=http://www.tianshemedia.com
 9195	南京艾迪亚动漫艺术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151230/1451445513_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	南京艾迪亚动漫艺术有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 南京市|公司规模=15-50人|网址=http://weibo.com/u/2891302771?is_hot=1
 9196	北京独游网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151230/1451444849_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京独游网络科技有限公司	行业=游戏-渠道|融资状态=战略投资|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.indiegames.cn
@@ -2067,7 +2067,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9202	深圳市育智科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151230/1451405399_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市育智科技有限公司	行业=教育；手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.cnedtech.com
 9203	上海蓝鱼数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451377543_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海蓝鱼数码科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=上海市 浦东新区|公司规模=15-50人|网址=待完善
 9204	雷尚（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451374084_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	雷尚（北京）科技有限公司	行业=游戏-研发|融资状态=并购|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.rayjoy.com
-9205	乐恒互动（北京）文化有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451372307_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	乐恒互动（北京）文化有限公司	行业=游戏-研发|融资状态=A轮|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.joy4you.com
 9206	成都景和千城科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451371500_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都景和千城科技股份有限公司	行业=电商|融资状态=未知|地区=四川省 成都市|公司规模=150-500人|网址=http://www.pxsj.com
 9207	深圳市魔蛋科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451369660_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市魔蛋科技有限公司	行业=游戏-研发|融资状态=A轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.modangame.com
 9208	杭州魔域网络科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20170926/1506420306_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	魔域网络	行业=游戏-研发,发行；应用|融资状态=A轮|地区=浙江省 杭州市|公司规模=150-500人|网址=http://www.moyuplay.com/
@@ -2228,6 +2227,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9362	广州乐牛软件科技有限公司	https://www.baijingapp.com//uploads/scrapy/190/201510076aab27b4.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州乐牛软件科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=广东省 广州市|公司规模=150-500人
 9363	广州由悠季信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/191/20150929adde3dd6.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州由悠季信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下
 9364	深圳云游技术网络有限公司	https://www.baijingapp.com//uploads/scrapy/192/201510046d11bb83.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳云游技术网络有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
+13970	成都鸿尚萌萌哒工作室	https://www.baijingapp.com//uploads/scrapy/550/201410134a24f949.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都鸿尚萌萌哒工作室	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
 9365	南京辰彩堂广告有限公司	https://www.baijingapp.com//uploads/scrapy/177/201509157ed3c33b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	南京辰彩堂广告有限公司	行业=游戏-研发；开发者服务-推广|融资状态=未知|地区=江苏省 南京市|公司规模=15人以下
 9366	深圳市范特西科技有限公司	https://www.baijingapp.com//uploads/scrapy/178/20150917a6a0ff0c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市范特西科技有限公司	行业=游戏-研发|融资状态=并购|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.ftxgame.com
 9367	福州雷霆互动网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/182/2015092252042a45.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州雷霆互动网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人
@@ -2246,7 +2246,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9380	重庆谋达科技有限责任公司	https://www.baijingapp.com//uploads/scrapy/66/201506254af90990.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	重庆谋达科技有限责任公司	行业=游戏-研发|融资状态=未知|地区=重庆市 渝北区|公司规模=15-50人
 9381	上海番糖网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/57/20150624ad6b5b2a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海番糖网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=上海市 徐汇区|公司规模=15-50人
 9382	盛迅达	https://www.baijingapp.com//uploads/scrapy/27/2015061553aef3ea.png?v=201605101534	2018-09-26 21:55:04.660435	\N	盛迅达	行业=游戏-研发；应用；文化娱乐-网络文学,动漫,音乐|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人
-9383	大连市世纪鲲鹏科技有限公司	https://www.baijingapp.com//uploads/scrapy/1/201506083b4bde00.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连市世纪鲲鹏科技有限公司	行业=游戏-研发|融资状态=未知|地区=辽宁省 大连市|公司规模=150-500人
 9384	厦门乐玩堂网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/3/2015061094819920.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门乐玩堂网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=15人以下
 9385	郑州灵犀软件科技有限公司	https://www.baijingapp.com//uploads/scrapy/8/201506118b9b46f2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	郑州灵犀软件科技有限公司	行业=游戏-研发|融资状态=未知|地区=河南省 郑州市|公司规模=15-50人|网址=www.zzlingxi.com
 9386	上海复娱文化传播股份有限公司	https://www.baijingapp.com//uploads/scrapy/10/2015060990004027.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海复娱文化传播股份有限公司	行业=游戏-研发|融资状态=上市公司|地区=上海市 徐汇区|公司规模=150-500人
@@ -2375,7 +2374,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9510	杭州锋芒易商网络技术有限公司	https://www.baijingapp.com//uploads/company/11/110911/20180926/1537957898_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	FunMart	行业=电商|融资状态=A+轮|地区=浙江省 杭州市|公司规模=50-150人|网址=https://play.google.com/store/apps/details?id=com.fun.funmart
 9511	网易有道信息技术（北京）有限公司	https://www.baijingapp.com//uploads/company/11/113285/20180925/1537874971_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	网易有道	行业=开发者服务-翻译；人工智能|融资状态=未知|地区=北京市 海淀区|公司规模=500-2000人|网址=https://f.youdao.com/
 9512	广州悦辰科技有限公司	https://www.baijingapp.com//uploads/company/11/111843/20180824/1535093412_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	悦辰科技	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下
-9513	奇亿（北京）音乐有限公司	https://www.baijingapp.com//uploads/company/10/101270/20180322/1521709137_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	奇亿音乐	行业=游戏-研发；文化娱乐-音乐；其他|融资状态=未知|地区=北京市 通州区|公司规模=15-50人|网址=www.qiyimusic.com
 9514	1Plusads Limited	https://www.baijingapp.com//uploads/company/10/100852/20180703/1530608740_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	1Plusads	行业=开发者服务-推广|融资状态=未知|地区=上海市 长宁区|公司规模=150-500人|网址=www.1plusads.com
 9515	广州栗树信息科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522229628_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	栗子科技	行业=游戏-研发,发行；应用；电商|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.ichestnuts.com/
 9516	广州掌族网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180514/1526290796_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	掌族游戏	行业=游戏-研发,发行|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.zhangzugame.com/
@@ -2459,7 +2457,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9595	北京大圣互动科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20171129/1511945521_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大圣互动	行业=应用；开发者服务-推广|融资状态=A轮|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.mkit.com.cn/
 9596	Nao Cat Studio	https://www.baijingapp.com//uploads/company/09/96284/20171121/1511254477_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Nao Cat Studio	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=https://play.google.com/store/apps/details?id=org.egret.java.Love3072
 9597	成都联萌科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522219881_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都联萌科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=http://www.unicgames.com
-9598	深圳豪客互联网有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522230429_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	豪客互联（HAWK）	行业=投资；开发者服务-其他|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.ehawk.com/
 9599	深圳光照启航互联网管理有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522230827_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	光照启航孵化器	行业=开发者服务-其他|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
 9600	成功易（北京）信息技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522230961_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成功易	行业=开发者服务-推广|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=www.chenggongyi.com
 9601	江苏溪谷网络科技有限公司	https://www.baijingapp.com//uploads/company/09/96284/20171031/1509437476_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江苏溪谷网络科技有限公司	行业=开发者服务-推广|融资状态=未知|地区=江苏省 徐州市|公司规模=50-150人|网址=https://www.vlcms.com
@@ -2511,7 +2508,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9647	深圳市风玩科技有限公司	https://www.baijingapp.com//uploads/company/03/30527/20170718/1500362827_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	风玩科技	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.funland.cn
 9648	Mostcore	https://www.baijingapp.com//uploads/company/09/92159/20170718/1500345981_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Mostcore	行业=游戏-研发|融资状态=未知|地区=香港 油尖旺区|公司规模=15-50人|网址=http://www.mostcore.com
 9649	Ludus Studio	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522306877_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Ludus Studio	行业=游戏-研发|融资状态=未知|地区=美国|公司规模=15-50人|网址=http://www.ludusstudio.com
-9650	安徽百舟互娱网络股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20170713/1499942699_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	百舟互娱	行业=游戏-发行,渠道|融资状态=未知|地区=安徽省 铜陵市|公司规模=50-150人|网址=http://www.baizhoucn.com
 9651	上海众联能创新能源科技股份有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170713/1499935361_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	申唐游戏翻译中心	行业=开发者服务-翻译|融资状态=未知|地区=上海市 徐汇区|公司规模=500-2000人|网址=www.grandeurchina.com.cn
 9652	东莞市开心宝宝软件科技有限公司	https://www.baijingapp.com//uploads/company/02/26974/20170712/1499832484_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	开心宝宝	行业=游戏-研发|融资状态=未知|地区=广东省 东莞市|公司规模=15人以下|网址=暂无
 9653	亿栗科技（北京）有限公司	https://www.baijingapp.com//uploads/company/09/92159/20170707/1499418150_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	亿栗科技	行业=开发者服务-推广|融资状态=未知|地区=北京市 海淀区|公司规模=15人以下|网址=http://www.eliads.com
@@ -2568,6 +2564,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9704	北溟互动网络科技（北京）有限公司	https://www.baijingapp.com//uploads/company/09/91370/20170527/1495853324_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北溟互动	行业=游戏-研发|融资状态=未知|地区=北京市 东城区|公司规模=15人以下|网址=https://www.rocgame.com/index.html
 9705	北京盘狮科技有限公司	https://www.baijingapp.com//uploads/company/09/91370/20170527/1495853093_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	盘狮科技	行业=游戏-研发|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=http://www.tapliongames.com
 9706	廊坊同步音律信息科技有限公司	https://www.baijingapp.com//uploads/company/09/91370/20170526/1495765864_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	同步音律	行业=游戏-研发|融资状态=未知|地区=河北省 廊坊市|公司规模=15人以下|网址=http://weibo.com/p/1006062617055711
+14050	火龙果游戏	https://www.baijingapp.com//uploads/scrapy/654/2014090322d6f786.png?v=201605101534	2018-09-26 21:55:04.660435	\N	火龙果游戏	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 9707	华泰证券股份有限公司	https://www.baijingapp.com//uploads/company/09/91711/20170525/1495692747_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华泰证券	行业=投资|融资状态=未知|地区=江苏省 南京市|公司规模=500-2000人|网址=http://www.htsc.com.cn
 9708	日上創意科技有限公司	https://www.baijingapp.com//uploads/company/09/91597/20170524/1495596738_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	日上創意科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=台湾 台中市|公司规模=15人以下|网址=www.sayhong.net
 9709	Everyads.Inc	https://www.baijingapp.com//uploads/company/03/31695/20170524/1495637633_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Rocket10	行业=开发者服务-推广,变现|融资状态=未知|地区=俄罗斯|公司规模=50-150人|网址=www.rocket10.com
@@ -2664,6 +2661,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9800	云南坚果科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522314807_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	坚果科技	行业=游戏-研发；应用|融资状态=未知|地区=云南省 昆明市|公司规模=15人以下|网址=http://www.nuttech.net
 9801	深圳市拾荒者科技有限公司	https://www.baijingapp.com//uploads/company/06/65060/20170117/1484640709_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市拾荒者科技有限公司	行业=应用|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下|网址=www.scavengers.mobi
 9802	易观复文化传媒（北京）有限公司	https://www.baijingapp.com//uploads/company/06/68818/20170117/1484620894_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	易观复文化传媒（北京）有限公司	行业=开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=无
+14209	四川至善网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/119/20150407963bfd92.png?v=201605101534	2018-09-26 21:55:04.660435	\N	四川至善网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 绵阳市|公司规模=15-50人
 9803	杭州赛众信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/249/20150128dca87a39.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州赛众信息技术有限公司	行业=应用；开发者服务-其他|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.hodanet.com
 9804	北京玉米无限传媒有限公司	https://www.baijingapp.com//uploads/company/08/88714/20170113/1484290297_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京玉米无限传媒有限公司	行业=游戏-渠道；开发者服务-推广|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=www.yumimobi.com
 9805	Zhuowei Zhang	https://www.baijingapp.com//uploads/company/06/61728/20170113/1484272290_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Zhuowei Zhang	行业=应用|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下|网址=待完善
@@ -2712,7 +2710,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9849	深圳市麦赛欧信息技术有限公司	https://www.baijingapp.com//uploads/company/06/62800/20161116/1479302149_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	麦赛欧	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=www.onemobi.com
 9850	欧乐移动	https://www.baijingapp.com//uploads/company/06/62307/20161115/1479173033_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	OleMobi	行业=开发者服务-推广|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=www.olemobi.com
 9851	DIY锁屏大师	https://www.baijingapp.com//uploads/company/06/61728/20161114/1479091268_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	DIY锁屏大师	行业=游戏-研发；其他|融资状态=未知|地区=广东省 珠海市|公司规模=15-50人
-9852	Clickky	https://www.baijingapp.com//uploads/company/02/26969/20161110/1478759367_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Clickky	行业=开发者服务-推广,其他|融资状态=未知|地区=美国|公司规模=50-150人|网址=https://clickky.biz
 9853	厦门掌锋信息科技有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161109/1478672550_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门掌锋信息科技有限公司	行业=游戏-研发,发行,渠道|融资状态=A轮|地区=福建省 厦门市|公司规模=15-50人|网址=5wanpk.com
 9854	西安闪游网络科技有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161108/1478575928_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	西安闪游网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=陕西省 西安市|公司规模=15-50人|网址=www.456.com.cn
 9855	广州大娱信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151102/1446430685_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大娱游戏	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.dayugame.net
@@ -2727,7 +2724,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9866	深圳市星商电子商务有限公司	https://www.baijingapp.com//uploads/company/00/6002/20161026/1477465635_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	星商(StarMerx)	行业=电商|融资状态=B轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.starmerx.com
 9867	上海元动文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161025/1477389266_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	VS MEDIA	行业=文化娱乐-视频；其他|融资状态=未知|地区=上海市 静安区|公司规模=15-50人|网址=http://www.vs-media.com
 9868	杭州鸿大网络发展股份有限公司	https://www.baijingapp.com//uploads/company/06/61728/20161025/1477388949_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	鸿大网络	行业=应用；其他|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.hodanet.com
-9869	上海复娱文化传播股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20161025/1477378970_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	复娱文化	行业=应用；体育；投资；文化娱乐-影视|融资状态=A轮|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.foyoent.com
 9870	福州米格美格网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161025/1477365220_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州米格美格网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=待完善
 9871	福建华脉网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161025/1477358017_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建华脉网络科技有限公司	行业=开发者服务-推广,其他|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://www.harme.cn
 9872	北京柒捌玖零科技信息有限公司	https://www.baijingapp.com//uploads/company/02/26969/20161021/1477030446_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京柒捌玖零科技信息有限公司	行业=文化娱乐-媒体及资讯；开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.coolooknews.com
@@ -2784,6 +2780,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9923	万达电影股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215154538947.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	万达院线(万达影视)	行业=投资|融资状态=IPO上市后|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.wandacinemas.com
 9924	北京清科创富投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215153938921.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	清科创投	行业=投资|融资状态=未知|地区=上海市 静安区|公司规模=50-150人|网址=http://www.zero2ipovc.com
 9925	金石投资有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215152838920.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	金石投资	行业=投资|融资状态=B轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.goldstone-investment.com
+14263	深圳市惊奇网络有限公司	https://www.baijingapp.com//uploads/scrapy/187/201503077103c3f4.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市惊奇网络有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
 9926	智度科技股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215151938919.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	智度投资(思达高科)	行业=投资|融资状态=未知|地区=河南省 郑州市|公司规模=15-50人|网址=http://treeglzz.ce.c-c.com
 9927	乐搏大成（北京）投资咨询有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215150238903.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	乐搏资本	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.leboxcap.com
 9928	艾格拉斯股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215145238902.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	巨龙管业	行业=投资|融资状态=未知|地区=浙江省 金华市|公司规模=50-150人|网址=http://www.zjjlgy.com
@@ -2806,13 +2803,11 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9945	乐视网信息技术（北京）股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215121228565.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	乐视网	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.letv.com
 9946	深圳市中美创投硅谷行基金管理企业（有限合伙）	https://www.baijingapp.com//uploads/company/investor/2016072215120438841.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中美创投	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.suvc.com.cn/
 9947	深圳前海汇能金融控股集团有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215115438840.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	前海汇能	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.qhhn-fund.com
-9948	蓝港在线（北京）科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215114538839.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蓝港互动	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.linekong.com
 9949	北京易车信息科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215113738835.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	易车网	行业=投资|融资状态=IPO|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.yiche.com
-9950	北京京东世纪贸易有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215113038811.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	京东	行业=投资|融资状态=A轮|地区=北京市 崇文区|公司规模=500-2000人|网址=http://www.jd.com
+14264	上海夏乐网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/185/2015030564c3b870.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海夏乐网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 9951	鴻海精密工業(股)公司	https://www.baijingapp.com//uploads/company/investor/2016072215111938810.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	鸿海集团Foxconn	行业=投资|融资状态=未知|地区=台湾 台北市|公司规模=150-500人|网址=http://www.foxconn.com.tw
 9952	浙江瀚叶股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215111138809.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	升华拜克	行业=投资|融资状态=未知|地区=浙江省 金华市|公司规模=150-500人|网址=http://www.biok.com
 9953	海航集团有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215110238808.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海航资本	行业=投资|融资状态=未知|地区=海南省 海口市|公司规模=50-150人|网址=http://www.hnagroup.com
-9954	优美缔软件（上海）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215105338807.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Unity游戏产业投资基金	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://unityfund.cn
 9955	上海创丰昕汇创业投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215104638799.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	创丰资本	行业=投资|融资状态=未知|地区=上海市 松江区|公司规模=50-150人|网址=http://www.tronfund.com
 9956	深圳市麦星投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215103838793.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	麦星投资	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.maisoncapital.com
 9957	Accel Partners	https://www.baijingapp.com//uploads/company/investor/2016072215102738792.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Accel Partners	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.accel.com
@@ -2823,13 +2818,11 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9962	薛蛮子	https://www.baijingapp.com//uploads/company/investor/2016072215093238746.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	薛蛮子	行业=投资|融资状态=未知|地区=北京市 昌平区|公司规模=15人以下|网址=http://weibo.com/1813080181
 9963	北京弘毅投资顾问有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215092438733.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	弘毅投资	行业=投资|融资状态=未知|地区=上海市 黄浦区|公司规模=50-150人|网址=http://www.honycapital.com
 9964	江苏凤凰出版传媒股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215091438731.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	凤凰传媒	行业=投资|融资状态=未知|地区=江苏省 淮安市|公司规模=150-500人|网址=http://www.ppm.cn
-9965	苏宁云商集团股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215090538727.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏宁	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.suning.cn
 9966	厚朴基金	https://www.baijingapp.com//uploads/company/investor/2016072215085738722.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厚朴基金	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人
 9967	深圳市天图投资管理股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215084938709.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天图资本	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.tiantu.com.cn
 9968	大唐电信科技股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215083838708.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大唐电信	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.datang.com
 9969	江苏综艺股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215082938707.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	综艺股份	行业=投资|融资状态=未知|地区=江苏省 连云港市|公司规模=50-150人|网址=http://www.600770.com
 9970	北京用友幸福投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215082138700.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	用友幸福投资	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.yonyou.com/
-9971	联想(北京)有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215081338697.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	联想创投集团(乐基金)	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://lefund.lenovo.com.cn
 9972	高盛集团（中国）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215080338693.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	高盛集团(中国)	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.goldmansachs.com
 9973	日本亚洲投资株式会社	https://www.baijingapp.com//uploads/company/investor/2016072215075438692.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	JAIC日本亚洲投资	行业=投资|融资状态=未知|地区=日本|公司规模=50-150人|网址=http://www.jaic-vc.co.jp
 9974	银瑞达Investor AB	https://www.baijingapp.com//uploads/company/investor/2016072215074538690.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	银瑞达Investor AB	行业=投资|融资状态=未知|地区=北京市 昌平区|公司规模=150-500人|网址=http://www.investorab.com
@@ -2846,7 +2839,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9985	DST	https://www.baijingapp.com//uploads/company/investor/2016072215055138627.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	DST	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下|网址=http://dst-global.com/
 9986	浙江华睿控股有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215054238619.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华睿投资	行业=投资|融资状态=未知|地区=浙江省 杭州市|公司规模=150-500人|网址=http://www.sinowisdom.cn
 9987	大晟时代文化投资股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215053438618.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	宝诚股份	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.baochengshare.com
-9988	上海恺英网络科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215051738610.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	恺英网络	行业=投资|融资状态=未知|地区=上海市 奉贤区|公司规模=50-150人|网址=http://www.kingnet.com
 9989	SoftBank capital软银海外	https://www.baijingapp.com//uploads/company/investor/2016072215050738609.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	SoftBank capital软银海外	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.softbank.com/
 9990	上海合之力投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215045938600.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	合力投资	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://weibo.com/u/3064326383
 9991	广州珠江钢琴集团股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215044938599.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	珠江钢琴	行业=投资|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=http://www.pearlriverpiano.com
@@ -2859,7 +2851,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 9998	杭州湖畔山南资本管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215034738567.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	湖畔山南资本	行业=投资|融资状态=未知|地区=北京市 东城区|公司规模=50-150人|网址=https://www.riverhillfund.com
 9999	Star VC	https://www.baijingapp.com//uploads/company/investor/2016072215033838565.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Star VC	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
 10000	亚杰天使投资	https://www.baijingapp.com//uploads/company/investor/2016072215032938564.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	亚杰天使投资	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.aamachina.com.cn
-10001	上海莉莉丝科技股份有限公司	https://www.baijingapp.com//uploads/company/09/91711/20170608/1496913131_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	莉莉丝	行业=投资|融资状态=未知|地区=上海市 闵行区|公司规模=500-2000人|网址=http://lilith.sh
 10002	富春科技股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215031438562.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	富春通信	行业=投资|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://www.forcom.com.cn
 10003	北京五岳天下投资咨询有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215030938549.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	五岳天下资本	行业=投资|融资状态=未知|地区=北京市 东城区|公司规模=50-150人|网址=http://www.n5capital.com
 10004	上海麦顿投资咨询有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215025638528.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	麦顿投资	行业=投资|融资状态=未知|地区=上海市 宝山区|公司规模=50-150人|网址=http://www.mcmchina.com
@@ -2876,7 +2867,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10015	深圳东方弘道文化传播有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215014838447.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	东方弘道(弘合基金)	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.join-hope.com
 10016	杭州圆璟投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215014338445.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	元璟资本	行业=投资|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.vplus.vc
 10017	上海蓝三古月投资资讯有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215013738441.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蓝湖资本	行业=投资|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人|网址=http://bluelakecap.com
-10018	北京分播时代网络科技有限公司	https://www.baijingapp.com//uploads/company/investor/201607221501305266.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	热酷游戏	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.rekoo.com
 10019	成都抱团创业投资有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215012538437.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	抱团科技	行业=投资|融资状态=未知|地区=四川省 成都市|公司规模=50-150人|网址=http://www.baotuan.us
 10020	快创营投资咨询（上海）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215011338421.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	快创营	行业=投资|融资状态=未知|地区=上海市 杨浦区|公司规模=50-150人|网址=http://www.innovation-camp.com
 10021	华岩时代咨询（北京）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072215010638419.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华岩资本ChinaRock	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://chinarockcapital.com
@@ -2973,12 +2963,10 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10115	华人文化（天津）投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214504337739.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华人文化产业基金	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.chinamediacapital.com
 10116	朗姿股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214503637738.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	朗姿股份	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.lancygroup.com
 10117	体育之窗文化股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214503037737.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	体育之窗	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.irenaworld.com
-10118	北京猎豹网络科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214502437734.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	猎豹移动	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.ijinshan.com
 10119	北京学而思教育科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214502037723.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	好未来(学而思)	行业=投资|融资状态=不明确|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.xueersi.com
 10123	Pitango Venture Capital	https://www.baijingapp.com//uploads/company/02/26969/20160726/1469501350_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Pitango Venture Capital	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.pitango.com
 10124	高通无线通信技术（中国）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214494537694.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	高通Qualcomm Ventures	行业=投资|融资状态=未知|地区=北京市 东城区|公司规模=50-150人|网址=https://qualcommventures.com
 10125	杭州华旦投资管理合伙企业（有限合伙）	https://www.baijingapp.com//uploads/company/investor/2016072214493237684.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	华旦天使投资	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人
-10126	北京触控科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214492626774.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	触控科技	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.chukong-inc.com
 10127	深圳市同威创业投资有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214491537681.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	同威创投	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.copowerpe.com
 10128	深圳市点石投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214491337679.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳点石投资	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.touchwood-pe.com
 10129	北京九合云腾投资中心（有限合伙）	https://www.baijingapp.com//uploads/company/investor/2016072214485937634.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	九合创投	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.unityvc.com
@@ -2992,37 +2980,27 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10137	Cherubic Ventures心元资本	https://www.baijingapp.com//uploads/company/investor/2016072214473037474.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Cherubic Ventures心元资本	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.crunchbase.com
 10138	上海阿米巴佰晖创业投资合伙企业（有限合伙）	https://www.baijingapp.com//uploads/company/investor/2016072214472837467.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	阿米巴资本	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
 10139	Infinity Venture Partners	https://www.baijingapp.com//uploads/company/investor/2016072214471237441.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Infinity Venture Partners	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.infinityventures.com
-10140	红杉资本顾问咨询（北京）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214470637440.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Sequoia Capital(红杉海外)	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.sequoiacap.com
 10141	Greycroft Partners	https://www.baijingapp.com//uploads/company/investor/2016072214470037439.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Greycroft Partners	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://greycroft.com
-10142	北京蓝色光标品牌管理顾问股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214465737432.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蓝色光标	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.bluefocus.com
 10143	启明维创创业投资管理（上海）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214465037401.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	启明创投	行业=投资|融资状态=未知|地区=江苏省 苏州市|公司规模=50-150人|网址=http://www.qimingventures.com
 10144	深圳市爱施德股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214463028471.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱施德	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.aisidi.com
 10145	赛博艾坚特（北京）投资咨询有限公司深圳分公司	https://www.baijingapp.com//uploads/company/investor/2016072214462737380.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	CA创投	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.caventures.cn
 10146	上海挚信投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214461937375.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	挚信资本	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.trustbridgepartners.com
-10147	上海巨人网络科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214461337372.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	巨人网络(巨人创投)	行业=投资|融资状态=未知|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.ic-ga.com
-10148	深圳中青宝互动网络股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214460637370.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳中青宝	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.zqgame.com
 10149	湖南电广传媒股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214460137369.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	湖南电广传媒	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.tik.com.cn
 10150	嘉兴自知股权投资管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214454937362.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	明势资本	行业=投资|融资状态=未知|地区=浙江省 嘉兴市|公司规模=50-150人|网址=http://www.future-cap.com
 10151	海通开元投资有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214453037342.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海通开元	行业=投资|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.htsec.com
-10152	小米科技有限责任公司	https://www.baijingapp.com//uploads/company/investor/2016072214452237310.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	顺为基金	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.shunwei.com
-10153	阿里巴巴（中国）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214450237258.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	阿里巴巴	行业=投资|融资状态=未知|地区=浙江省 杭州市|公司规模=500-2000人|网址=http://www.alibabacapital.com
 10154	北京创新方舟科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214445737239.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	创新工场	行业=投资|融资状态=未知|地区=上海市 杨浦区|公司规模=50-150人|网址=http://www.chuangxin.com
 10155	大连天神娱乐股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20161019/1476840032_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天神娱乐	行业=投资|融资状态=未知|地区=辽宁省 大连市|公司规模=50-150人|网址=http://www.tianshenyule.com
 10156	无锡宝通科技股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214443037225.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	宝通科技	行业=投资|融资状态=未知|地区=江苏省 无锡市|公司规模=150-500人|网址=http://www.btdy.com
-10157	竞技世界（北京）网络技术有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214442437223.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	JJ比赛(竞技创投)	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.jj.cn
-10158	小米科技有限责任公司	https://www.baijingapp.com//uploads/company/investor/2016072214441537207.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	小米科技	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.xiaomi.com
 10159	网易（杭州）网络有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214440837195.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	网易	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.163.com
 10160	诚承投资控股有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214440137194.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	诚承投资	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人
 10161	海通创意资本管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214435637190.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海通创意资本	行业=投资|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人|网址=http://htlcm.com
 10162	上海汉理股权投资管理股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214435137184.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	汉理资本	行业=投资|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.newaccess.com.cn
 10163	东方证券股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214434437183.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	东方证券(东方星晖)	行业=投资|融资状态=未知|地区=上海市 普陀区|公司规模=150-500人|网址=http://www.dfzq.com.cn
+14265	掌创网络	https://www.baijingapp.com//uploads/scrapy/182/2015030549ae75ec.png?v=201605101534	2018-09-26 21:55:04.660435	\N	掌创网络	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人
 10164	奥飞娱乐股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214433837180.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	奥飞动漫	行业=投资|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.gdalpha.com
 10165	星辉互动娱乐股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214433237179.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	互动娱乐	行业=投资|融资状态=未知|地区=广东省 汕头市|公司规模=50-150人|网址=http://www.rastar.cn
 10166	伙伴创投（北京）创业咨询有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214432137163.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	PartnerAngel伙伴创投戴志康	行业=投资|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.partnerangel.net
-10167	深圳市腾讯计算机系统有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214431727133.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	腾讯	行业=投资|融资状态=未知|地区=上海市 徐汇区|公司规模=500-2000人|网址=http://www.tencent.com
-10168	深圳市东方博雅科技有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214431337159.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	博雅互动	行业=投资|融资状态=IPO上市|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.boyaa.com
 10169	深圳市迅雷网络技术有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214423937099.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	迅雷	行业=投资|融资状态=IPO上市|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.xunlei.com
-10170	北京掌趣科技股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214423337094.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	掌趣科技	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.ourpalm.com
 10171	隆领投资股份有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214422937091.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	隆领投资	行业=投资|融资状态=未知|地区=福建省 厦门市|公司规模=50-150人|网址=http://www.longling.com
 10172	IDG资本投资顾问（北京）有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214422637021.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	IDG资本	行业=投资|融资状态=未知|地区=香港 中西区|公司规模=50-150人|网址=http://www.idgvc.com
 10173	龙渊云腾(当乐网)	https://www.baijingapp.com//uploads/company/investor/2016072214420437017.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	龙渊云腾(当乐网)	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.devfund.cn
@@ -3040,7 +3018,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10187	Aeria Games	https://www.baijingapp.com//uploads/company/investor/2016072214403736984.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Aeria Games	行业=投资|融资状态=未知|地区=北京市 昌平区|公司规模=15-50人|网址=http://www.aeriagames.com
 10188	金浦产业投资基金管理有限公司	https://www.baijingapp.com//uploads/company/investor/2016072214403336983.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	金浦投资	行业=投资|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.gpcapital.com.cn
 10189	Susquehanna International Group, LLP.	https://www.baijingapp.com//uploads/company/investor/2016072214402936982.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Susquehanna Growth Equity（SIG）	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.sgep.com
-10190	ironSource	https://www.baijingapp.com//uploads/company/02/26969/20160727/1469613666_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	ironSource	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.ironsrc.com
+14345	Typhoon Studio	https://www.baijingapp.com//uploads/scrapy/140/20141218eca25f65.png?v=201605101534	2018-09-26 21:55:04.660435	\N	Typhoon Studio	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人
 10191	Hearst Communications Inc.	https://www.baijingapp.com//uploads/company/investor/2016072214402336980.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	赫斯特Hearst Ventures	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.hearst.com
 10192	Greenspring Associates	https://www.baijingapp.com//uploads/company/investor/2016072214402036979.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Greenspring Associates	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.crunchbase.com/organization/greenspring-associates
 10193	中信控股有限责任公司	https://www.baijingapp.com//uploads/company/investor/2016072214345636977.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中信证券	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.cs.ecitic.com
@@ -3210,7 +3188,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10357	深圳市小心眼科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462777783_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市小心眼科技有限公司	行业=应用；医疗健康|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.leyechn.com
 10358	北京顽石乐创软件开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462777245_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	顽石乐创	行业=游戏-研发,发行|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.joycrafter.cn
 10359	上海网鱼信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462777029_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	网鱼网咖.鱼泡泡	行业=其他|融资状态=不明确|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.wywk.cn
-10360	上海柯慧网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462775564_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	柯慧网络	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人|网址=http://www.kehuinet.com
 10361	北京博雅科诺信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462774617_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	博雅科诺	行业=开发者服务-推广|融资状态=未知|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.bykernel.com
 10362	杭州点诺信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462774316_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	点诺游戏	行业=游戏-研发,发行|融资状态=天使轮|地区=浙江省 杭州市|公司规模=15人以下|网址=http://www.dinogame.cn
 10363	苏州天平先进数字科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160509/1462773925_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州天平	行业=手机与硬件；消费升级|融资状态=A轮|地区=江苏省 苏州市|公司规模=50-150人|网址=http://www.tpadsz.com
@@ -3452,12 +3429,10 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10598	北京美云集网络科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26541/20160419/1461036343_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	店小秘	行业=电商|融资状态=天使轮|地区=北京市 昌平区|公司规模=15-50人|网址=http://www.dianxiaomi.com
 10599	北京顶尖旅思科技发展有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522381319_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	洋葱淘	行业=电商|融资状态=天使轮|地区=北京市 海淀区|公司规模=15-50人|网址=http://yangcongtao.com
 10600	蓝莲花资本顾问有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160419/1461034116_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蓝莲花资本顾问有限公司	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.blue-lotus.cn
-10601	上海安移融网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160419/1461033701_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海外投	行业=投资|融资状态=C轮|地区=上海市 嘉定区|公司规模=15-50人|网址=http://www.haiwaitou.org
 10602	拾联（厦门）信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160415/1460682199_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	拾联科技	行业=手机与硬件；其他|融资状态=天使轮|地区=福建省 厦门市|公司规模=50-150人|网址=http://wholeally.com
 10603	上海稻壳网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160419/1461032002_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	稻壳互联	行业=开发者服务-其他|融资状态=未知|地区=上海市 宝山区|公司规模=50-150人|网址=http://www.dookay.com
 10604	艾普拉斯投资顾问(北京)有限公司运营	https://www.baijingapp.com//uploads/company/02/26541/20160419/1461031664_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	以太资本	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=https://www.ethercap.com
 10605	上海耶格网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160419/1461028665_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	贼鸥游戏	行业=游戏-研发,发行|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=待完善
-10606	深圳市创新投资集团有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160418/1460965731_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	创新投资	行业=投资|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.szvc.com.cn/
 10607	北京金刚游戏科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460965889_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	金刚游戏	行业=游戏-研发,发行|融资状态=未知|地区=北京市 东城区|公司规模=50-150人|网址=http://www.jgyou.com
 10608	镇江微端网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460962863_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	镇江微端网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 镇江市|公司规模=15-50人|网址=http://www.viduan.com
 10609	天津掌通无线科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460961409_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天津掌通无线科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.zhangtongwireless.com
@@ -3473,6 +3448,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10619	北京运多多网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460948341_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蜜柚淘	行业=电商|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.meyoutao.com
 10620	北京指点科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160418/1460946942_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京指点科技有限公司	行业=游戏-研发,发行,渠道|融资状态=天使轮|地区=北京市 海淀区|公司规模=15人以下|网址=http://121.40.94.115
 10621	深圳市超算科技开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460947214_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	超算云	行业=人工智能；开发者服务-数据服务|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.chaosuan.cn
+10693	重庆商社电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459928943_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	世纪购	行业=电商|融资状态=未知|地区=重庆市 涪陵区|公司规模=50-150人|网址=http://www.sjgo365.com
 10622	亿海蓝（北京）数据技术股份公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460945236_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	亿海蓝（北京）数据技术股份公司	行业=开发者服务-数据服务,其他|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.elane.com
 10623	北京泰和金典商贸有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160418/1460944876_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海居汇	行业=电商|融资状态=未知|地区=北京市 通州区|公司规模=15-50人|网址=http://www.haijuhui.com
 10624	北京阿法科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160418/1460943709_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	ALPHA MOBILE	行业=应用|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=待完善
@@ -3496,6 +3472,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10643	晔波国际贸易（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160411/1460357671_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	洋品仓	行业=电商|融资状态=未知|地区=上海市 长宁区|公司规模=15-50人|网址=http://www.ypincang.com
 10644	北京时间季节科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160411/1460357475_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海猫全球购	行业=电商|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=http://www.haimao.cn
 10645	武汉九万里科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160411/1460357300_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉九万里科技有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=湖北省 武汉市|公司规模=50-150人|网址=http://www.jwlkeji.com
+10694	深圳安适购电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459927591_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	安适购	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.ansgo.com
 10646	北京轻客智能科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26541/20160411/1460356731_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	轻客智能科技	行业=手机与硬件；人工智能|融资状态=未知|地区=江苏省 无锡市|公司规模=15-50人|网址=http://www.slightech.com
 10647	上海弘枫（国际）健康管理有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160411/1460356265_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	全球医疗网	行业=应用；投资；医疗健康|融资状态=未知|地区=上海市 静安区|公司规模=15-50人|网址=http://www.medinline.com
 10648	广州酷狐狸网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160411/1460355827_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州酷狐狸网络技术有限公司	行业=应用；旅游|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.kuhuli.com
@@ -3543,8 +3520,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10690	上海宜送信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459930227_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海宜送信息科技有限公司	行业=电商|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.yi-express.com
 10691	广东太平洋互联网信息服务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459929548_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	聚超值	行业=电商|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://best.pconline.com.cn
 10692	赣州星汉信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459929272_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	我爱海淘	行业=电商|融资状态=未知|地区=江西省 赣州市|公司规模=15-50人|网址=http://www.woaihaitao.com
-10693	重庆商社电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459928943_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	世纪购	行业=电商|融资状态=未知|地区=重庆市 涪陵区|公司规模=50-150人|网址=http://www.sjgo365.com
-10694	深圳安适购电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459927591_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	安适购	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.ansgo.com
 10695	宁波诚淘电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459927283_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海带网	行业=电商|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.seatent.com
 10696	好荷贸易（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459927050_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	好荷贸易（上海）有限公司	行业=电商|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.holland-at-home.com
 10697	临桂零与壹软件有限公司（微型企业）	https://www.baijingapp.com//uploads/company/02/26541/20160406/1459926702_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	影音先锋	行业=应用|融资状态=未知|地区=广西壮族自治区 桂林市|公司规模=15-50人|网址=http://www.xfplay.com
@@ -3629,7 +3604,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10776	厦门从众互动文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160329/1459218791_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	雨果网	行业=电商|融资状态=未知|地区=福建省 厦门市|公司规模=15-50人|网址=http://www.cifnews.com
 10777	福建汇源信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160329/1459218348_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建汇源信息科技有限公司	行业=电商|融资状态=未知|地区=福建省 福州市|公司规模=50-150人|网址=http://www.hydianshang.com
 10778	中国外运福建有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160329/1459218199_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建外运	行业=电商|融资状态=未知|地区=福建省 厦门市|公司规模=50-150人|网址=http://www.sinotransfj.com
-10779	厦门跨境网信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160329/1459217767_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	跨境网	行业=电商|融资状态=未知|地区=福建省 厦门市|公司规模=150-500人|网址=http://www.kuajing.com
 10780	福建利嘉电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160329/1459217394_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	你他购	行业=电商|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://nitago.com
 10781	福建海丝路科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160329/1459216844_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建海丝路科技有限公司	行业=电商；开发者服务-推广,其他|融资状态=未知|地区=福建省 泉州市|公司规模=50-150人|网址=http://www.heysroad.com
 10782	GTOKEN	https://www.baijingapp.com//uploads/company/00/3114/20150914/1442218129_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	GTOKEN	行业=游戏-研发,发行,渠道|融资状态=未知|地区=新加坡|公司规模=150-500人|网址=www.playtoken.com
@@ -3639,6 +3613,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10786	上海俊鹰网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160328/1459142120_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海俊鹰网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=待完善
 10787	深圳储世界科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160328/1459137046_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳储世界科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=待定
 10788	青岛英特沃克网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522316380_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	UMCall	行业=应用|融资状态=未知|地区=山东省 青岛市|公司规模=15-50人|网址=http://www.umcall.cn
+10836	北京惠杰科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458540866_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	洋妈妈	行业=电商|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=http://www.yangmama.com
 10789	上海贝朋信息科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522310901_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海贝朋信息科技有限公司	行业=应用|融资状态=天使轮|地区=上海市 浦东新区|公司规模=15人以下|网址=https://www.pomotodo.com
 10790	北京创仕科锐信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160328/1459133692_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京创仕科锐信息技术有限公司	行业=应用|融资状态=A轮|地区=北京市 昌平区|公司规模=15-50人|网址=https://www.rishiqing.com
 10791	成都芯通科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160328/1459131851_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都芯通科技股份有限公司	行业=手机与硬件；开发者服务-其他|融资状态=未知|地区=四川省 成都市|公司规模=50-150人|网址=http://www.nts-intl.com
@@ -3658,7 +3633,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10805	厦门超越优联网络有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160325/1458874554_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门超越优联网络有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=15-50人
 10806	盘古科技	https://www.baijingapp.com//uploads/company/02/26541/20160325/1458873508_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	盘古科技	行业=开发者服务-其他|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.pangeamobile.com
 10807	斯塔克互动科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160325/1458873006_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	斯塔克互动科技有限公司	行业=游戏-发行,渠道|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://stark-corp.com
-10808	深圳富贵乐园科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160325/1458871891_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳富贵乐园科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.fuguileyuan.com
 10809	成都指游科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160325/1458871419_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都指游科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=待定
 10810	广州酷牛信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160325/1458870132_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州酷牛信息科技有限公司	行业=开发者服务-推广|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.gzkuniu.com
 10811	海南英立科技开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160324/1458812340_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海南英立科技开发有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=海南省 海口市|公司规模=15-50人|网址=http://www.hnyl3g.com
@@ -3686,7 +3660,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10833	深圳市舶来品尚有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458549140_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	舶来品尚	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.bolaibuy.com
 10834	广州通樱信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458547876_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	外房网	行业=房产家居|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.glofang.com
 10835	大连虎王国际贸易有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458543239_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北美商城	行业=电商|融资状态=未知|地区=辽宁省 大连市|公司规模=15-50人|网址=http://www.kuajingcheng.com
-10836	北京惠杰科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458540866_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	洋妈妈	行业=电商|融资状态=未知|地区=北京市 东城区|公司规模=15-50人|网址=http://www.yangmama.com
 10837	郑州拇纹网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458532570_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	郑州拇纹网络科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=河南省 郑州市|公司规模=15-50人|网址=http://www.muwentong.com
 10838	绿蟹（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458532176_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	绿蟹（北京）科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.lyuxie.com
 10839	北京海房优选科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26541/20160321/1458531650_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海房优选	行业=房产家居|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.haifangbest.com
@@ -3706,7 +3679,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10853	武汉两点十分文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160318/1458281862_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉两点十分文化传播有限公司	行业=应用；文化娱乐-动漫；其他|融资状态=C轮|地区=湖北省 武汉市|公司规模=150-500人|网址=http://www.2-10.cn
 10854	上海畅航信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160318/1458281521_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	优顾	行业=应用|融资状态=天使轮|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.urgoo.cn
 10855	北京好豆网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160318/1458281192_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	好豆网	行业=应用；开发者服务-其他|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.haodou.com
-10856	雅虎	https://www.baijingapp.com//uploads/company/02/26969/20160318/1458273770_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Yahoo	行业=文化娱乐-媒体及资讯；开发者服务-其他|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=https://www.yahoo.com
 10857	TCL通讯科技控股有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160318/1458273355_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	TCL通讯科技控股有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.tclcom.com
 10858	北京东软慧聚信息技术股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160318/1458272898_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京东软慧聚信息技术股份有限公司	行业=开发者服务-推广|融资状态=上市公司|地区=北京市 海淀区|公司规模=500-2000人|网址=http://huiju.neusoft.com
 10859	北京蜜友科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160518/1463541853_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	趣播	行业=应用|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.miu520.com
@@ -3756,6 +3728,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10903	北京英梅吉科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160315/1458009988_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京英梅吉科技有限公司	行业=人工智能|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.imgnb.com
 10904	北京飞猫无限科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160315/1458009801_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京飞猫无限科技有限公司	行业=手机与硬件|融资状态=Pre-A|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.lyrobotix.com
 10905	北京酷路快思科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160314/1457925688_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京酷路快思科技有限公司	行业=应用；文化娱乐-视频；开发者服务-推广|融资状态=未知|地区=北京市 通州区|公司规模=15-50人|网址=http://www.ushahd.com
+10950	深圳中兴力维技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457684610_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳中兴力维技术有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.znv.com.cn
 10906	UT斯达康（中国）股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160314/1457949345_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	UT斯达康（中国）股份有限公司	行业=应用；开发者服务-其他|融资状态=未知|地区=北京市 东城区|公司规模=150-500人|网址=http://www.utstarcom.cn
 10907	爱立信（中国）通信有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160314/1457949179_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱立信	行业=应用；开发者服务-其他|融资状态=上市公司|地区=北京市 朝阳区|公司规模=2000人以上|网址=http://www.ericsson.com/cn
 10908	北京威速科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160314/1457946553_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京威速科技有限公司	行业=应用；文化娱乐-视频；开发者服务-其他|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.v2tech.com
@@ -3800,7 +3773,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 10947	上海铀尼信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457685442_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	超级表格	行业=应用|融资状态=天使轮|地区=上海市 虹口区|公司规模=15人以下|网址=http://www.chaojibiaoge.com
 10948	北京掌创科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160418/1460969702_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京掌创科技有限公司	行业=游戏-发行,渠道；开发者服务-推广|融资状态=未知|地区=北京市 海淀区|公司规模=500-2000人|网址=http://www.yiqizuo.com
 10949	北京趣连科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457684842_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京趣连科技有限公司	行业=应用；旅游|融资状态=天使轮|地区=北京市 西城区|公司规模=15-50人|网址=http://about.quliantrip.com
-10950	深圳中兴力维技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457684610_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳中兴力维技术有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.znv.com.cn
 10951	浙江宇视科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457684305_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	浙江宇视科技有限公司	行业=手机与硬件；开发者服务-其他|融资状态=D轮及以上|地区=浙江省 杭州市|公司规模=2000人以上|网址=http://cn.uniview.com
 10952	无锡德思普科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457683930_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	无锡德思普科技有限公司	行业=手机与硬件|融资状态=A轮|地区=江苏省 无锡市|公司规模=50-150人|网址=http://www.dspsemi.com
 10953	深圳博亚网络有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160311/1457682365_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳博亚网络有限公司	行业=应用；开发者服务-推广,其他|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.borya.net
@@ -3864,7 +3836,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11010	深圳市智信网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160310/1457580564_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市智信网络技术有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.zhi-xin.com
 11011	苏州恒讯网络系统有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160310/1457580047_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州恒讯网络系统有限公司	行业=开发者服务-其他|融资状态=未知|地区=江苏省 苏州市|公司规模=50-150人|网址=http://www.helen-sun.com
 11012	大连云动力科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160310/1457579658_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连云动力科技有限公司	行业=手机与硬件；人工智能；开发者服务-云服务|融资状态=未知|地区=辽宁省 大连市|公司规模=15-50人|网址=http://www.cloudforce.cn
-11013	上海众联能创新能源科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160310/1457579229_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海众联能创新能源科技股份有限公司	行业=手机与硬件|融资状态=未知|地区=上海市 长宁区|公司规模=500-2000人|网址=http://www.zlnc.com.cn
 11014	上海集睿信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160310/1457579296_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海集睿信息科技有限公司	行业=手机与硬件|融资状态=未知|地区=上海市 虹口区|公司规模=50-150人|网址=http://www.drery.com
 11015	成都普锐思恩科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160310/1457578460_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都普锐思恩科技发展有限公司	行业=手机与硬件|融资状态=未知|地区=四川省 成都市|公司规模=500-2000人|网址=http://www.cdprecisiontech.com
 11016	森声数字科技（深圳）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160310/1457578124_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	森声数字科技（深圳）有限公司	行业=手机与硬件|融资状态=A轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.scenessound.com
@@ -3889,6 +3860,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11035	光联国际有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160309/1457508011_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	光联国际	行业=开发者服务-其他|融资状态=未知|地区=香港 九龙城区|公司规模=50-150人|网址=http://fnetlink.com.hk
 11036	深圳市墨亦森科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160309/1457507304_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市墨亦森科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://cn.moizen.com
 11037	扇港元器件(深圳)有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160309/1457507231_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	扇港元器件(深圳)有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.senko.com.cn
+11196	上海美远物流有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456904921_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海购街	行业=电商|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.heyshopstreet.com
 11038	深圳市载德光电技术开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160309/1457506893_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市载德光电技术开发有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.cuanbo.com
 11039	上海乐提投资管理有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160309/1457506472_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海乐提投资管理有限公司	行业=开发者服务-云服务,其他；其他|融资状态=未知|地区=上海市 徐汇区|公司规模=150-500人|网址=http://www.syscloud.com.cn
 11040	青岛未来移动医疗科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160309/1457505907_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	小智丁无线智能体温计	行业=应用；手机与硬件；医疗健康|融资状态=天使轮|地区=山东省 青岛市|公司规模=15-50人|网址=https://www.smartdean.cn
@@ -4047,9 +4019,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11193	深圳市浩蓝科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456907185_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海倍网	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.happay.com
 11194	深圳市去哪买信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456906711_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	全球去哪买	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.qqqnm.com
 11195	深圳市青柏信息科技有限公司	https://www.baijingapp.com//uploads/company/00/5935/20150716/1437027851_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市青柏信息科技有限公司	行业=开发者服务-推广,其他|融资状态=A轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.influx.io
-11196	上海美远物流有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456904921_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海购街	行业=电商|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.heyshopstreet.com
 11197	国际妈咪易购有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456904563_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	国际妈咪易购有限公司	行业=电商|融资状态=未知|地区=上海市 嘉定区|公司规模=15-50人|网址=http://www.guojimami.com
-11198	新月亮网络科技（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456904228_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海外e购	行业=电商|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.letsebuy.com
 11199	深圳市一号仓信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456903925_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	一号仓	行业=电商|融资状态=天使轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.1hcang.com
 11200	深圳市柏威国际货运代理有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456903638_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	柏威海淘	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.bsibuy.com.cn
 11201	宁波世纪欧美电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456901505_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	欧美淘	行业=电商|融资状态=未知|地区=浙江省 宁波市|公司规模=50-150人|网址=http://www.omtao.com
@@ -4071,6 +4041,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11216	北京甄科网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160302/1456886220_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京甄科网络技术有限公司	行业=应用|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.i-matcher.com
 11217	深圳市博乐信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160302/1456885915_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市博乐信息技术有限公司	行业=手机与硬件|融资状态=A轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.shishiar.cn
 11218	深圳市凡爱智生活科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160302/1456882752_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市凡爱智生活科技有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.fineair-tech.com
+11242	东软集团股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456802716_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	东软集团股份有限公司	行业=开发者服务-推广|融资状态=未知|地区=山东省 青岛市|公司规模=50-150人|网址=http://www.neusoft.com
 11219	杭州骑客智能科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160302/1456882409_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州骑客智能科技有限公司	行业=手机与硬件|融资状态=未知|地区=浙江省 杭州市|公司规模=500-2000人|网址=http://www.chic-robot.com
 11220	中科创达软件股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160302/1456881770_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中科创达软件股份有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=北京市 海淀区|公司规模=500-2000人|网址=http://www.thundersoft.com
 11221	深圳市海亚科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160301/1456819541_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市海亚科技发展有限公司	行业=手机与硬件；开发者服务-其他|融资状态=A轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.sz-haiya.com
@@ -4094,7 +4065,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11239	深圳市世纪宏洋科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456804493_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市世纪宏洋科技有限公司	行业=电商|融资状态=B轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.century-ct.com
 11240	深圳中博网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456803683_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳中博网络技术有限公司	行业=应用|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://zhongbosoft.com
 11241	上海三思电子工程有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456803137_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海三思电子工程有限公司	行业=手机与硬件|融资状态=未知|地区=上海市 闵行区|公司规模=500-2000人|网址=http://www.sansitech.com
-11242	东软集团股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456802716_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	东软集团股份有限公司	行业=开发者服务-推广|融资状态=未知|地区=山东省 青岛市|公司规模=50-150人|网址=http://www.neusoft.com
 11243	成都谛听科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160301/1456802334_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都谛听科技股份有限公司	行业=手机与硬件|融资状态=新三板|地区=四川省 成都市|公司规模=15-50人|网址=http://www.xcloud.cc
 11244	北京乐度科技文化有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456802281_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京乐度科技文化有限公司	行业=应用|融资状态=Pre-A|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.lesdo.cn
 11245	深圳车泰斗科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160301/1456801805_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳车泰斗科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.gyroor.com
@@ -4189,7 +4159,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11336	深圳市艾合石科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160225/1456381341_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市艾合石科技有限公司	行业=手机与硬件|融资状态=天使轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.hihex.com
 11337	上海自友投资管理有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456381171_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	峰瑞资本	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=https://www.freesvc.com
 11338	北京妙计科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456380839_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	妙计旅行	行业=应用；旅游；人工智能|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.mioji.com
-11339	上海复星高科技（集团）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456372412_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海复星高科技（集团）有限公司	行业=投资|融资状态=未知|地区=上海市 虹口区|公司规模=50-150人|网址=http://www.fosun.com
 11340	凯拔（中国）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456372117_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	凯拔（中国）科技有限公司	行业=手机与硬件|融资状态=上市公司|地区=广东省 深圳市|公司规模=2000人以上|网址=http://www.kabaprobuck.com.cn
 11341	武汉佰钧成技术有限责任公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456371375_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉佰钧成技术有限责任公司	行业=其他|融资状态=未知|地区=湖北省 武汉市|公司规模=2000人以上|网址=http://www.bill-jc.com
 11342	漳州立达信光电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160225/1456368016_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	漳州立达信光电子科技有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=福建省 厦门市|公司规模=50-150人|网址=http://www.leedarson.com.cn
@@ -4277,6 +4246,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11424	广州帝视尼电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456125304_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州帝视尼电子科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=http://dsnny.com
 11425	深圳市光峰光电技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456124433_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市光峰光电技术有限公司	行业=手机与硬件|融资状态=A轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.appotronics.com
 11426	深圳美丽讯网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522374322_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	脸蛋	行业=应用；人工智能|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.liandan100.com
+11449	戴尔（中国）有限公司深圳办事处	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456110773_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	戴尔	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.dell.com.cn
 11427	奥图码数码科技（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456124144_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	奥图码数码科技（上海）有限公司	行业=手机与硬件|融资状态=未知|地区=上海市 宝山区|公司规模=150-500人|网址=http://www.optoma.com.cn
 11428	优派科技（中国）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456123847_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	优派科技（中国）有限公司	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.viewsonic.com.cn
 11429	北京攀藤科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160222/1456123646_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京攀藤科技有限公司	行业=手机与硬件|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.plantower.com
@@ -4299,7 +4269,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11446	深圳市广百思科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456112057_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市广百思科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.gonbes.com
 11447	宁波智造数字科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160222/1456111018_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	宁波智造数字科技有限公司	行业=手机与硬件|融资状态=未知|地区=浙江省 宁波市|公司规模=15-50人|网址=http://makex.com
 11448	摩拉医疗科技（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456110972_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	摩拉中国	行业=手机与硬件|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.morachina.cn
-11449	戴尔（中国）有限公司深圳办事处	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456110773_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	戴尔	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.dell.com.cn
+11472	浙江七巧板信息科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160220/1455939252_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	七巧板	行业=应用|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.7qbcn.com
 11450	三木源（北京）健康科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160222/1456110326_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	斯格艾尔	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.squair3.com
 11451	远景能源（江苏）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456110012_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	远景能源	行业=手机与硬件；开发者服务-云服务|融资状态=未知|地区=上海市 浦东新区|公司规模=500-2000人|网址=http://www.envisioncn.com
 11452	北京云栖科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160222/1456109006_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京云栖科技有限公司	行业=开发者服务-云服务|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=https://www.y7tech.com
@@ -4323,7 +4293,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11469	深圳市富视康实业发展有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160220/1455949247_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	富视康	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://fujikam.com
 11470	杭州睿琪软件有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160220/1455948759_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州睿琪软件有限公司	行业=开发者服务-其他|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.glority.com
 11471	深圳市宇君康科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522375415_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	妈妈和我	行业=应用；手机与硬件|融资状态=Pre-A|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.finepo.com
-11472	浙江七巧板信息科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160220/1455939252_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	七巧板	行业=应用|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.7qbcn.com
 11473	上海等势线计算机科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160220/1455938395_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	ETW国际	行业=人工智能；开发者服务-推广,其他；其他|融资状态=未知|地区=上海市 浦东新区|公司规模=150-500人|网址=http://www.etwservice.com
 11474	武汉极意网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160220/1455937932_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	极验验证	行业=开发者服务-其他|融资状态=B轮|地区=湖北省 武汉市|公司规模=50-150人|网址=http://www.geetest.com
 11475	北京绿里生态科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160220/1455937600_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京绿里生态科技有限公司	行业=应用；手机与硬件；人工智能|融资状态=天使轮|地区=北京市 平谷区|公司规模=15-50人|网址=http://www.greenmagic.com.cn
@@ -4378,7 +4347,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11524	重庆金与云电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160218/1455759638_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	硬牛网	行业=手机与硬件；人工智能|融资状态=未知|地区=重庆市 渝北区|公司规模=15-50人|网址=http://www.yingnew.com
 11525	北京一数科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160218/1455758453_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京一数科技有限公司	行业=消费升级；人工智能|融资状态=A轮|地区=北京市 东城区|公司规模=15-50人|网址=http://www.a-su.com.cn
 11526	深圳新创客电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160217/1455694529_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳新创客电子科技有限公司	行业=手机与硬件|融资状态=天使轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.nufilo.com
-11527	北京轻客智能科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26969/20160217/1455691609_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京轻客智能科技有限责任公司	行业=汽车交通|融资状态=B轮|地区=北京市 东城区|公司规模=50-150人|网址=http://www.tsinova.com
 11528	北京掌览天下信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160217/1455691652_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京掌览天下信息科技有限公司	行业=手机与硬件|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.dayinyun.com
 11529	影创科技	https://www.baijingapp.com//uploads/company/02/26541/20160217/1455690937_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	影创科技	行业=手机与硬件；人工智能|融资状态=未知|地区=上海市 虹口区|公司规模=15-50人|网址=http://www.ivglass.com
 11530	奎泽凡尔（天津）科技发展有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160802/1470122065_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	疯火科技	行业=手机与硬件|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.crazyfire.hk
@@ -4432,7 +4400,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11579	深圳市奔跑科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160215/1455520207_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市奔跑科技有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.ruuuun.com
 11580	上海沃迎信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455519365_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海沃迎信息技术有限公司	行业=应用|融资状态=A轮|地区=上海市 卢湾区|公司规模=15人以下|网址=https://build.walkin.com.cn
 11581	深圳市帕斯菲德科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455507954_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市帕斯菲德科技股份有限公司	行业=应用|融资状态=B轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.passfeed.com
-11582	暴风集团股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455507017_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	暴风影音	行业=应用；文化娱乐-视频|融资状态=IPO|地区=北京市 石景山区|公司规模=15-50人|网址=http://www.baofeng.com
 11583	Flurry	https://www.baijingapp.com//uploads/company/02/26969/20160215/1455506135_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Flurry	行业=开发者服务-推广,统计|融资状态=并购|地区=美国|公司规模=500-2000人|网址=http://www.flurry.com
 11584	长春海和信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455505793_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	长春海和信息技术有限公司	行业=开发者服务-其他|融资状态=未知|地区=吉林省 长春市|公司规模=15-50人|网址=http://www.kaiwacn.com
 11585	北京众星智联科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26541/20160215/1455505537_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京众星智联科技有限责任公司	行业=手机与硬件；人工智能|融资状态=未知|地区=北京市 大兴区|公司规模=15-50人|网址=http://www.wellgaga.com
@@ -4481,6 +4448,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11628	深圳微信创科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160203/1454485707_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳微信创科技有限公司	行业=开发者服务-推广|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.wechatcenter.com
 11629	Star Cloud Limited	https://www.baijingapp.com//uploads/company/02/26541/20160203/1454485805_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Star Cloud Limited	行业=应用；其他|融资状态=未知|地区=台湾 台北市|公司规模=15-50人|网址=待定
 11630	深圳洲际通航投资控股有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160203/1454485249_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳洲际通航投资控股有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://icna.com.cn
+11652	广州市青龙信息科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160202/1454403976_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	美人时计(MMclock)	行业=应用|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://mmclock.cn
 11631	深圳市创百通讯科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160203/1454484780_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市创百通讯科技有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.createbest.com.cn
 11632	深圳市林辰展华科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160203/1454483718_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	一动网	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://adonging.cn
 11633	俺朋堂（北京）网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160203/1454483683_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	俺朋堂（北京）网络科技有限公司	行业=应用；文化娱乐-媒体及资讯|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.opentown.cn
@@ -4503,14 +4471,12 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11649	深圳市华宝电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454404780_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市华宝电子科技有限公司	行业=手机与硬件；其他|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.sinohb.com
 11650	深圳市西可德信通信技术设备有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454404046_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市西可德信通信技术设备有限公司	行业=手机与硬件；开发者服务-其他|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.ck-telecom.com
 11651	成都市极米科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454403372_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都市极米科技有限公司	行业=手机与硬件；人工智能|融资状态=C轮|地区=四川省 成都市|公司规模=150-500人|网址=http://www.xgimi.com
-11652	广州市青龙信息科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160202/1454403976_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	美人时计(MMclock)	行业=应用|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://mmclock.cn
 11653	北京陶阳之星科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160202/1454399103_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京陶阳之星科技有限公司	行业=应用|融资状态=天使轮|地区=北京市 丰台区|公司规模=15人以下|网址=http://coloshine.com
 11654	丰唐物联技术（深圳）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454398904_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	丰唐物联技术（深圳）有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.fantem.com
 11655	北京飞漫软件技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160202/1454398589_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京飞漫软件技术有限公司	行业=手机与硬件；开发者服务-其他|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.fmsoft.cn
 11656	杭州华三通信技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454397174_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州华三通信技术有限公司	行业=手机与硬件|融资状态=未知|地区=浙江省 杭州市|公司规模=2000人以上|网址=http://www.h3c.com.cn
 11657	爱国者电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454395511_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	爱国者电子科技有限公司	行业=手机与硬件；其他|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.aigochina.com
 11658	极客帮创投	https://www.baijingapp.com//uploads/company/02/26541/20160202/1454396712_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	极客帮创投	行业=投资|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.geekfounders.com
-11659	天津华永无线科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160202/1454396183_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天津华永无线科技有限公司	行业=应用|融资状态=未知|地区=天津市 大港区|公司规模=150-500人|网址=http://info.vlifepaper.com
 11660	杭州巨峰科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454395079_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州巨峰科技有限公司	行业=手机与硬件|融资状态=未知|地区=浙江省 杭州市|公司规模=500-2000人|网址=http://www.jufenginfo.com
 11661	普联技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160202/1454394684_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	普联技术有限公司	行业=手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=2000人以上|网址=http://www.tp-link.com.cn
 11662	深圳市易甲文技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160202/1454393375_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市易甲文技术有限公司	行业=手机与硬件；汽车交通|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://cn.icarvisions.com
@@ -4684,6 +4650,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11828	广东思派康电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160124/1453601270_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广东思派康电子科技有限公司	行业=消费升级；人工智能|融资状态=未知|地区=广东省 东莞市|公司规模=500-2000人|网址=http://www.i-spk.com
 11829	北京九识佳科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160124/1453601301_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京九识佳科技有限公司	行业=应用|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.xiaodupi.cn
 11830	上海天玩网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160124/1453601047_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海天玩网络科技有限公司	行业=游戏-发行,渠道|融资状态=天使轮|地区=上海市 静安区|公司规模=50-150人|网址=http://m.twan.cn
+12082	北京右脑人科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160121/1453344029_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	右脑人	行业=应用|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.younaoren.com
 11831	广州乐霸网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160124/1453600675_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州乐霸网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.play68.com
 11832	上海斐讯数据通信技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160124/1453600337_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海斐讯数据通信技术有限公司	行业=应用；手机与硬件；开发者服务-云服务,其他|融资状态=D轮及以上|地区=上海市 松江区|公司规模=2000人以上|网址=http://www.phicomm.com
 11833	深圳市智水小荷技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160124/1453599423_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市智水小荷技术有限公司	行业=房产家居；人工智能|融资状态=A轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.xhjsq.com
@@ -4822,6 +4789,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 11966	大连北游科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160122/1453451084_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连北游科技有限公司	行业=游戏-研发|融资状态=未知|地区=辽宁省 大连市|公司规模=15-50人|网址=http://www.44vs.com
 11967	Sanjiang Zhao	https://www.baijingapp.com//uploads/company/00/1/20160122/1453450738_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Sanjiang Zhao	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://blog.sina.com.cn/u/1594758545
 11968	成都哆可梦网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160122/1453450540_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都哆可梦网络科技有限公司	行业=游戏-研发,发行|融资状态=C轮|地区=四川省 成都市|公司规模=50-150人|网址=待定
+12265	App DEV	https://www.baijingapp.com//uploads/company/00/2486/20160119/1453169197_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	App DEV	行业=应用|融资状态=未知|地区=香港 中西区|公司规模=15-50人|网址=待定
 11969	浙江风向标科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160122/1453450020_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	浙江风向标科技有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=浙江省 嘉兴市|公司规模=150-500人|网址=http://www.vanelife.com
 11970	北京联易互动网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160122/1453450137_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京联易互动网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=北京市 东城区|公司规模=150-500人|网址=待定
 11971	rruuinc（个人开发者）	https://www.baijingapp.com//uploads/company/00/1/20160122/1453449296_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	rruuinc（个人开发者）	行业=游戏-研发|融资状态=未知|地区=香港 湾仔区|公司规模=15-50人
@@ -4936,7 +4904,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12079	广州灿和信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453344857_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州灿和信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=150-500人|网址=http://www.splusgame.com
 12080	武汉指尖游科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453344216_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉指尖游科技有限公司	行业=游戏-研发,渠道；开发者服务-推广|融资状态=未知|地区=湖北省 武汉市|公司规模=50-150人|网址=待完善
 12081	北京宏元富成科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160121/1453344152_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京宏元富成科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.ssk12.com
-12082	北京右脑人科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160121/1453344029_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	右脑人	行业=应用|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.younaoren.com
 12083	厦门笨鸟电子商务有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160220/1455938626_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	笨鸟社交	行业=应用；人工智能；开发者服务-追踪,数据服务,其他|融资状态=A轮|地区=福建省 厦门市|公司规模=150-500人|网址=https://www.socialbird.cn
 12084	法国华通信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160121/1453343360_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	法国华通信息科技有限公司	行业=应用|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.huarenjie.com
 12085	杭州玖联信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160121/1453343106_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州玖联信息科技有限公司	行业=游戏-渠道|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.90game.cn
@@ -4982,7 +4949,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12125	上海安久网络信息有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453273916_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海安久网络信息有限公司	行业=开发者服务-其他|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=待定
 12126	指点通（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160120/1453273018_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	指点通（北京）科技有限公司	行业=游戏-研发,发行；开发者服务-其他|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=待完善
 12127	光辉软件（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453272760_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	光辉软件（上海）有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=待定
-12128	北京云狐时代科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160120/1453272589_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京云狐时代科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 大兴区|公司规模=150-500人|网址=待完善
 12129	上海岩浆数码技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453272609_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海岩浆数码技术有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=待定
 12130	成都卡尔维科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160120/1453272288_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都卡尔维科技有限公司	行业=游戏-研发|融资状态=A轮|地区=四川省 成都市|公司规模=500-2000人|网址=待完善
 12131	目标软件（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453272242_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	目标软件（北京）有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=待定
@@ -5036,7 +5002,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12179	大连阿里奥斯科技咨询有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453255579_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连阿里奥斯科技咨询有限公司	行业=游戏-研发|融资状态=未知|地区=辽宁省 大连市|公司规模=15-50人|网址=待定
 12180	北京华信鼎天科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453255432_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京华信鼎天科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 石景山区|公司规模=15-50人|网址=待定
 12181	北京深蓝创娱科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453255257_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京深蓝创娱科技有限公司	行业=游戏-研发,发行；应用|融资状态=未知|地区=北京市 西城区|公司规模=15-50人|网址=待定
-12182	天乐互娱（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453255103_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天乐互娱（北京）科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=待定
 12183	北京掌中飞天科技股份有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522304276_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京掌中飞天科技股份有限公司	行业=游戏-研发,发行|融资状态=新三板|地区=北京市 东城区|公司规模=15-50人|网址=http://www.ophyer.com/
 12184	空中猛犸科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160120/1453254655_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	空中猛犸科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.kongzhong.com
 12185	武汉市印迹科技有限公司	https://www.baijingapp.com//uploads/company/00/2486/20160120/1453254472_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉市印迹科技有限公司	行业=游戏-研发|融资状态=未知|地区=湖北省 武汉市|公司规模=15-50人|网址=http://www.ingyj.com
@@ -5104,7 +5069,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12247	北京蓝硕娱乐科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453174557_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京蓝硕娱乐科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=待定
 12248	广州市易陆信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453174333_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州市易陆信息科技有限公司	行业=开发者服务-推广,其他|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=待定
 12249	苏州聚众网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453173531_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州聚众网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 苏州市|公司规模=15-50人|网址=待定
-12250	上海淘米网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160119/1453173081_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海淘米网络科技有限公司	行业=游戏-研发；其他|融资状态=未知|地区=上海市 徐汇区|公司规模=500-2000人|网址=http://www.taomee.com
 12251	广州赤兔数字动漫有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453172500_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州赤兔数字动漫有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.chitu.com
 12252	上海红居网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160119/1453172130_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海红居网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.esc-app.com
 12253	香港智美网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453171915_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	香港智美网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=香港 湾仔区|公司规模=15-50人|网址=http://www.gm99.com
@@ -5115,11 +5079,9 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12258	上海朗时信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453170781_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海朗时信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.165yx.com
 12259	北京天天飞度信息技术有限公司	https://www.baijingapp.com//uploads/company/00/2486/20160119/1453170631_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京天天飞度信息技术有限公司	行业=电商|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=待定
 12260	深圳市光启科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160119/1453170383_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市光启科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.gamtee.com
-12261	上海宣合网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453170462_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海宣合网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 杨浦区|公司规模=15-50人|网址=待定
 12262	上海悦游网络信息科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453170134_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海悦游网络信息科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://game.yeyou.com
 12263	厦门魔力猪网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453169955_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门魔力猪网络科技有限公司	行业=游戏-研发；应用|融资状态=未知|地区=福建省 厦门市|公司规模=15-50人|网址=待定
 12264	福州创能信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160119/1453169209_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州创能信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=50-150人|网址=http://www.miq.cn
-12265	App DEV	https://www.baijingapp.com//uploads/company/00/2486/20160119/1453169197_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	App DEV	行业=应用|融资状态=未知|地区=香港 中西区|公司规模=15-50人|网址=待定
 12266	龙南德荣科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160119/1453169224_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	龙南德荣科技有限公司	行业=游戏-发行|融资状态=未知|地区=江西省 赣州市|公司规模=15-50人|网址=http://www.hao2u.com
 12267	金华星秀文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160119/1453168839_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	金华星秀文化传播有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 金华市|公司规模=50-150人|网址=待完善
 12268	残象室	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522378730_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	残象室	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=上海市 宝山区|公司规模=15-50人|网址=http://www.zinewow.com
@@ -5189,7 +5151,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12332	杭州绿游网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160118/1453100918_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州绿游网络科技有限公司	行业=游戏-渠道|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://517kd.net
 12333	湖南众创義联网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160118/1453100763_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	湖南众创義联网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=湖南省 长沙市|公司规模=15-50人|网址=http://www.38youxi.com
 12334	厦门睿客信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160118/1453100243_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门睿客信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=50-150人|网址=http://www.xmrk.cn
-12335	杭州绿游网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160118/1453100166_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州绿游网络科技有限公司	行业=游戏-渠道|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.117wan.com
 12336	广州千骐动漫有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160118/1453099741_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州千骐动漫有限公司	行业=应用；文化娱乐-动漫|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.gzqq.net
 12337	深圳市嘻斗科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160118/1453099920_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市嘻斗科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=待定
 12338	趣游（厦门）科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160118/1453099723_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	趣游（厦门）科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=150-500人|网址=http://www.yeyou.com
@@ -5334,7 +5295,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12477	Golden Dream Mobile Technology Co., Ltd.	https://www.baijingapp.com//uploads/company/02/26969/20160115/1452830167_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Golden Dream Mobile Technology Co., Ltd.	行业=游戏-发行,渠道|融资状态=天使轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.goldendream.hk
 12478	乐视游戏科技（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160115/1452830277_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	乐视游戏科技（北京）有限公司	行业=电商；体育；手机与硬件；消费升级；人工智能；文化娱乐-影视|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://games.letv.com
 12479	大连奇域网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160115/1452829719_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连奇域网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=辽宁省 大连市|公司规模=15-50人|网址=待定
-12480	江西大麦互娱科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160115/1452829381_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江西大麦互娱科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=江西省 南昌市|公司规模=150-500人|网址=待定
 12481	上海永恒网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160115/1452829025_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海永恒网络科技有限公司	行业=游戏-研发|融资状态=不明确|地区=上海市 静安区|公司规模=15-50人|网址=http://www.forevergame.com
 12482	合肥盘戈班网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160115/1452829067_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	合肥盘戈班网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=安徽省 合肥市|公司规模=15-50人|网址=http://www.pangurban.me
 12483	厦门乐顽信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160115/1452828822_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门乐顽信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=15-50人|网址=http://www.letwon.com
@@ -5359,7 +5319,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12502	合肥倍好网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160115/1452822467_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	合肥倍好网络科技有限公司	行业=电商|融资状态=未知|地区=安徽省 合肥市|公司规模=15-50人|网址=http://www.boldby.com
 12503	藌柚（厦门）软件科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160115/1452821494_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	藌柚（厦门）软件科技有限公司	行业=游戏-研发|融资状态=未知|地区=河南省 郑州市|公司规模=50-150人|网址=待完善
 12504	成都聚乐科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160115/1452787492_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都聚乐科技有限公司	行业=游戏-研发|融资状态=A轮|地区=四川省 成都市|公司规模=50-150人|网址=http://www.julegame.com
-12505	上海鸿澄信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452785427_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海鸿澄信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人|网址=http://www.hcgames.com.cn
 12506	北京梅森合众科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452784855_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京梅森合众科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=待完善
 12507	上海慕讯网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452765322_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海慕讯网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人|网址=待完善
 12508	北京白橘子网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452765004_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京白橘子网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=待完善
@@ -5387,7 +5346,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12530	在线途游（北京）科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160127/1453858456_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	途游游戏	行业=游戏-研发,发行|融资状态=A轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.tuyoo.com
 12531	深圳市游力科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452757076_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市游力科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=待完善
 12532	上海冰堂网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452757041_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海冰堂网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 长宁区|公司规模=15-50人|网址=http://www.icetang.com
-12533	成都景和千城科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452756789_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都景和千城科技股份有限公司	行业=消费升级|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=http://www.pxsj.com
 12534	武汉中媒文化传媒有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452756972_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉中媒文化传媒有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=湖北省 武汉市|公司规模=150-500人|网址=http://www.whzm.cn
 12535	四川乐客互娱信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452756483_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	四川乐客互娱信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=待定
 12536	广州易航网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452755974_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州易航网络科技有限公司	行业=游戏-研发|融资状态=B轮|地区=广东省 广州市|公司规模=150-500人|网址=待完善
@@ -5416,6 +5374,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12559	北京水果堂网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452738070_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京水果堂网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 东城区|公司规模=50-150人|网址=待定
 12560	广州新昊网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452737624_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州新昊网络科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=http://xhaonet.com
 12561	上海炽宇网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160114/1452737273_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海炽宇网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=待完善
+12606	上海旭游网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452655785_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海旭游网络技术有限公司	行业=游戏-研发|融资状态=并购|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.xuyougame.com
 12562	成都均方根网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452737480_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都均方根网络科技有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=http://www.zjsb88.com
 12563	深圳市摩申网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452737199_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市摩申网络技术有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.moshen.cn
 12564	北京聚成创优科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160114/1452736967_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京聚成创优科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人|网址=待定
@@ -5462,7 +5421,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12603	深圳市云海情天文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452656898_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	指游方寸	行业=游戏-发行,渠道|融资状态=上市公司|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.3333.cn
 12604	深圳市手游科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160113/1452657041_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市手游科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.pkpuke.com
 12605	上海楚问文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452656402_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海楚问文化传播有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 松江区|公司规模=50-150人|网址=待完善
-12606	上海旭游网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452655785_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海旭游网络技术有限公司	行业=游戏-研发|融资状态=并购|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.xuyougame.com
 12607	杭州网溜橙橙网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160113/1452655822_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州网溜橙橙网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.iboom.tv
 12608	杭州吾动网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452655204_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州吾动网络技术有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=待完善
 12609	广州写意飞游戏开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160113/1452655172_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州写意飞游戏开发有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=待定
@@ -5472,7 +5430,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12613	上海昱迦网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452653964_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海昱迦网络科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=上海市 普陀区|公司规模=50-150人|网址=http://www.17miyou.com
 12614	武汉鱼之乐信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160113/1452653957_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉鱼之乐信息技术有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=湖北省 武汉市|公司规模=15-50人|网址=http://www.jofgame.com
 12615	鸿锋恒宇（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452653589_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	鸿锋恒宇（北京）科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.fancy3d.com
-12616	北京空中信使信息技术有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160113/1452653777_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	空中网	行业=游戏-研发,发行|融资状态=不明确|地区=北京市 海淀区|公司规模=500-2000人|网址=http://www.kongzhong.com
 12617	杭州斯凯网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160113/1452653468_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州斯凯网络科技有限公司	行业=游戏-渠道；开发者服务-推广,变现|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.mopo.com
 12618	上海杰姆火网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160113/1452653135_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海杰姆火网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=50-150人|网址=待完善
 12620	上海星米网络科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160113/1452652722_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海星米网络科技股份有限公司	行业=游戏-研发,发行,渠道|融资状态=B轮|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.sinceme.com
@@ -5544,7 +5501,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12685	成都摩奇卡卡科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26969/20160111/1452501917_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都摩奇卡卡科技有限责任公司	行业=游戏-研发|融资状态=并购|地区=四川省 成都市|公司规模=150-500人|网址=http://www.moqikaka.com
 12686	珠海市优陆软件科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160111/1452500925_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	珠海市优陆软件科技有限公司	行业=游戏-研发|融资状态=A轮|地区=广东省 珠海市|公司规模=50-150人|网址=http://illumesoft.com
 12687	江苏谷游信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160111/1452500002_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江苏谷游信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 苏州市|公司规模=15-50人|网址=待完善
-12688	青岛蓝飞互娱科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160111/1452499425_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	青岛蓝飞互娱科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=山东省 青岛市|公司规模=15-50人|网址=http://www.bluefir.cn
 12689	奇妙星空(北京)科技有限公司	https://www.baijingapp.com//uploads/company/09/94674/20180208/1518073059_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	奇妙星空(北京)科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.topgame.com
 12690	杭州傲天科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160111/1452495654_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州傲天科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.ao-t.com
 12691	深圳莲蓬网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160111/1452492808_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳莲蓬网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.tlqxol.com
@@ -5771,7 +5727,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 12912	北京荣璟国际房地产经纪有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160105/1451975278_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京荣璟国际房地产经纪有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 石景山区|公司规模=15-50人|网址=待完善
 12913	广州沐游网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160105/1451974819_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州沐游网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=广东省 广州市|公司规模=15-50人|网址=http://www.mog-gen.com
 12914	深圳市大梦龙途文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160105/1451974653_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市大梦龙途文化传播有限公司	行业=游戏-研发|融资状态=天使轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.dodjoy.com
-12915	北京麒麟网文化股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160105/1451974315_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京麒麟网文化股份有限公司	行业=游戏-研发,发行|融资状态=IPO上市|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.70yx.com
 12916	上海跳跃网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160105/1451974285_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海跳跃网络科技有限公司	行业=游戏-研发|融资状态=IPO|地区=上海市 浦东新区|公司规模=150-500人|网址=http://www.jumpw.com
 12917	深圳市宏立创想网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160105/1451973960_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市宏立创想网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.tgtgame.com
 12918	闪动玖创（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160105/1451973710_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	闪动玖创（北京）科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 黄浦区|公司规模=150-500人|网址=待完善
@@ -5871,13 +5826,13 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13010	上海游神信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451873118_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海游神信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人|网址=http://www.playmage.com
 13011	光线时代（北京）数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160104/1451873095_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	光线时代（北京）数码科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.lightgx.com
 13012	西安印加时代网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451872693_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	西安印加时代网络科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.gameguard.cn
+13057	上海奇速网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451544191_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海奇速网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 嘉定区|公司规模=15-50人|网址=http://www.qs921.com
 13013	伍游（北京）科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451872423_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	伍游（北京）科技有限公司	行业=游戏-发行,渠道；文化娱乐-媒体及资讯|融资状态=B轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.5you.cc
 13014	上海哇麦信息技术有限公司广州分公司	https://www.baijingapp.com//uploads/company/02/26541/20160104/1451872587_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海哇麦信息技术有限公司广州分公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=待定
 13015	杭州巴腾网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451871874_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州巴腾网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=待完善
 13016	重庆市热岛科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451871591_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	重庆市热岛科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=重庆市 大渡口区|公司规模=50-150人|网址=待完善
 13017	广州光娱信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451871289_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州光娱信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.guangyv.com
 13018	陕西至尊网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160104/1451870726_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	陕西至尊网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=陕西省 西安市|公司规模=150-500人|网址=http://www.gamezz.com.cn
-13019	北京艺动创新科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160103/1451796764_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京艺动创新科技有限公司	行业=游戏-研发,发行,渠道|融资状态=并购|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.mobartsgame.com
 13020	北京中视网元娱乐科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160103/1451794219_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京中视网元娱乐科技有限公司	行业=游戏-研发,发行|融资状态=D轮及以上|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.ccnec.com
 13021	北京腾龙时空科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160103/1451792436_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京腾龙时空科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.tenlongame.com
 13022	上海火拉网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160103/1451789956_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海火拉网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 杨浦区|公司规模=15-50人|网址=http://www.enish.jp
@@ -5909,14 +5864,12 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13047	上海墨白计算机科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451548572_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海墨白计算机科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=上海市 杨浦区|公司规模=50-150人|网址=http://www.mobygame.cn
 13048	武汉翼动数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451547904_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉翼动数码科技有限公司	行业=游戏-研发|融资状态=未知|地区=湖北省 武汉市|公司规模=50-150人|网址=http://www.gamedo.ne
 13049	北京擎天网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451548112_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京擎天网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.qingtiangame.com
-13050	北京天道创想科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451547412_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京天道创想科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.tdgame.cn
 13051	杭州派娱科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451547366_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州派娱科技有限公司	行业=游戏-研发,发行,渠道|融资状态=天使轮|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.p7game.com
 13052	深圳天易创魂网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451546548_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳天易创魂网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.tysoul.com
 13053	江西省云讯网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451546661_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江西省云讯网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=河南省 郑州市|公司规模=150-500人|网址=http://www.u0.com
 13054	大连坐标数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451545978_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连坐标数码科技有限公司	行业=文化娱乐-影视,动漫,其他|融资状态=未知|地区=辽宁省 大连市|公司规模=50-150人|网址=http://www.xyz-digi.com
 13055	成都吉乾科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451545411_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都吉乾科技有限公司	行业=游戏-发行,渠道；开发者服务-支付|融资状态=未知|地区=四川省 成都市|公司规模=500-2000人|网址=http://www.dkmol.com
 13056	上海纵游网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151231/1451544772_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海纵游网络技术有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=上海市 杨浦区|公司规模=150-500人|网址=http://www.denachina.com
-13057	上海奇速网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451544191_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海奇速网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 嘉定区|公司规模=15-50人|网址=http://www.qs921.com
 13058	上海童石网络科技股份有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160803/1470217074_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海童石	行业=游戏-研发；文化娱乐-动漫|融资状态=IPO上市后|地区=上海市 虹口区|公司规模=50-150人|网址=http://www.kidstone.cn
 13059	蝴蝶互动（上海）信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451542018_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蝴蝶互动（上海）信息技术有限公司	行业=游戏-研发|融资状态=天使轮|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.hoodinn.com
 13060	深圳市唯变科技开发有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151231/1451541699_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市唯变科技开发有限公司	行业=游戏-研发,发行,渠道|融资状态=天使轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.vigame.cn
@@ -6030,6 +5983,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13166	Tzula Entertainment Co.LTD	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451358427_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Tzula Entertainment Co.LTD	行业=游戏-渠道；文化娱乐-媒体及资讯|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.gameteaser.com
 13167	上海掌民信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451359398_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海掌民信息科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 虹口区|公司规模=15-50人|网址=http://www.salagame.com
 13168	北京展程科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451358627_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京展程科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.zhanchengkeji.com
+13490	北京爱游互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/216/20151023f6c73910.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京爱游互动科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人
 13169	上海际动网络科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451358394_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海际动网络科技股份有限公司	行业=游戏-研发,发行,渠道；文化娱乐-网络文学,动漫|融资状态=未知|地区=上海市 黄浦区|公司规模=15-50人|网址=http://www.jidongnet.com
 13170	深圳市卓越信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451358042_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市卓越信息技术有限公司	行业=开发者服务-其他|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.joyue-tech.com
 13171	炫踪网络股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451357721_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	炫踪网络股份有限公司	行业=游戏-研发,发行|融资状态=B轮|地区=上海市 浦东新区|公司规模=150-500人|网址=http://www.shinezone.com
@@ -6037,12 +5991,10 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13173	蓝骑鲸动漫信息科技（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151229/1451356373_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蓝骑鲸动漫信息科技（上海）有限公司	行业=金融；文化娱乐-影视,动漫|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人|网址=http://www.superwhale.com.cn
 13174	上海点点乐信息科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522380179_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海点点乐信息科技有限公司	行业=游戏-研发,发行|融资状态=并购|地区=上海市 浦东新区|公司规模=500-2000人|网址=http://www.ddianle.com
 13175	北京澳柯网信科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451353202_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京澳柯网信科技发展有限公司	行业=开发者服务-其他|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.aokoshare.com
-13176	北京捷通华声科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451352154_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京捷通华声科技股份有限公司	行业=人工智能；开发者服务-云服务|融资状态=C轮|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.sinovoice.com
 13177	湖南熊蛋网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151229/1451351049_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	湖南熊蛋网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=湖南省 长沙市|公司规模=150-500人|网址=http://www.xiongdan.com
 13178	成都三叠纪数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451317658_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都三叠纪数码科技有限公司	行业=开发者服务-其他|融资状态=未知|地区=四川省 成都市|公司规模=500-2000人|网址=http://www.triascg.com
 13179	成都夏尔数码科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451316332_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都夏尔数码科技有限公司	行业=开发者服务-其他|融资状态=战略投资|地区=四川省 成都市|公司规模=150-500人|网址=http://www.sheeren.com
 13180	火烈鸟网络（广州）股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451313975_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	火烈鸟网络（广州）股份有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 广州市|公司规模=150-500人|网址=http://www.flamingo-inc.com
-13181	苏州玩友时代科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451311561_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州玩友时代科技股份有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=江苏省 苏州市|公司规模=150-500人|网址=http://www.bojoy.net
 13182	西安火神网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451310663_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	西安火神网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=陕西省 西安市|公司规模=50-150人|网址=待完善
 13183	杭州智玩网络股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451296923_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州智玩网络股份有限公司	行业=游戏-研发,发行|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=http://www.zw310.com
 13184	广州菲音信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151228/1451296178_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州菲音信息科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=广东省 广州市|公司规模=500-2000人|网址=http://www.feiyin.com
@@ -6096,6 +6048,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13232	北京居安三六五科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451201819_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京居安三六五科技有限公司	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.roobo.com.cn
 13233	深圳双橙科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451199683_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳双橙科技有限公司	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.tworange.com
 13234	深圳好视网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451193732_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳好视网络科技有限公司	行业=文化娱乐-影视,视频|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.gvtv.com.cn
+13756	云阳工作室	https://www.baijingapp.com//uploads/scrapy/431/20141112b1d44ff2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	云阳工作室	行业=游戏-研发|融资状态=未知|地区=陕西省 西安市|公司规模=15人以下
 13235	浙江汉朔电子科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451187976_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	浙江汉朔电子科技有限公司	行业=开发者服务-其他|融资状态=C轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.hanshows.com
 13236	深圳万利达移动通信有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451185142_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳万利达移动通信有限公司	行业=手机与硬件；其他|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.malatamobile.com
 13237	广州领仁网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451183842_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州领仁网络科技有限公司	行业=应用|融资状态=A轮|地区=广东省 广州市|公司规模=15-50人|网址=http://www.langland.cc
@@ -6104,7 +6057,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13240	博宏信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451179723_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	博宏信息技术有限公司	行业=开发者服务-其他|融资状态=未知|地区=湖南省 长沙市|公司规模=500-2000人|网址=http://www.boomhope.com
 13241	哈尔滨奥松机器人科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151227/1451178971_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	哈尔滨奥松机器人科技股份有限公司	行业=手机与硬件；人工智能|融资状态=未知|地区=黑龙江省 哈尔滨市|公司规模=150-500人|网址=http://www.robotbase.cn
 13242	蒲公英信息技术（深圳）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451033221_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	蒲公英信息技术（深圳）有限公司	行业=开发者服务-推广|融资状态=A轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.ddlions.com
-13243	乐视网信息技术（北京）股份有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151226/1451135377_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	乐视网信息技术（北京）股份有限公司	行业=手机与硬件|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人|网址=http://www.letv.com
 13244	国广东方网络（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151226/1451134134_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	国广东方网络（北京）有限公司	行业=文化娱乐-影视,媒体及资讯|融资状态=B轮|地区=北京市 石景山区|公司规模=150-500人|网址=http://www.cibn.cc
 13245	广州市灏翔信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151226/1451125289_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州市灏翔信息科技有限公司	行业=游戏-发行,渠道；开发者服务-推广|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=待定
 13246	北京展游科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151226/1451124949_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京展游科技有限公司	行业=游戏-研发,发行|融资状态=天使轮|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.zhanyougame.com
@@ -6130,7 +6082,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13266	浙江婴联网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451054183_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	浙江婴联网络科技有限公司	行业=电商|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.elinebaby.com
 13267	深圳市掌中灵动科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20151225/1451036185_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	掌中灵动	行业=游戏-研发；应用|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.izzld.com
 13268	北京泰尔英福网络科技有限责任公司	https://www.baijingapp.com//uploads/company/02/26969/20151225/1451035133_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京泰尔英福网络科技有限责任公司	行业=开发者服务-数据服务,其他|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.tele-info.cn
-13269	深圳市爱施德股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451034733_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市爱施德股份有限公司	行业=手机与硬件|融资状态=上市公司|地区=广东省 深圳市|公司规模=2000人以上|网址=http://www.aisidi.com
 13270	深圳市启明星电子商务有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151225/1451033113_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市启明星电子商务有限公司	行业=电商|融资状态=A轮|地区=广东省 深圳市|公司规模=150-500人|网址=http://m.allpyra.com
 13271	大连文思海辉信息技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451032900_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连文思海辉信息技术有限公司	行业=开发者服务-其他|融资状态=上市公司|地区=辽宁省 大连市|公司规模=2000人以上|网址=http://www.pactera.com
 13272	深圳市亿觅科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451032600_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市亿觅科技有限公司	行业=手机与硬件|融资状态=A轮|地区=广东省 深圳市|公司规模=50-150人|网址=http://cn.emie.com
@@ -6140,6 +6091,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13276	中国通讯多媒体集团有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451031297_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中国通讯多媒体集团有限公司	行业=开发者服务-推广|融资状态=未知|地区=台湾 台北市|公司规模=50-150人|网址=http://www.ccmg.mobi
 13277	北京方正阿帕比技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151225/1451030553_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京方正阿帕比技术有限公司	行业=文化娱乐-其他；开发者服务-其他|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.apabi.cn
 13278	深圳时与光科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451029204_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳时与光科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.kk5u.com
+13324	上海魔力小孩网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151222/1450751325_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	魔力小孩	行业=游戏-研发；应用|融资状态=C轮|地区=上海市 松江区|公司规模=15-50人|网址=http://www.magikid.com
 13279	国广星空视频科技（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451028775_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	国广星空视频科技（北京）有限公司	行业=文化娱乐-媒体及资讯|融资状态=A轮|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.starschina.com
 13280	广州柯咔网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451027373_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州柯咔网络科技有限公司	行业=电商|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=http://www.cookabuy.com/
 13281	上海微盟企业发展有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451025777_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海微盟企业发展有限公司	行业=电商|融资状态=C轮|地区=上海市 宝山区|公司规模=500-2000人|网址=http://www.vd.cn
@@ -6151,7 +6103,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13287	深圳墨齐致知网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451022009_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳墨齐致知网络科技有限公司	行业=教育|融资状态=D轮|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.morechinese.cc
 13288	成都若溪科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451021133_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都若溪科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下|网址=http://www.rosy.net.cn/
 13289	北京擎信互娱信息技术有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160128/1453967136_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	iSing	行业=应用；文化娱乐-音乐|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.isingmobi.com
-13290	北京火柴互娱科技股份有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451019737_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京火柴互娱科技股份有限公司	行业=游戏-发行,渠道|融资状态=B轮|地区=北京市 丰台区|公司规模=50-150人|网址=http://www.huochaihy.com
 13291	上海欢众信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451014297_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海欢众信息科技有限公司	行业=游戏-研发|融资状态=A轮|地区=上海市 浦东新区|公司规模=15-50人|网址=http://web72-12983.10.xiniuyun.com
 13292	成都创娱互动科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451012932_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都创娱互动科技有限公司	行业=游戏-研发；人工智能|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=待定
 13293	福建萝卜网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151225/1451012022_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建萝卜网络科技有限公司	行业=游戏-发行,渠道|融资状态=A轮|地区=福建省 福州市|公司规模=15-50人|网址=www.lbwan.net
@@ -6162,6 +6113,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13298	思科系统（中国）网络技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522381151_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	思科系统（中国）网络技术有限公司	行业=开发者服务-其他；手机与硬件|融资状态=上市公司|地区=北京市 海淀区|公司规模=2000人以上|网址=http://www.cisco.com
 13299	深圳云荣天尚网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151224/1450929065_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳云荣天尚网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.yrtsgame.com/
 13300	苏州番茄互娱信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151224/1450927902_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州番茄互娱信息科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=江苏省 苏州市|公司规模=15-50人|网址=待定
+13489	杭州劲电科技游戏有限公司	https://www.baijingapp.com//uploads/scrapy/214/2015102680fb563e.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州劲电科技游戏有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人
 13301	友讯电子设备（上海）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151224/1450927848_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	友讯电子设备（上海）有限公司	行业=应用；开发者服务-其他|融资状态=上市公司|地区=上海市 长宁区|公司规模=2000人以上|网址=http://www.dlink.com.cn
 13302	上海富丘网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151224/1450926600_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海富丘网络科技有限公司	行业=游戏-研发；其他|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=待定
 13303	上海课海网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151224/1450919549_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海课海网络科技有限公司	行业=教育|融资状态=未知|地区=上海市 闸北区|公司规模=500-2000人|网址=https://www.coursera.org/
@@ -6182,15 +6134,12 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13669	Global Mobi	https://www.baijingapp.com//uploads/scrapy/1217/2014112410f56749.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Global Mobi	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=g.global-mobi.com
 13319	上海迈和信息科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522294211_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海迈和信息科技有限公司	行业=游戏-研发；应用；金融|融资状态=A轮|地区=上海市 黄浦区|公司规模=50-150人|网址=http://www.tradehero.mobi
 13320	成都瑞安云科技股份有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180327/1522135046_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都瑞安云科技股份有限公司	行业=应用|融资状态=未知|地区=四川省 成都市|公司规模=50-150人|网址=http://www.uwewe.com
-13321	北京天盈九州网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151222/1450770320_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	凤凰网	行业=应用；文化娱乐-网络文学,媒体及资讯|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.ifeng.com
 13322	星展银行（中国）有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151222/1450769240_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	星展银行（中国）有限公司	行业=金融|融资状态=未知|地区=上海市 浦东新区|公司规模=500-2000人|网址=http://www.dbs.com
 13323	顽石互动（北京）网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151222/1450766623_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	顽石互动（北京）网络科技有限公司	行业=游戏-研发|融资状态=B轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.wistone.com
-13324	上海魔力小孩网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151222/1450751325_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	魔力小孩	行业=游戏-研发；应用|融资状态=C轮|地区=上海市 松江区|公司规模=15-50人|网址=http://www.magikid.com
 13325	上海麦博文化传媒有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160202/1454374970_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	麦博游戏MYBO	行业=游戏-研发,发行|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人|网址=http://www.mybogame.com
 13326	海拉（上海）管理有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151222/1450746894_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海拉（上海）管理有限公司	行业=游戏-研发；应用|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.hella.com
 13327	北京骏景通科技有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151221/1450690057_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京骏景通科技有限公司	行业=游戏-研发；应用|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://easymobi.cn
 13328	杭州联科美讯生物医药技术有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160127/1453876533_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	丁香医生	行业=医疗健康|融资状态=未知|地区=浙江省 杭州市|公司规模=150-500人|网址=http://dxy.com
-13329	合一信息技术（北京）有限公司	https://www.baijingapp.com//uploads/company/02/26969/20151221/1450684338_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	优酷	行业=应用；文化娱乐-影视|融资状态=未知|地区=北京市 海淀区|公司规模=500-2000人|网址=http://www.youku.com
 13330	北京天梯网络技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522291504_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京天梯网络技术有限公司	行业=应用|融资状态=D轮|地区=北京市 海淀区|公司规模=15-50人|网址=https://air.fresh-ideas.cc
 13331	浙江天猫网络有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151221/1450682181_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天猫	行业=应用；电商|融资状态=未知|地区=浙江省 杭州市|公司规模=500-2000人|网址=https://www.tmall.com
 13332	北京天天创新科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160127/1453880094_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天天创新	行业=游戏-研发；应用|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.iduoduo.cn
@@ -6349,8 +6298,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13486	东莞市黑洞信息科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151029/1446100184_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	东莞市黑洞信息科技有限公司	行业=游戏-研发,发行|融资状态=天使轮|地区=广东省 东莞市|公司规模=150-500人|网址=www.0769-game.com
 13487	北京萌果科技有限公司	https://www.baijingapp.com//uploads/scrapy/218/2015102854b1abdd.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京萌果科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人
 13488	哈尔滨挖掘者游戏开发有限公司	https://www.baijingapp.com//uploads/scrapy/219/201510297b8c3a62.png?v=201605101534	2018-09-26 21:55:04.660435	\N	哈尔滨挖掘者游戏开发有限公司	行业=游戏-研发|融资状态=未知|地区=黑龙江省 哈尔滨市|公司规模=15人以下
-13489	杭州劲电科技游戏有限公司	https://www.baijingapp.com//uploads/scrapy/214/2015102680fb563e.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州劲电科技游戏有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人
-13490	北京爱游互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/216/20151023f6c73910.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京爱游互动科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人
 13491	福州混合体文化传播有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151029/1446080916_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州混合体文化传播有限公司	行业=开发者服务-其他|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://www.mix-717.com/
 13492	潘朵拉网络科技有限公司	https://www.baijingapp.com//uploads/company/02/26541/20151028/1446004920_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	潘朵拉网络科技有限公司	行业=应用；开发者服务-推广|融资状态=未知|地区=香港 油尖旺区|公司规模=15-50人|网址=www.linemobi.com
 13493	北京飞鱼互联科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160126/1453797865_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	飞鱼科技	行业=游戏-研发,发行|融资状态=IPO上市|地区=福建省 厦门市|公司规模=500-2000人|网址=http://www.feiyu.com
@@ -6421,7 +6368,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13563	深圳三体文化传播有限公司	https://www.baijingapp.com//uploads/scrapy/120/2015072328f2f906.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳三体文化传播有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13566	游戏孙子（GameSuntzu）	https://www.baijingapp.com//uploads/company/00/1123/20150723/1437627560_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	游戏孙子（GameSuntzu）	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15人以下|网址=gamesuntzu.com
 13567	福州爱立德软件技术有限公司	https://www.baijingapp.com//uploads/company/00/3341/20150410/1428635497_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州爱立德	行业=游戏-研发,发行|融资状态=C轮|地区=福建省 福州市|公司规模=50-150人|网址=http://www.18163.com
-13568	广西南宁市昇泰安电子商务发展有限公司	https://www.baijingapp.com//uploads/scrapy/116/20150720b4a514cd.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广西南宁市昇泰安电子商务发展有限公司	行业=游戏-研发|融资状态=天使轮|地区=广西壮族自治区 南宁市|公司规模=50-150人
 13569	上海游旎酷网络科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522393185_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海游旎酷网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人|网址=http://www.iuniku.com/
 13570	深圳糖果游戏	https://www.baijingapp.com//uploads/company/10/100852/20180329/1522307414_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳糖果游戏	行业=游戏-研发,发行,渠道|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13571	四海龙华	https://www.baijingapp.com//uploads/scrapy/115/20150717a207bbb1.png?v=201605101534	2018-09-26 21:55:04.660435	\N	四海龙华	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人
@@ -6453,6 +6399,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13597	凯零网络科技（上海）有限公司	https://www.baijingapp.com//uploads/scrapy/79/201507010f219c21.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	凯零网络科技（上海）有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=15人以下
 13598	电子情歌（北京）网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/80/20150702c74c2c0f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	电子情歌（北京）网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下|网址=http://blog.sina.com.cn/u/1579755037
 13599	广州亚晶信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/81/2015070296b9ea44.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州亚晶信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
+13783	Amirasoft	https://www.baijingapp.com//uploads/scrapy/473/20141104c3e41fa0.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Amirasoft	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
 13600	深圳市逗萌互动科技有很公司	https://www.baijingapp.com//uploads/scrapy/77/20150701dd235354.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市逗萌互动科技有很公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
 13601	杭州斗魂网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/78/20150701bc18c69e.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州斗魂网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人
 13602	成都狂想互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/75/201506295bcf3c64.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都狂想互动科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
@@ -6471,7 +6418,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13615	深圳市智科通讯有限公司	https://www.baijingapp.com//uploads/scrapy/64/201506250f8ce314.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市智科通讯有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.tthd.com.cn/download.html
 13616	上海伍游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/53/20150623793c475d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海伍游网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人
 13617	聚樂方塊數位股份有限公司	https://www.baijingapp.com//uploads/scrapy/54/20150623bfd69543.png?v=201605101534	2018-09-26 21:55:04.660435	\N	聚樂方塊數位股份有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人
-13619	北京银河昊星网络游戏开发有限公司	https://www.baijingapp.com//uploads/scrapy/52/2015061822d4702d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京银河昊星网络游戏开发有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人
 13620	樂卡迪遊戲有限公司	https://www.baijingapp.com//uploads/scrapy/51/201506186a7529b3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	樂卡迪遊戲有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 黄浦区|公司规模=15人以下
 13621	上海爱特米科技有限公司	https://www.baijingapp.com//uploads/scrapy/34/2015061784566726.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海爱特米科技有限公司	行业=游戏-研发,发行,渠道|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.me.cn
 13622	酷乐无限（北京）网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/36/2015061805876416.png?v=201605101534	2018-09-26 21:55:04.660435	\N	酷乐无限（北京）网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=北京市 东城区|公司规模=50-150人
@@ -6521,13 +6467,13 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13666	广州汇趣网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/1196/20141226b2e3e91f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州汇趣网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 13667	北京掌智通科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/1212/20141209a8fa1890.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京掌智通科技股份有限公司	行业=游戏-研发,发行,渠道|融资状态=C轮|地区=北京市 朝阳区|公司规模=150-500人
 13668	成都动游天下网络技术有限公司	https://www.baijingapp.com//uploads/company/02/26969/20160527/1464337157_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都动游天下网络技术有限公司	行业=游戏-发行,渠道；开发者服务-推广|融资状态=天使轮|地区=四川省 成都市|公司规模=15-50人|网址=www.pocketriver.com
-13670	广东凡跃集团股份有限公司	https://www.baijingapp.com//uploads/scrapy/1218/20141121d90ae23d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广东凡跃集团股份有限公司	行业=游戏-研发,发行,渠道；应用；消费升级|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=www.fanyue.com
 13671	北京新锋爱应用科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/1216/2014112151741596.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京新锋爱应用科技股份有限公司	行业=游戏-发行,渠道|融资状态=新三板|地区=北京市 西城区|公司规模=50-150人|网址=http://www.51wp.com
 13672	北京天博来科技有限公司	https://www.baijingapp.com//uploads/scrapy/1231/20141031eff2fd3a.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京天博来科技有限公司	行业=游戏-发行,渠道|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人
 13673	北京神州泰奇互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/1230/201411049089938b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	泰奇互动	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=http://uqsoft.com
 13674	广州骐游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/1227/201411065d3e01d2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州骐游网络科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 广州市|公司规模=150-500人|网址=http://yayawan.com
 13675	北京支点联游科技有限公司	https://www.baijingapp.com//uploads/scrapy/1225/20141112332b190c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京支点联游科技有限公司	行业=游戏-研发|融资状态=B轮|地区=北京市 海淀区|公司规模=15-50人|网址=http://www.openxlive.net
 13676	杭州渡口网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/1226/20150310d55439b5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州渡口网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=上海市 浦东新区|公司规模=150-500人
+13784	北京微游科技有限公司	https://www.baijingapp.com//uploads/scrapy/472/20141104165e0139.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京微游科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 13677	北京麟游互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/1224/20141111dfa931be.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京麟游互动科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=北京市 石景山区|公司规模=50-150人
 13678	厦门巴掌科技有限公司	https://www.baijingapp.com//uploads/scrapy/1238/201410233363c0c2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门巴掌科技有限公司	行业=游戏-发行,渠道；开发者服务-推广|融资状态=未知|地区=福建省 厦门市|公司规模=15-50人|网址=http://www.bazhang.com/
 13679	Stark Interactive	https://www.baijingapp.com//uploads/scrapy/1236/20141028f584b2da.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Stark Interactive	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人|网址=www.stark-corp.com
@@ -6563,7 +6509,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13708	上海指心网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/220/2015020410987021.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海指心网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人
 13709	无锡异趣文化发展有限公司	https://www.baijingapp.com//uploads/scrapy/221/20150204e1d4dc97.png?v=201605101534	2018-09-26 21:55:04.660435	\N	无锡异趣文化发展有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 无锡市|公司规模=15-50人|网址=www.17-store.com
 13710	威海迷城网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/219/2015020423b9282c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	威海迷城网络技术有限公司	行业=游戏-研发|融资状态=未知|地区=山东省 威海市|公司规模=15人以下
-13711	福建游龙网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/1283/201407242aed1699.png?v=201605101534	2018-09-26 21:55:04.660435	\N	福建游龙网络科技有限公司	行业=游戏-研发,发行,渠道；开发者服务-推广|融资状态=未知|地区=福建省 福州市|公司规模=500-2000人|网址=www.19196.com
 13712	米奇网络	https://www.baijingapp.com//uploads/scrapy/1280/201407284d70bc4b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	米奇网络	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 广州市|公司规模=50-150人
 13713	ATET	https://www.baijingapp.com//uploads/scrapy/1281/201407282b29a49f.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	ATET	行业=游戏-研发,发行；手机与硬件|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人
 13714	深圳结伴玩网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/245/201501272bdd1a61.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳结伴玩网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
@@ -6584,7 +6529,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13732	福州市爆米花网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/255/20150122c965d8ab.png?v=201605101534	2018-09-26 21:55:04.660435	\N	福州市爆米花网络科技有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=www.bmhgame.com
 13733	木偶星球（北京）科技有限公司	https://www.baijingapp.com//uploads/scrapy/253/2015012104e1b3d9.png?v=201605101534	2018-09-26 21:55:04.660435	\N	木偶星球（北京）科技有限公司	行业=游戏-研发|融资状态=A轮|地区=北京市 海淀区|公司规模=50-150人
 13734	珠海帝游科技有限公司	https://www.baijingapp.com//uploads/scrapy/250/20150120d34e039d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	珠海帝游科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 珠海市|公司规模=15-50人
-13735	广州由悠季信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/248/2015012881c7203f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州由悠季信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下
 13736	北京中科奥科技有限公司	https://www.baijingapp.com//uploads/scrapy/247/20150128a43ac70a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	小奥游戏	行业=游戏-研发|融资状态=天使轮|地区=北京市 海淀区|公司规模=150-500人|网址=http://www.xiaoao.com
 13737	北京乐赢互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/1297/20140715ffbabe8a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京乐赢互动科技有限公司	行业=游戏-研发,发行,渠道|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.75wan.cn
 13738	深圳大唐高鸿互动传媒有限公司	https://www.baijingapp.com//uploads/scrapy/1296/201407153df3acdb.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳大唐高鸿互动传媒有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
@@ -6604,8 +6548,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13753	深圳软安科技有限公司	https://www.baijingapp.com//uploads/scrapy/436/20141113dce519b9.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳软安科技有限公司	行业=游戏-研发；手机与硬件；其他|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 13754	厦门天瞳网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/434/2014111326c1de88.png?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门天瞳网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 厦门市|公司规模=15-50人
 13755	北京烽悦科技有限公司	https://www.baijingapp.com//uploads/scrapy/432/2014111296d168da.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京烽悦科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15人以下
-13756	云阳工作室	https://www.baijingapp.com//uploads/scrapy/431/20141112b1d44ff2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	云阳工作室	行业=游戏-研发|融资状态=未知|地区=陕西省 西安市|公司规模=15人以下
-13757	武汉拇指通科技有限公司	https://www.baijingapp.com//uploads/scrapy/430/201411124d7d8179.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉拇指通科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=湖北省 武汉市|公司规模=500-2000人
 13758	深圳市掌上星辰科技发展有限公司	https://www.baijingapp.com//uploads/scrapy/427/201411190ac085fc.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市掌上星辰科技发展有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=www.66isy.com
 13759	深圳市千知科技有限公司	https://www.baijingapp.com//uploads/scrapy/425/201411188c30dcb2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市千知科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13760	烁动游戏	https://www.baijingapp.com//uploads/scrapy/426/20141118efd6cc6a.png?v=201605101534	2018-09-26 21:55:04.660435	\N	烁动游戏	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
@@ -6631,8 +6573,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13780	苏州阿坤软件科技有限公司	https://www.baijingapp.com//uploads/scrapy/477/201411055a9f0990.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州阿坤软件科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 苏州市|公司规模=15-50人
 13781	成都多聚游信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/476/201411055bec4a06.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都多聚游信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 13782	福州星之灵计算机信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/474/20141104de474389.png?v=201605101534	2018-09-26 21:55:04.660435	\N	福州星之灵计算机信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
-13783	Amirasoft	https://www.baijingapp.com//uploads/scrapy/473/20141104c3e41fa0.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Amirasoft	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
-13784	北京微游科技有限公司	https://www.baijingapp.com//uploads/scrapy/472/20141104165e0139.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京微游科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 13785	天津雅讯天地科技发展有限公司	https://www.baijingapp.com//uploads/scrapy/471/20141103ffedacc4.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天津雅讯天地科技发展有限公司	行业=游戏-研发|融资状态=未知|地区=天津市 南开区|公司规模=50-150人|网址=http://www.asionspace.com
 13786	上海智动软件科技有限公司	https://www.baijingapp.com//uploads/scrapy/469/20141103da46815d.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海智动软件科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人|网址=www.injoygame.com
 13787	广州天萌网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/468/201411039ecb61ef.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州天萌网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
@@ -6649,22 +6589,16 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13798	厦门妙趣天游网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/478/201411055136002b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门妙趣天游网络技术有限公司	行业=游戏-研发|融资状态=天使轮|地区=福建省 厦门市|公司规模=15-50人
 13799	苏州笨鸟网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/509/20141027f850c7f5.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州笨鸟网络科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=上海市 杨浦区|公司规模=50-150人|网址=http://www.ibirdgame.com
 13800	LongTail游戏工作室	https://www.baijingapp.com//uploads/scrapy/508/2014102708ed901c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	LongTail游戏工作室	行业=游戏-研发|融资状态=未知|地区=江苏省 苏州市|公司规模=15-50人|网址=http://weibo.com/u/3919543133?source=blog
-13801	云南天之游科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/506/20141025edb55908.png?v=201605101534	2018-09-26 21:55:04.660435	\N	云南天之游科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=云南省 昆明市|公司规模=150-500人|网址=www.tnyoo.com
 13802	广州狼魂网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/507/2014102551402f57.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州狼魂网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 13803	郑州魅游	https://www.baijingapp.com//uploads/scrapy/505/20150202e59dc09b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	郑州魅游	行业=游戏-研发|融资状态=未知|地区=河南省 郑州市|公司规模=15人以下
-13804	成都艾丹云科技有限公司	https://www.baijingapp.com//uploads/scrapy/504/20141024257d823d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都艾丹云科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=http://brometech.com
 13805	上海炫骥网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/503/2014102363a8c022.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海炫骥网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人
 13806	深圳顺源网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/501/201410305a2877b8.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳顺源网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13807	广州市游毅坊网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/502/20141023ac534744.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州市游毅坊网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人
-13808	南京紫琅软件科技有限公司	https://www.baijingapp.com//uploads/scrapy/500/2014103006b65683.png?v=201605101534	2018-09-26 21:55:04.660435	\N	南京紫琅软件科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 闸北区|公司规模=15-50人
 13809	068游戏	https://www.baijingapp.com//uploads/scrapy/498/201410295c97dd25.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	068游戏	行业=游戏-研发,发行|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=www.068.com
 13810	武汉游戏群科技有限公司	https://www.baijingapp.com//uploads/scrapy/497/20141029ed94d42a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉游戏群科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=湖北省 武汉市|公司规模=50-150人
-13811	成都超越团队	https://www.baijingapp.com//uploads/scrapy/496/20141029e5773d67.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都超越团队	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
 13812	北京乐迪通科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160129/1454055201_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	乐迪通	行业=游戏-研发|融资状态=A轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.redatoms.com
 13813	深圳市普威德科技有限公司	https://www.baijingapp.com//uploads/scrapy/492/20141029c675f975.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市普威德科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 13814	北京翼骑兵网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/491/20141028b3e42ece.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京翼骑兵网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
-13815	深圳市掌上星辰科技发展有限公司	https://www.baijingapp.com//uploads/scrapy/525/2014102376cc2198.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市掌上星辰科技发展有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
-13816	深圳市圣盛网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/524/20141023646d8a91.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市圣盛网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13817	广州幻享网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/523/201410224df081c9.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州幻享网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://www.funsplay.com
 13818	杭州shards手游工作室	https://www.baijingapp.com//uploads/scrapy/522/20141022be57ee60.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州shards手游工作室	行业=游戏-研发,发行|融资状态=未知|地区=浙江省 杭州市|公司规模=15人以下
 13819	天坤未来	https://www.baijingapp.com//uploads/scrapy/521/201410220c43ba4f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	天坤未来	行业=游戏-发行,渠道|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
@@ -6713,8 +6647,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13862	深圳市萌乐无限科技有限公司	https://www.baijingapp.com//uploads/scrapy/804/201407246413ad8d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市萌乐无限科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13863	上海智用文化传播有限公司	https://www.baijingapp.com//uploads/scrapy/805/20140724ad5bfbe7.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海智用文化传播有限公司	行业=游戏-研发,发行|融资状态=未知|地区=上海市 普陀区|公司规模=50-150人|网址=www.gm88.com
 13864	江苏拉阔网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/833/20140721f54b2d15.png?v=201605101534	2018-09-26 21:55:04.660435	\N	江苏拉阔网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=150-500人|网址=lakoo.com
-13865	深圳市大头鱼科技有限公司	https://www.baijingapp.com//uploads/scrapy/834/20140721c82c6b60.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市大头鱼科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
-13866	深圳市涡轮科技有限公司	https://www.baijingapp.com//uploads/scrapy/832/201407212566854c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市涡轮科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 13867	金华市婺城区晴空网络工作室	https://www.baijingapp.com//uploads/scrapy/829/20140718bd310679.png?v=201605101534	2018-09-26 21:55:04.660435	\N	金华市婺城区晴空网络工作室	行业=游戏-研发|融资状态=未知|地区=浙江省 金华市|公司规模=15人以下
 13868	深圳市点点牛网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/830/201407218f85715a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市点点牛网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.dax99.com
 13869	嘉丰永道（北京）科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/827/20140718872a7bd4.png?v=201605101534	2018-09-26 21:55:04.660435	\N	嘉丰永道（北京）科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 石景山区|公司规模=150-500人
@@ -6743,7 +6675,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13892	成都掌上游科技有限公司	https://www.baijingapp.com//uploads/scrapy/859/20140715f4a26e99.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都掌上游科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 13893	深圳市深海娱游网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/858/20140714fc4377bf.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市深海娱游网络技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.shyygame.com
 13894	成都炫游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/856/20140716cf63fad2.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都炫游网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
-13895	广州市倍儿悦动漫科技有限公司	https://www.baijingapp.com//uploads/scrapy/873/20140708788a93d5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州市倍儿悦动漫科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 13896	北京美萌科技有限公司	https://www.baijingapp.com//uploads/scrapy/874/20150505964208e9.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京美萌科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人
 13897	深圳市掌上宝科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20151207/1449476181_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市掌上宝科技有限公司	行业=应用|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.handbb.com
 13898	成都汉森信息技术有限公司	https://www.baijingapp.com//uploads/company/00/6002/20151207/1449480503_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都汉森信息技术有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=四川省 成都市|公司规模=50-150人|网址=www.handseeing.com
@@ -6794,7 +6725,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13943	深圳市第一波网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/946/20140715d50973c1.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市第一波网络科技有限公司	行业=游戏-研发,发行|融资状态=并购|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.szdiyibo.com
 13944	北京千梦溪美术有限公司	https://www.baijingapp.com//uploads/scrapy/941/201502069a5ed140.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京千梦溪美术有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人
 13945	深圳四楼无限科技公司	https://www.baijingapp.com//uploads/scrapy/942/20140618a96b39bc.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳四楼无限科技公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
-13946	江门市十万麻将网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/940/20140625b5e7b21c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	江门市十万麻将网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 江门市|公司规模=15人以下
 13947	深圳市游乐天下科技有限公司	https://www.baijingapp.com//uploads/scrapy/938/2014101564ae91a2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市游乐天下科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 13948	上海激乐信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/971/20141224fae38b59.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海激乐信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=50-150人
 13949	北京交典创艺数字科技有限公司	https://www.baijingapp.com//uploads/scrapy/967/20141212057a3e37.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京交典创艺数字科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下|网址=http://www.spotlightor.com/        http://game.spotlightor.com/
@@ -6807,18 +6737,12 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 13956	北京宜爱思信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/633/20140904c117f11f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京宜爱思信息科技有限公司	行业=游戏-研发|融资状态=A轮|地区=北京市 东城区|公司规模=15-50人|网址=www.eis-game.com
 13957	武汉手盟网络科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/538/20141017c6256824.png?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉手盟网络科技股份有限公司	行业=游戏-发行,渠道；开发者服务-推广|融资状态=A轮|地区=广东省 广州市|公司规模=50-150人
 13958	上海鱼乐网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/536/20141016ca7d50e3.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海鱼乐网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=上海市 闸北区|公司规模=15-50人
-13959	湖南网圣腾飞信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/533/20141021c36da516.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	湖南网圣腾飞信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=湖南省 长沙市|公司规模=15-50人
 13960	深圳市哈啰移动科技有限公司	https://www.baijingapp.com//uploads/scrapy/532/20141020c9d977f9.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市哈啰移动科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
-13961	深圳市圣盛网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/531/201410208f53ce01.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市圣盛网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.ss2007.com/index.html
 13962	北京那些时空	https://www.baijingapp.com//uploads/scrapy/529/201410207aee9d65.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京那些时空	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
 13963	北京梦之匙科技有限公司	https://www.baijingapp.com//uploads/scrapy/530/2014102074f741a5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京梦之匙科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人
 13964	西安域海网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/528/201410206731716e.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	西安域海网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=陕西省 西安市|公司规模=15人以下
 13965	上海小梦网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/527/201410206cd05670.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海小梦网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=上海市 闵行区|公司规模=15-50人
 13966	深圳指盟网络科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/526/20141023bcb66328.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳指盟网络科技股份有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
-13967	花火游戏	https://www.baijingapp.com//uploads/scrapy/554/20141014e9655355.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	花火游戏	行业=游戏-研发|融资状态=未知|地区=山西省 太原市|公司规模=15人以下
-13968	慧典科技	https://www.baijingapp.com//uploads/scrapy/553/20141014c11bfe52.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	慧典科技	行业=游戏-研发|融资状态=未知|地区=湖南省 长沙市|公司规模=50-150人
-13969	福建优联文化发展有限公司	https://www.baijingapp.com//uploads/scrapy/551/201410146cf02a36.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建优联文化发展有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人
-13970	成都鸿尚萌萌哒工作室	https://www.baijingapp.com//uploads/scrapy/550/201410134a24f949.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都鸿尚萌萌哒工作室	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
 13971	福州乐加网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/548/201410132d9a8731.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州乐加网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=http://www.lejiagames.com
 13972	北京完盛科技有限公司	https://www.baijingapp.com//uploads/scrapy/546/2014102002f4fbd4.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京完盛科技有限公司	行业=游戏-研发,发行|融资状态=天使轮|地区=北京市 海淀区|公司规模=15-50人
 13973	上海游墨网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/544/20141018c573714d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海游墨网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=上海市 普陀区|公司规模=15-50人|网址=http://www.umogame.com
@@ -6869,17 +6793,14 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14018	福建龙谷网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/598/20140922abe08883.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福建龙谷网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=福建省 福州市|公司规模=150-500人|网址=http://www.lomcoo.com/
 14019	广州翼光网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/596/2014092680643afb.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州翼光网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 14020	深圳市腾研科技有限公司	https://www.baijingapp.com//uploads/scrapy/595/20140925d9b69fe5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市腾研科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
-14021	海南传奇天地科技有限公司	https://www.baijingapp.com//uploads/scrapy/629/2014091507a3a30a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	海南传奇天地科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=河南省 郑州市|公司规模=15-50人|网址=http://weibo.com/5192077818/manage
 14022	深圳市安欧科技有限公司	https://www.baijingapp.com//uploads/scrapy/630/20140916a05e87f4.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市安欧科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 14023	河北乐聪网络科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/628/201409126f018fe1.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	河北乐聪网络科技股份有限公司	行业=游戏-研发,发行|融资状态=未知|地区=河北省 廊坊市|公司规模=15-50人
 14024	安徽昊月广告有限公司	https://www.baijingapp.com//uploads/scrapy/627/20140912119d4bdf.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	安徽昊月广告有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人
 14025	上海茸游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/626/20140912a781ada5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海茸游网络科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=上海市 松江区|公司规模=15-50人
 14026	上海峻尚网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/623/20140912dd2183b3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海峻尚网络科技有限公司	行业=游戏-研发；文化娱乐-其他|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人
-14027	广州安浩软件科技有限公司	https://www.baijingapp.com//uploads/scrapy/622/20140912e22a85d8.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州安浩软件科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 广州市|公司规模=150-500人
 14028	北京莲舞互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/620/201409111b771801.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京莲舞互动科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 石景山区|公司规模=15人以下
 14029	成都欢乐动力信息技术有限责任公司	https://www.baijingapp.com//uploads/scrapy/621/201409115f28d56c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都欢乐动力信息技术有限责任公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
 14030	北京指尖旋律科技有限公司	https://www.baijingapp.com//uploads/scrapy/617/20140918b647a636.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京指尖旋律科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
-14031	深圳飓风互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/618/2014091996f87397.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳飓风互动科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
 14032	福州艺美活动网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/615/201409185e4c8c03.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州艺美活动网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 14033	四川塔奇诺科技有限公司	https://www.baijingapp.com//uploads/scrapy/616/20140918ef3113cf.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	四川塔奇诺科技有限公司	行业=游戏-发行,渠道|融资状态=B轮|地区=四川省 成都市|公司规模=50-150人|网址=http://www.touchrom.com
 14034	深圳市光年互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/614/2014091810506aff.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市光年互动科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
@@ -6898,12 +6819,10 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14047	常祥游戏	https://www.baijingapp.com//uploads/scrapy/640/201409095716a4a9.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	常祥游戏	行业=游戏-发行,渠道|融资状态=未知|地区=上海市 宝山区|公司规模=15-50人
 14048	杭州汇动科技有限公司	https://www.baijingapp.com//uploads/scrapy/657/20140925aa1c95c8.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州汇动科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=15人以下
 14049	深圳市黑鲸网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/655/2014090451ab8e69.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市黑鲸网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.heygam.com
-14050	火龙果游戏	https://www.baijingapp.com//uploads/scrapy/654/2014090322d6f786.png?v=201605101534	2018-09-26 21:55:04.660435	\N	火龙果游戏	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 14051	上海野火网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/653/20140701d5a1f8d7.png?v=201605101534	2018-09-26 21:55:04.660435	\N	野火网络	行业=游戏-研发,发行|融资状态=未知|地区=上海市 虹口区|公司规模=50-150人|网址=http://www.yrtsgame.com
 14052	北京星空顺游网路科技有限公司	https://www.baijingapp.com//uploads/scrapy/651/20140819d77c7ad5.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京星空顺游网路科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 昌平区|公司规模=50-150人|网址=http://www.xkyou.cn
 14053	杭州每日给力科技有限公司	https://www.baijingapp.com//uploads/scrapy/649/20140903f0873ab8.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州每日给力科技有限公司	行业=游戏-研发|融资状态=A轮|地区=浙江省 杭州市|公司规模=15-50人
 14054	上海美峰数码科技有限公司	https://www.baijingapp.com//uploads/scrapy/647/2014090361d449ad.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海美峰数码科技有限公司	行业=游戏-研发,发行|融资状态=并购|地区=上海市 浦东新区|公司规模=150-500人|网址=http://www.morefuntek.com
-14055	成都掌娱天下科技有限公司	https://www.baijingapp.com//uploads/scrapy/646/20140903137330c1.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都掌娱天下科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=四川省 成都市|公司规模=500-2000人
 14056	广州简乐网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/674/20140829eb0205ae.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州简乐网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 广州市|公司规模=50-150人
 14057	成都小浣熊网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/672/20140828997b8693.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都小浣熊网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14058	北京神瑞互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/673/20140828a7eb6d0f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京神瑞互动科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 朝阳区|公司规模=15-50人
@@ -6915,7 +6834,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14064	成都傲佳网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/664/20140901e0ed0ec0.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都傲佳网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14065	成都微游时代科技有限公司	https://www.baijingapp.com//uploads/scrapy/662/20140901e474fc92.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都微游时代科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=四川省 成都市|公司规模=15-50人|网址=www.weiyouba.com
 14066	四川盘古信息技术开发有限责任公司	https://www.baijingapp.com//uploads/scrapy/688/20140828976e43bf.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	四川盘古信息技术开发有限责任公司	行业=游戏-研发|融资状态=未知|地区=四川省 绵阳市|公司规模=15人以下
-14067	北京华娱无线科技有限公司	https://www.baijingapp.com//uploads/scrapy/686/201408276a289f5b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京华娱无线科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 石景山区|公司规模=50-150人
 14068	广州暴雨网络技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522222978_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州暴雨网络技术有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=广东省 广州市|公司规模=150-500人|网址=http://www.baoyugame.com
 14069	上海聚洲信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/685/20140827b74e0646.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海聚洲信息技术有限公司	行业=游戏-研发,发行,渠道；开发者服务-推广|融资状态=未知|地区=上海市 普陀区|公司规模=50-150人
 14070	深圳市睿德网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/683/20140827b055bbb7.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市睿德网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
@@ -6956,13 +6874,11 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14105	上海同凯信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/743/201408090aa9bbbe.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海同凯信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15人以下
 14106	重庆迅游科技有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180328/1522223124_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	重庆迅游科技有限公司	行业=游戏-研发,发行|融资状态=天使轮|地区=重庆市 渝北区|公司规模=150-500人|网址=http://www.soonyo.com/
 14107	成都闪游科技有限公司	https://www.baijingapp.com//uploads/scrapy/739/201408157bb98646.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都闪游科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
-14108	杭州小浣熊网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/738/20140815485374be.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州小浣熊网络科技有限公司	行业=游戏-研发,渠道|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人
 14109	大连深蓝广告有限公司	https://www.baijingapp.com//uploads/scrapy/737/201408143047719b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	大连深蓝广告有限公司	行业=游戏-研发|融资状态=未知|地区=辽宁省 大连市|公司规模=15人以下
 14110	杭州奇道软件技术有限公司	https://www.baijingapp.com//uploads/scrapy/734/201408156d00a95a.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州奇道软件技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人
 14111	剑龙工作室	https://www.baijingapp.com//uploads/scrapy/732/20140813c06e2d09.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	剑龙工作室	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人|网址=http://www.jurlogy.com
 14112	乐嘉互动（北京）数字科技有限公司	https://www.baijingapp.com//uploads/scrapy/733/20140813da2b0496.png?v=201605101534	2018-09-26 21:55:04.660435	\N	乐嘉互动（北京）数字科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
 14113	潍坊迈博网络信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/731/2014081322a7e0de.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	潍坊迈博网络信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=山东省 潍坊市|公司规模=15-50人
-14114	晋江市在野软件开发有限公司	https://www.baijingapp.com//uploads/scrapy/750/2014081252f3d94c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	晋江市在野软件开发有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 泉州市|公司规模=15-50人
 14115	上海勤和互联网技术软件开发有限公司	https://www.baijingapp.com//uploads/scrapy/749/2014081281604f1d.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海勤和互联网技术软件开发有限公司	行业=人工智能；开发者服务-其他|融资状态=A轮|地区=上海市 徐汇区|公司规模=150-500人
 14116	天津卡乐互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/748/201408123a56b4f3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	天津卡乐互动科技有限公司	行业=游戏-研发,发行|融资状态=战略投资|地区=天津市 南开区|公司规模=50-150人
 14117	杭州点色网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/747/20140811831f371d.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州点色网络科技有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=浙江省 杭州市|公司规模=15人以下
@@ -6975,12 +6891,10 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14124	广州尚游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/765/20140801572aa967.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州尚游网络科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=广东省 广州市|公司规模=15-50人|网址=http://www.syyx.com
 14125	深圳冰川网络股份有限公司	https://www.baijingapp.com//uploads/scrapy/763/20140808065dd1b2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳冰川网络股份有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=广东省 深圳市|公司规模=500-2000人|网址=http://www.q1.com
 14126	上海钦风国际贸易有限公司	https://www.baijingapp.com//uploads/scrapy/762/201408080fb92acc.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海钦风国际贸易有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=http://www.vipplayer.com
-14127	北京泰和大家科技有限公司	https://www.baijingapp.com//uploads/scrapy/760/201408072de6e48e.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京泰和大家科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 东城区|公司规模=15-50人
 14128	成都童梦时空网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/759/20140807c8b00c27.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都童梦时空网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
 14129	北京天宇新邦科技发展有限公司	https://www.baijingapp.com//uploads/company/02/26541/20160122/1453433351_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京天宇新邦科技发展有限公司	行业=游戏-研发,发行|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人|网址=http//weibo.com/u/3876407530
 14130	宇娱网络科技（上海）有限公司	https://www.baijingapp.com//uploads/scrapy/212/201502136748bc32.png?v=201605101534	2018-09-26 21:55:04.660435	\N	宇娱网络科技（上海）有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 杨浦区|公司规模=15人以下
 14131	赤橙时光（北京）文化艺术传播有限公司	https://www.baijingapp.com//uploads/scrapy/215/20150202d75b45ca.png?v=201605101534	2018-09-26 21:55:04.660435	\N	赤橙时光（北京）文化艺术传播有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 昌平区|公司规模=15-50人
-14132	杭州千游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/151/2015032586c115e3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州千游网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人
 14133	起源科技	https://www.baijingapp.com//uploads/scrapy/103/20150413adf2b566.png?v=201605101534	2018-09-26 21:55:04.660435	\N	起源科技	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 14134	上海甲游网络科有限公司	https://www.baijingapp.com//uploads/scrapy/83/20150421d016408b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海甲游网络科有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=150-500人
 14135	珠海帅狗狗科技有限公司	https://www.baijingapp.com//uploads/scrapy/75/20150423f10ee1c4.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	珠海帅狗狗科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 珠海市|公司规模=15-50人|网址=www.sgougou.com
@@ -7047,7 +6961,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14198	上海掌逸网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/87/201504178ced8c6b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海掌逸网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人
 14199	北京欢乐之旅科技有限公司	https://www.baijingapp.com//uploads/scrapy/82/2015042233c0252f.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京欢乐之旅科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=北京市 朝阳区|公司规模=15-50人|网址=www.joy-game.com
 14200	西安东宸君盛信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/81/201504233f43fdf6.png?v=201605101534	2018-09-26 21:55:04.660435	\N	西安东宸君盛信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=陕西省 西安市|公司规模=15-50人
-14201	广州晨景信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/107/2015041142aa1e38.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州晨景信息科技有限公司	行业=开发者服务-推广|融资状态=未知|地区=广东省 广州市|公司规模=50-150人|网址=www.mzlook.com
 14202	上海玉卓信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/106/2015041342db784e.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海玉卓信息科技有限公司	行业=游戏-研发,发行；手机与硬件|融资状态=未知|地区=上海市 徐汇区|公司规模=50-150人|网址=http://www.jadegreat.com/about.html
 14203	深圳市触动时空科技有限公司	https://www.baijingapp.com//uploads/scrapy/104/201504137794945c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市触动时空科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 14204	北京暴火游戏软件开发有限公司	https://www.baijingapp.com//uploads/scrapy/102/201504144c8846f5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京暴火游戏软件开发有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人
@@ -7055,7 +6968,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14206	福州水滴网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/100/2015041461f88be8.png?v=201605101534	2018-09-26 21:55:04.660435	\N	福州水滴网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人|网址=待完善
 14207	深圳市摩玩信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/99/20150414a5ca5447.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市摩玩信息技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 14208	成都致家视游网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/97/20150415bfae5042.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都致家视游网络技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=四川省 成都市|公司规模=50-150人
-14209	四川至善网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/119/20150407963bfd92.png?v=201605101534	2018-09-26 21:55:04.660435	\N	四川至善网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 绵阳市|公司规模=15-50人
 14210	成都威斯漫数码科技有限公司	https://www.baijingapp.com//uploads/scrapy/115/20150408e74922ed.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都威斯漫数码科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14211	北京星游艺动科技有限公司	https://www.baijingapp.com//uploads/scrapy/116/20150407aa631838.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京星游艺动科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15人以下
 14212	中影动画产业有限公司	https://www.baijingapp.com//uploads/scrapy/112/201504094dc8f20e.png?v=201605101534	2018-09-26 21:55:04.660435	\N	中影动画产业有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人
@@ -7077,7 +6989,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14228	广州卡洛信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/144/20150320f5aacce8.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州卡洛信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人
 14229	成都熙远网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/141/201503209e23577d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都熙远网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14230	广州菜鸟达人手游团队	https://www.baijingapp.com//uploads/scrapy/140/201503308506a1a2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州菜鸟达人手游团队	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下
-14231	北京交典创艺数字科技有限公司	https://www.baijingapp.com//uploads/scrapy/138/20150330298346e2.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京交典创艺数字科技有限公司	行业=游戏-研发；其他|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
 14232	深圳市大秦帝国科技有限公司	https://www.baijingapp.com//uploads/scrapy/137/20150330235b9227.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市大秦帝国科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 14233	成都漫舟行科技有限责任公司	https://www.baijingapp.com//uploads/scrapy/136/20150330bca4f1bf.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都漫舟行科技有限责任公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14234	淮安魔比石信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/135/201503309f1e3dda.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	淮安魔比石信息科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 通州区|公司规模=15人以下
@@ -7092,7 +7003,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14243	福州蝴蝶互动信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/148/20150323b085cde6.png?v=201605101534	2018-09-26 21:55:04.660435	\N	福州蝴蝶互动信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人
 14244	杭州萨满网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/178/201503025f83da3a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州萨满网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=浙江省 杭州市|公司规模=15-50人|网址=http://www.samangame.com
 14245	苏州工业园区丰游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/177/201503021c83842c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州工业园区丰游网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 苏州市|公司规模=15-50人
-14246	杭州趣蛙网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/176/20150316ee80531d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州趣蛙网络科技有限公司	行业=游戏-研发|融资状态=A轮|地区=浙江省 杭州市|公司规模=15-50人
 14247	深圳海豆芽网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/170/201503125c29a672.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳海豆芽网络技术有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 14248	广州希软信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/175/20150315e06512f5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州希软信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下
 14249	映像工作室	https://www.baijingapp.com//uploads/scrapy/173/201503138207fa41.png?v=201605101534	2018-09-26 21:55:04.660435	\N	映像工作室	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
@@ -7109,9 +7019,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14260	北京红柚科技有限公司	https://www.baijingapp.com//uploads/scrapy/192/20150228b04edae5.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京红柚科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 昌平区|公司规模=15人以下
 14261	上海龙魂网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160111/1452497997_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	龙魂网络	行业=游戏-研发|融资状态=A轮|地区=上海市 普陀区|公司规模=15-50人|网址=http://lonfun.com
 14262	oyefaction	https://www.baijingapp.com//uploads/scrapy/186/20150305f1f1fee3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	oyefaction	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
-14263	深圳市惊奇网络有限公司	https://www.baijingapp.com//uploads/scrapy/187/201503077103c3f4.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市惊奇网络有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下
-14264	上海夏乐网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/185/2015030564c3b870.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海夏乐网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
-14265	掌创网络	https://www.baijingapp.com//uploads/scrapy/182/2015030549ae75ec.png?v=201605101534	2018-09-26 21:55:04.660435	\N	掌创网络	行业=游戏-研发|融资状态=未知|地区=北京市 海淀区|公司规模=15-50人
 14266	深圳市点乐网络科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160130/1454119683_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	点乐游戏	行业=游戏-研发,发行|融资状态=未知|地区=广东省 深圳市|公司规模=15人以下|网址=http://www.dianler.com
 14267	北京得途科技有限公司	https://www.baijingapp.com//uploads/scrapy/179/20150302cdd759b4.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京得途科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=www.tech-tour.com
 14268	上海永境信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/211/20150215b1d4e293.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海永境信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 虹口区|公司规模=15人以下
@@ -7132,7 +7039,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14283	成都诺娃网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/84/20150421e44d860a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都诺娃网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14284	葵花游戏	https://www.baijingapp.com//uploads/scrapy/228/201411194bbcba49.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	葵花游戏	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=150-500人
 14285	上海果昔网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/227/2014111976432f93.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海果昔网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15人以下
-14286	潍坊迈博网络信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/225/20141119fd2a5e73.png?v=201605101534	2018-09-26 21:55:04.660435	\N	潍坊迈博网络信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=山东省 潍坊市|公司规模=15-50人
 14287	深圳市侏罗纪科技有限公司	https://www.baijingapp.com//uploads/scrapy/224/201411198e3a5250.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市侏罗纪科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人|网址=http://www.jurlogy.com/
 14288	北京尽欢科技有限公司	https://www.baijingapp.com//uploads/scrapy/223/2014111939aaffbc.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京尽欢科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14289	大连明雨科技有限公司	https://www.baijingapp.com//uploads/scrapy/222/20141119ace72544.png?v=201605101534	2018-09-26 21:55:04.660435	\N	大连明雨科技有限公司	行业=游戏-研发|融资状态=未知|地区=辽宁省 大连市|公司规模=15-50人|网址=http://weibo.com/u/5037035927
@@ -7144,11 +7050,8 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14295	DigiTeller动漫游戏工作室	https://www.baijingapp.com//uploads/scrapy/212/2014112191018e22.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	DigiTeller动漫游戏工作室	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15人以下
 14296	上海滔天网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/211/2014112122b56145.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海滔天网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人
 14297	武汉乐谷在线科技有限公司	https://www.baijingapp.com//uploads/scrapy/208/2014112456912b32.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	武汉乐谷在线科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=湖北省 武汉市|公司规模=15-50人|网址=www.legu.cc
-14298	湖南网圣腾飞信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/206/2014112451cbe953.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	湖南网圣腾飞信息技术有限公司	行业=游戏-研发,发行；手机与硬件|融资状态=未知|地区=湖南省 长沙市|公司规模=50-150人|网址=http://www.ylwqgame.com/
 14299	成都市必扬科技有限公司	https://www.baijingapp.com//uploads/scrapy/204/2014112498bc6906.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都市必扬科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=四川省 成都市|公司规模=15人以下|网址=http://www.next2fun.com
-14300	深圳市腾海世纪科技开发有限公司	https://www.baijingapp.com//uploads/scrapy/203/20141125085c5129.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市腾海世纪科技开发有限公司	行业=游戏-研发,发行；金融；房产家居|融资状态=未知|地区=广东省 深圳市|公司规模=150-500人
 14301	杭州匀腾网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/202/201411251a800ab6.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	杭州匀腾网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=浙江省 杭州市|公司规模=50-150人|网址=www.zjwinturn.com
-14302	深圳市游乐天下科技有限公司	https://www.baijingapp.com//uploads/scrapy/201/201411257334b5dc.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市游乐天下科技有限公司	行业=游戏-研发,发行；开发者服务-推广|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 14303	上海楠石信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/200/20141125232c776d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海楠石信息技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人
 14304	中航晟硕（福建）环保科技有限公司	https://www.baijingapp.com//uploads/scrapy/199/2014112564329e7c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	中航晟硕（福建）环保科技有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15人以下
 14305	猫饭游戏工作室	https://www.baijingapp.com//uploads/scrapy/198/201411258f36f9a7.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	猫饭游戏工作室	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15人以下
@@ -7168,11 +7071,9 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14319	上海游荣网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/181/20141201e271b479.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海游荣网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人
 14320	北京华仁艺电科技有限公司	https://www.baijingapp.com//uploads/scrapy/180/20141201a1ee72ce.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京华仁艺电科技有限公司	行业=游戏-研发|融资状态=天使轮|地区=北京市 通州区|公司规模=15-50人
 14321	KUKA	https://www.baijingapp.com//uploads/scrapy/177/20141202a62d0aef.png?v=201605101534	2018-09-26 21:55:04.660435	\N	KUKA	行业=游戏-研发|融资状态=未知|地区=辽宁省 大连市|公司规模=15-50人
-14322	深圳市合众连横科技有限公司	https://www.baijingapp.com//uploads/scrapy/176/201412023d1de57e.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市合众连横科技有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 14323	桂林力港网络科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/175/201412027dc97003.png?v=201605101534	2018-09-26 21:55:04.660435	\N	桂林力港网络科技股份有限公司	行业=游戏-研发,发行|融资状态=未知|地区=广东省 广州市|公司规模=150-500人
 14324	嘿啪游戏工作室	https://www.baijingapp.com//uploads/scrapy/174/20141202bca05d3a.png?v=201605101534	2018-09-26 21:55:04.660435	\N	嘿啪游戏工作室	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
 14325	上海游擎信息科技发展有限公司	https://www.baijingapp.com//uploads/scrapy/173/2014120386969154.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海游擎信息科技发展有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人
-14326	北京触控科技有限公司	https://www.baijingapp.com//uploads/scrapy/171/201412046553aa5c.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京触控科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=500-2000人
 14327	无锡仙人球网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/169/201412056867636d.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	无锡仙人球网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 无锡市|公司规模=15人以下
 14328	广州悦世界信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/168/201412056a8e8df3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州悦世界信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=50-150人
 14329	深圳侠之谷科技有限公司	https://www.baijingapp.com//uploads/scrapy/167/20141205832c7144.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳侠之谷科技有限公司	行业=游戏-研发,发行|融资状态=天使轮|地区=广东省 深圳市|公司规模=15-50人
@@ -7183,7 +7084,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14334	珠海晴威互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/159/20141210d661341a.png?v=201605101534	2018-09-26 21:55:04.660435	\N	珠海晴威互动科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 珠海市|公司规模=15人以下|网址=http://www.solgame.net
 14335	北京凤凰图腾软件开发有限公司	https://www.baijingapp.com//uploads/scrapy/155/2014121123b4faf4.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京凤凰图腾软件开发有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 昌平区|公司规模=15-50人
 14336	多兰格尔	https://www.baijingapp.com//uploads/scrapy/153/2014121242a389af.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	多兰格尔	行业=游戏-研发|融资状态=未知|地区=北京市 昌平区|公司规模=15人以下
-14337	深圳市书游网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/152/2014121239bb8908.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市书游网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 14338	GLTOP	https://www.baijingapp.com//uploads/scrapy/151/20141212cd234363.png?v=201605101534	2018-09-26 21:55:04.660435	\N	GLTOP	行业=游戏-研发|融资状态=未知|地区=上海市 闵行区|公司规模=15人以下
 14339	上海悠扬网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/149/2014121586202018.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海悠扬网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=上海市 普陀区|公司规模=15-50人
 14340	福州市台江区悠悠贸易有限公司	https://www.baijingapp.com//uploads/scrapy/147/201412166e141077.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	福州市台江区悠悠贸易有限公司	行业=游戏-研发|融资状态=未知|地区=福建省 福州市|公司规模=15-50人
@@ -7191,17 +7091,14 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14342	北京乐动地带科技有限公司	https://www.baijingapp.com//uploads/scrapy/145/201412165aa66688.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京乐动地带科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=50-150人
 14343	珠海市众游网络科技有限责任公司	https://www.baijingapp.com//uploads/scrapy/143/20141216b6abc454.png?v=201605101534	2018-09-26 21:55:04.660435	\N	珠海市众游网络科技有限责任公司	行业=游戏-研发|融资状态=未知|地区=广东省 珠海市|公司规模=15-50人|网址=www.zhyga.com
 14344	盛世天佑（北京）网络技术股份有限公司	https://www.baijingapp.com//uploads/scrapy/142/201412160678329c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	盛世天佑（北京）网络技术股份有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
-14345	Typhoon Studio	https://www.baijingapp.com//uploads/scrapy/140/20141218eca25f65.png?v=201605101534	2018-09-26 21:55:04.660435	\N	Typhoon Studio	行业=游戏-研发|融资状态=未知|地区=上海市 徐汇区|公司规模=15-50人
 14346	广州飞雨网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/139/20141218a8c3ff32.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州飞雨网络科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=广东省 广州市|公司规模=50-150人
 14347	壁虎工作室（北京）	https://www.baijingapp.com//uploads/scrapy/138/20141219a3a20c8b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	壁虎工作室（北京）	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下
 14348	Hong Studio	https://www.baijingapp.com//uploads/scrapy/137/201412194a1c3081.png?v=201605101534	2018-09-26 21:55:04.660435	\N	Hong Studio	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 14349	TITAN	https://www.baijingapp.com//uploads/scrapy/134/20141222db41909d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	TITAN	行业=游戏-研发|融资状态=未知|地区=上海市 长宁区|公司规模=15-50人
-14350	北京奇客创想科技股份有限公司	https://www.baijingapp.com//uploads/scrapy/133/20141222f3c50243.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京奇客创想科技股份有限公司	行业=游戏-研发,发行|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人
 14351	北京趣盈网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/132/2014122256de5610.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京趣盈网络技术有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
 14352	天津掌控科技有限公司	https://www.baijingapp.com//uploads/scrapy/131/201412238d2ac3b2.png?v=201605101534	2018-09-26 21:55:04.660435	\N	天津掌控科技有限公司	行业=游戏-研发|融资状态=未知|地区=天津市 南开区|公司规模=15-50人
 14353	台州爱游网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/129/201412239d96ac2d.png?v=201605101534	2018-09-26 21:55:04.660435	\N	台州爱游网络技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=浙江省 台州市|公司规模=15-50人
 14354	深圳市卓趣网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/128/20141223cba9c440.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市卓趣网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
-14355	深圳市博友空间科技有限公司	https://www.baijingapp.com//uploads/scrapy/127/20141223f9325e93.png?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市博友空间科技有限公司	行业=游戏-发行,渠道|融资状态=未知|地区=广东省 深圳市|公司规模=50-150人
 14356	广州生菜网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/124/20141224720d45d1.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州生菜网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 14357	北京酷游艺动科技有限公司	https://www.baijingapp.com//uploads/scrapy/123/20141224b6b623a8.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京酷游艺动科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下|网址=http://weibo.com/p/1006065351061422
 14358	广州红羽网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/119/20141225eb77dc9e.png?v=201605101534	2018-09-26 21:55:04.660435	\N	广州红羽网络科技有限公司	行业=游戏-研发,发行|融资状态=A轮|地区=广东省 广州市|公司规模=15-50人
@@ -7209,7 +7106,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14360	飓风天下（北京）科技有限公司	https://www.baijingapp.com//uploads/scrapy/117/20141226e65baf2b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	飓风天下（北京）科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 丰台区|公司规模=15-50人
 14361	上海镜游信息技术有限公司	https://www.baijingapp.com//uploads/company/10/100852/20180330/1522393648_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海镜游信息技术有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 松江区|公司规模=15-50人|网址=www.mirror-game.com
 14362	济南团谱信息技术有限公司	https://www.baijingapp.com//uploads/scrapy/112/201412307b5bae2c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	济南团谱信息技术有限公司	行业=游戏-研发,发行|融资状态=未知|地区=山东省 济南市|公司规模=15-50人|网址=http://www.tuansbook.com/index.aspx
-14363	长沙随便玩网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/111/20141230c18ecbd0.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	长沙随便玩网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=湖南省 长沙市|公司规模=15-50人
 14364	北京玄霄科技有限公司	https://www.baijingapp.com//uploads/scrapy/110/2014123077fa5c08.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京玄霄科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 朝阳区|公司规模=15人以下|网址=www.xxemo.com
 14365	艾露希游戏	https://www.baijingapp.com//uploads/scrapy/109/201412314ad676ca.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	艾露希游戏	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15人以下
 14366	境界游戏股份有限公司	https://www.baijingapp.com//uploads/scrapy/107/20150104031b2877.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	境界游戏股份有限公司	行业=游戏-研发,发行|融资状态=未知|地区=北京市 海淀区|公司规模=150-500人
@@ -7217,16 +7113,13 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14368	西安华游网络科技有限公司 旗下 一个独立工作室	https://www.baijingapp.com//uploads/scrapy/103/201501053a596fae.png?v=201605101534	2018-09-26 21:55:04.660435	\N	西安华游网络科技有限公司 旗下 一个独立工作室	行业=游戏-研发|融资状态=未知|地区=陕西省 西安市|公司规模=15-50人
 14369	北京满疆集团有限公司	https://www.baijingapp.com//uploads/scrapy/100/2015010520d57fbd.png?v=201605101534	2018-09-26 21:55:04.660435	\N	北京满疆集团有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 丰台区|公司规模=50-150人
 14370	苏州旗智时代网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/97/20150106da33c966.png?v=201605101534	2018-09-26 21:55:04.660435	\N	苏州旗智时代网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=江苏省 苏州市|公司规模=15人以下|网址=http://www.legend108.com/
-14371	深圳顺源网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/95/201501075c666a2e.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳顺源网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人|网址=www.happysource-inc.com
 14372	深圳市绿之铃移动传媒有限公司	https://www.baijingapp.com//uploads/scrapy/94/2015010712387185.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市绿之铃移动传媒有限公司	行业=游戏-研发,渠道；开发者服务-推广|融资状态=未知|地区=广东省 深圳市|公司规模=15-50人
 14373	跳动手游	https://www.baijingapp.com//uploads/scrapy/93/20150107aaf5a655.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	跳动手游	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
-14374	北京华娱无线科技有限公司	https://www.baijingapp.com//uploads/scrapy/92/20150108da4df8c8.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京华娱无线科技有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 石景山区|公司规模=50-150人
 14375	广州展悦信息科技有限公司	https://www.baijingapp.com//uploads/scrapy/91/2015010970c2e71a.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州展悦信息科技有限公司	行业=游戏-研发|融资状态=未知|地区=广东省 广州市|公司规模=15-50人
 14376	青岛万化网络技术有限公司	https://www.baijingapp.com//uploads/scrapy/90/2015010905b5789c.png?v=201605101534	2018-09-26 21:55:04.660435	\N	青岛万化网络技术有限公司	行业=游戏-研发|融资状态=未知|地区=山东省 青岛市|公司规模=15人以下
 14377	成都创力互动科技有限公司	https://www.baijingapp.com//uploads/scrapy/86/2015011274846cd3.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都创力互动科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14378	成都耀布科技有限公司	https://www.baijingapp.com//uploads/scrapy/85/20150113fb43b24b.png?v=201605101534	2018-09-26 21:55:04.660435	\N	成都耀布科技有限公司	行业=游戏-研发|融资状态=未知|地区=四川省 成都市|公司规模=15-50人
 14379	零时间（北京）科技发展有限公司	https://www.baijingapp.com//uploads/scrapy/84/20150113788cf94b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	零时间（北京）科技发展有限公司	行业=游戏-发行|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人
-14380	成都掌娱天下科技有限公司	https://www.baijingapp.com//uploads/scrapy/82/2015011513ce0305.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都掌娱天下科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=四川省 成都市|公司规模=150-500人|网址=www.palmjoys.com
 14381	上海掌驿网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/80/20150115f286087b.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海掌驿网络科技有限公司	行业=游戏-研发|融资状态=未知|地区=上海市 浦东新区|公司规模=15-50人
 14382	上海聚梦石网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/79/2015011698985b17.png?v=201605101534	2018-09-26 21:55:04.660435	\N	上海聚梦石网络科技有限公司	行业=游戏-研发；手机与硬件|融资状态=天使轮|地区=上海市 浦东新区|公司规模=15-50人
 14383	广州维动网络科技有限公司	https://www.baijingapp.com//uploads/scrapy/78/20150116c2044ff7.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州维动网络科技有限公司	行业=游戏-研发,发行|融资状态=Pre-B轮|地区=广东省 广州市|公司规模=500-2000人|网址=http://www.91wan.com
@@ -7234,7 +7127,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14385	天津市多德科技有限公司	https://www.baijingapp.com//uploads/company/00/4011/20150518/1431943565_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	天津市多德科技有限公司	行业=游戏-研发；其他|融资状态=未知|地区=天津市 西青区|公司规模=15-50人|网址=www.dodur.com
 14386	珠海正点科技有限公司	https://www.baijingapp.com//uploads/company/00/6002/20160128/1453968027_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	正点科技	行业=应用|融资状态=未知|地区=北京市 海淀区|公司规模=50-150人|网址=http://www.zdworks.com
 14387	碧悠科技（湖南）有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150519/1432007975_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	碧悠科技（湖南）有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=北京市 朝阳区|公司规模=15-50人|网址=www.biubiu.com.cn 
-14388	北京新锋爱应用科技股份有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150518/1431943300_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京新锋爱应用科技股份有限公司	行业=游戏-发行,渠道；开发者服务-推广|融资状态=Pre-A|地区=北京市 西城区|公司规模=15-50人|网址=http://www.51wp.com/
 14389	成都中云天下科技有限公司	https://www.baijingapp.com//uploads/company/00/3766/20150515/1431655321_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	Testbird	行业=游戏-研发,发行；开发者服务-推广,测试|融资状态=B轮|地区=四川省 成都市|公司规模=50-150人|网址=http://www.testbird.com
 14390	北京海誉动想科技股份有限公司青岛分公司	https://www.baijingapp.com//uploads/company/00/2514/20150512/1431418502_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京海誉动想科技股份有限公司青岛分公司	行业=游戏-渠道；应用；开发者服务-推广|融资状态=B轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.haima.me/
 14391	厦门图特动漫科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431418634_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	厦门图特动漫科技有限公司	行业=游戏-研发；开发者服务-其他|融资状态=未知|地区=福建省 厦门市|公司规模=150-500人|网址=http://start99.gotoip3.com/
@@ -7249,9 +7141,7 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14400	广州铁人网络科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431415734_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州铁人网络科技有限公司	行业=游戏-渠道；开发者服务-推广|融资状态=A轮|地区=广东省 广州市|公司规模=150-500人|网址=http://www.25pp.com/
 14401	北京指间魅力科技发展有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431415230_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京指间魅力科技发展有限公司	行业=开发者服务-推广|融资状态=A轮|地区=北京市 朝阳区|公司规模=50-150人|网址=http://www.heibaidao.com.cn/
 14402	北京运科网络科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431414609_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京运科网络科技有限公司	行业=物流|融资状态=B轮|地区=北京市 朝阳区|公司规模=15-50人|网址=http://www.eunke.com/baidu_i
-14403	重庆魔创网络科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431412330_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	重庆魔创网络科技有限公司	行业=游戏-研发,发行|融资状态=未知|地区=重庆市 北碚区|公司规模=15-50人|网址=待定
 14404	上海蝶动网络技术有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431402446_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海蝶动网络技术有限公司	行业=游戏-研发,发行,渠道|融资状态=未知|地区=上海市 长宁区|公司规模=15-50人
-14405	三人行工作室	https://www.baijingapp.com//uploads/company/00/1123/20150512/1431401722_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	三人行工作室	行业=游戏-研发|融资状态=未知|地区=河南省 郑州市|公司规模=15-50人|网址=http://lsl373.cn.china.cn/
 14406	深圳市环球金贸电子商务有限公司	https://www.baijingapp.com//uploads/company/00/2514/20150511/1431329825_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	深圳市环球金贸电子商务有限公司	行业=电商|融资状态=未知|地区=广东省 深圳市|公司规模=500-2000人|网址=www.u-e-b.com/
 14407	上海清鹤科技股份有限公司	https://www.baijingapp.com//uploads/company/00/2514/20150511/1431331910_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	上海清鹤科技股份有限公司	行业=手机与硬件|融资状态=B轮|地区=上海市 浦东新区|公司规模=50-150人|网址=www.cleartv.cn/website/index.html
 14408	北京好赞移动科技有限公司	https://www.baijingapp.com//uploads/company/00/2514/20150511/1431330730_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京好赞移动科技有限公司	行业=应用|融资状态=C轮|地区=北京市 朝阳区|公司规模=150-500人|网址=http://www.oneniceapp.com
@@ -7272,7 +7162,6 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 14423	广州洪铟信息科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150430/1430356518_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州洪铟信息科技有限公司	行业=应用|融资状态=未知|地区=广东省 广州市|公司规模=15-50人|网址=http://ifate.org
 14424	腾讯无限安全产品部	https://www.baijingapp.com//uploads/company/00/1123/20150429/1430279991_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	腾讯无限安全产品部	行业=应用|融资状态=未知|地区=北京市 海淀区|公司规模=500-2000人|网址=m.qq.com
 14425	北京倾欣时空科技发展有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150428/1430183881_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京倾欣时空科技发展有限公司	行业=游戏-研发|融资状态=未知|地区=北京市 石景山区|公司规模=15-50人|网址=www.rt361.com
-14426	北京搜狗科技发展有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150427/1430120186_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	北京搜狗科技发展有限公司	行业=应用；文化娱乐-媒体及资讯|融资状态=C轮|地区=北京市 海淀区|公司规模=2000人以上|网址=http://www.sogou.com/
 14427	香港蜂鸟移动有限公司（Hummer Mobile Hongkong Co., Limited）	https://www.baijingapp.com//uploads/company/00/1123/20150427/1430116144_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	香港蜂鸟移动有限公司（Hummer Mobile Hongkong Co., Limited）	行业=开发者服务-推广,变现|融资状态=未知|地区=香港 西贡区|公司规模=500-2000人|网址=http://www.hummermobi.com
 14428	广州光岛网络科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150424/1429841940_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	广州光岛网络科技有限公司	行业=开发者服务-推广|融资状态=未知|地区=广东省 广州市|公司规模=500-2000人|网址=http://www.o2omobi.com/
 14429	成都泰峰卓越科技有限公司	https://www.baijingapp.com//uploads/company/00/1123/20150423/1429782550_pic_real.jpg?v=201605101534	2018-09-26 21:55:04.660435	\N	成都泰峰卓越科技有限公司	行业=游戏-发行,渠道|融资状态=天使轮|地区=香港 湾仔区|公司规模=15-50人|网址=www.tfjoy.com
@@ -7297,14 +7186,14 @@ COPY public.organizations (id, name, icon, created_at, verified, alias, info) FR
 
 
 --
--- Name: organizations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: shutu
+-- Name: organizations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: x4
 --
 
 SELECT pg_catalog.setval('public.organizations_id_seq', 14446, true);
 
 
 --
--- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: shutu
+-- Name: organizations organizations_pkey; Type: CONSTRAINT; Schema: public; Owner: x4
 --
 
 ALTER TABLE ONLY public.organizations

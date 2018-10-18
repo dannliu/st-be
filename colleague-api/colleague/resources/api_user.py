@@ -14,10 +14,9 @@ from colleague.extensions import db
 from colleague.extensions import redis_conn
 from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
-from colleague.service import user_service
+from colleague.service import user_service, rc_service
 from colleague.utils import (ErrorCode, VerificationCode, md5,
                              st_raise_error, decode_id, generate_random_verification_code)
-from colleague.rongcloud import token_service
 from . import compose_response
 
 
@@ -147,6 +146,8 @@ class UserDetail(Resource):
         reqparser.add_argument('colleague_id', type=unicode, location='json', required=False)
         args = reqparser.parse_args()
         user_info = current_user.user.update_user(**args)
+        login_user = User.find(current_user.user.id)
+        rc_service.refresh_user_info(login_user)
         return {
             "status": 200,
             "result": user_info
@@ -175,6 +176,8 @@ class UploadUserIcon(Resource):
         img.save(saved_path)
 
         user_info = current_user.user.update_user(avatar=os.path.join(date_dir, img_file))
+        login_user = User.find(current_user.user.id)
+        rc_service.refresh_user_info(login_user)
         return {
             "status": 200,
             "result": user_info
@@ -192,6 +195,13 @@ class UserProfile(Resource):
         return compose_response(result=user_profile)
 
 
+class MeProfile(Resource):
+    @login_required
+    def get(self):
+        user_profile = user_service.get_login_user_profile(current_user.user.id)
+        return compose_response(result=user_profile)
+
+
 class RongCloud(Resource):
     """Get RongCloud token
     https://www.rongcloud.cn/docs/ios.html
@@ -199,7 +209,7 @@ class RongCloud(Resource):
 
     @login_required
     def get(self):
-        token = token_service.get_rc_token(current_user.user)
+        token = rc_service.get_rc_token(current_user.user)
         if token is None:
             st_raise_error(ErrorCode.RCTOKEN_FETCH_ERROR)
         return compose_response(result={"token": token})

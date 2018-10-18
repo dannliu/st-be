@@ -67,7 +67,8 @@ def register_extensions(app):
 def register_blueprints(app):
     from .resources.api_user import (
         Register, Verification, Login, RefreshToken, Logout,
-        UserDetail, UploadUserIcon, SearchUsers, UserProfile, RongCloud)
+        UserDetail, UploadUserIcon, SearchUsers, UserProfile, RongCloud,
+        MeProfile)
     from .resources.api_work import (ApiWorkExperience, ApiCompanySearch)
     from .resources.api_contact import ApiContacts, ApiContactRequest
     from .resources.api_endorse import (
@@ -82,8 +83,10 @@ def register_blueprints(app):
     api.add_resource(Logout, '/logout')
     # The api for updating current user information
     api.add_resource(UserDetail, '/user_detail')
+    # 获取登录用户的profile
+    api.add_resource(MeProfile, '/me/profile')
     # 获取用户profile
-    api.add_resource(UserProfile, '/user_profile')
+    api.add_resource(UserProfile, '/user/profile')
     # 上传头像
     api.add_resource(UploadUserIcon, '/upload_avatar')
     # 添加用户搜索

@@ -58,11 +58,13 @@ class Contact(db.Model):
 
     @staticmethod
     def add(uidA, uidB, type):
+        result = False
         contact = Contact.find_by_uid(uidA, uidB)
         if contact is None:
             uidA, uidB = (uidA, uidB) if uidA < uidB else (uidB, uidA)
             contact = Contact(uidA=uidA, uidB=uidB, type=type)
             db.session.add(contact)
+            result = True
         # 由于联系人的请求有两种来源：自己添加和朋友推荐
         # 这两种情况可能同时会存在，但是以用户添加为主
         if type == ContactRequestType.Added:
@@ -70,6 +72,7 @@ class Contact(db.Model):
         contact.status = ContactStatus.Connected
         contact.updated_at = arrow.utcnow().naive
         db.session.commit()
+        return result
 
     @staticmethod
     def find_by_uid(uidA, uidB):
@@ -134,6 +137,7 @@ class ContactRequest(db.Model):
 
     @staticmethod
     def add(uid, uidA, uidB, comment):
+        result = False
         relationship = Contact.find_by_uid(uidA, uidB)
         if relationship and relationship.status == ContactStatus.Connected:
             st_raise_error(ErrorCode.RELATIONSHIP_ALREADY_CONNECTED)
@@ -146,6 +150,7 @@ class ContactRequest(db.Model):
             if len(work_experiences_A & work_experiences_B) == 0:
                 st_raise_error(ErrorCode.ADD_RELATIONSHIP_NOT_COMMON_COMPANY)
 
+        # TODO: 过期时间
         request = ContactRequest.query.filter(
                 ContactRequest.uid == uid,
                 ContactRequest.uidA == uidA,
@@ -156,4 +161,6 @@ class ContactRequest(db.Model):
             request = ContactRequest(uid=uid, uidA=uidA, uidB=uidB, type=type,
                                      comment=comment, status=ContactRequestStatus.Pending)
             db.session.add(request)
+            result = True
         db.session.commit()
+        return result

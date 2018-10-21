@@ -190,8 +190,8 @@ class UserProfile(Resource):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uid', type=unicode, location='args', required=True)
         args = reqparser.parse_args()
-        uid = decode_id(args['uid'])
-        user_profile = user_service.get_user_profile(uid)
+        uid = int(decode_id(args['uid']))
+        user_profile = user_service.get_user_profile(uid, current_user.user.id)
         return compose_response(result=user_profile)
 
 

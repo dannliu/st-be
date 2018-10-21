@@ -61,8 +61,8 @@ class Contact(db.Model):
         result = False
         contact = Contact.find_by_uid(uidA, uidB)
         if contact is None:
-            uidA, uidB = (uidA, uidB) if uidA < uidB else (uidB, uidA)
-            contact = Contact(uidA=uidA, uidB=uidB, type=type)
+            uid_a, uid_b = Contact._ordered_uid(uidA, uidB)
+            contact = Contact(uidA=uid_a, uidB=uid_b, type=type)
             db.session.add(contact)
             result = True
         # 由于联系人的请求有两种来源：自己添加和朋友推荐
@@ -76,9 +76,13 @@ class Contact(db.Model):
 
     @staticmethod
     def find_by_uid(uidA, uidB):
-        uidA, uidB = (uidA, uidB) if uidA < uidB else (uidB, uidA)
-        return Contact.query.filter(Contact.uidA == uidA,
-                                    Contact.uidB == uidB).one_or_none()
+        uid_a, uid_b = Contact._ordered_uid(uidA, uidB)
+        return Contact.query.filter(Contact.uidA == uid_a,
+                                    Contact.uidB == uid_b).one_or_none()
+
+    @staticmethod
+    def _ordered_uid(a, b):
+        return (a, b) if a < b else (b, a)
 
 
 class ContactRequest(db.Model):
@@ -138,8 +142,8 @@ class ContactRequest(db.Model):
     @staticmethod
     def add(uid, uidA, uidB, comment):
         result = False
-        relationship = Contact.find_by_uid(uidA, uidB)
-        if relationship and relationship.status == ContactStatus.Connected:
+        contact = Contact.find_by_uid(uidA, uidB)
+        if contact and contact.status == ContactStatus.Connected:
             st_raise_error(ErrorCode.RELATIONSHIP_ALREADY_CONNECTED)
 
         type = ContactRequestType.Added if uid == uidA else ContactRequestType.Recommended

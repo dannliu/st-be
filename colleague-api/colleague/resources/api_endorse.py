@@ -36,14 +36,15 @@ class ApiEndorseNiubility(Resource):
         reqparser.add_argument('uid', type=unicode, location='json', required=True)
         reqparser.add_argument('status', type=bool, location='json', required=True)
         args = reqparser.parse_args()
-        to_uid = decode_id(args.get('uid'))
+        to_uid = int(decode_id(args.get('uid')))
         status = args.get('status')
         UserEndorse.update(to_uid, current_user.user.id, EndorseType.Niubility, status)
         if status:
             message = "你的同事{}认为你是大牛".format(current_user.user.user_name)
             rc_service.send_system_notification(rc_service.RCSystemUser.T100003,
                                                 args.get("uid"), message)
-        return compose_response(result=user_service.get_user_profile(to_uid))
+        profile = user_service.get_user_profile(to_uid, current_user.user.id)
+        return compose_response(result=profile)
 
 
 class ApiEndorseReliability(Resource):
@@ -71,15 +72,15 @@ class ApiEndorseReliability(Resource):
         reqparser.add_argument('uid', type=unicode, location='json', required=True)
         reqparser.add_argument('status', type=bool, location='json', required=True)
         args = reqparser.parse_args()
-        to_uid = decode_id(args.get('uid'))
+        to_uid = int(decode_id(args.get('uid')))
         status = args.get('status')
         if status:
             message = "你的同事{}认为你很靠谱".format(current_user.user.user_name)
             rc_service.send_system_notification(rc_service.RCSystemUser.T100004,
                                                 args.get("uid"), message)
         UserEndorse.update(to_uid, current_user.user.id, EndorseType.Reliability, status)
-        # endorsement = colleague.service.endorse_service.get_user_endorsement(to_uid, current_user.user.id)
-        return compose_response(result=user_service.get_user_profile(to_uid))
+        profile = user_service.get_user_profile(to_uid, current_user.user.id)
+        return compose_response(result=profile)
 
 
 class ApiEndorseComment(Resource):
@@ -102,11 +103,12 @@ class ApiEndorseComment(Resource):
         reqparser.add_argument('uid', type=unicode, location='json', required=True)
         reqparser.add_argument('text', type=unicode, location='json', required=True)
         args = reqparser.parse_args()
-        to_uid = decode_id(args.get('uid'))
+        to_uid = int(decode_id(args.get('uid')))
         EndorseComment.update(to_uid, current_user.user.id, args.get('text'))
         text = args.get('text')
         if text and len(text.strip()) > 0:
             message = "你的同事{}给你做了评价".format(current_user.user.user_name)
             rc_service.send_system_notification(rc_service.RCSystemUser.T100005,
                                                 args.get("uid"), message)
-        return compose_response(result=user_service.get_user_profile(to_uid), message="评论成功")
+        profile = user_service.get_user_profile(to_uid, current_user.user.id)
+        return compose_response(result=profile, message="评论成功")

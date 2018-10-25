@@ -44,6 +44,8 @@ class ErrorCode(object):
 
     RCTOKEN_FETCH_ERROR = STError(2015, "获取token失败")
 
+    UPLOAD_IMAGE_FAILED = STError(3000, "图片上传失败")
+
 
 class ApiException(Exception):
     def __init__(self, status_code, error, http_status_code=200):

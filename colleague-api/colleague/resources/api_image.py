@@ -1,10 +1,37 @@
 # -*- coding:utf-8 -*-
 
+from datetime import datetime
+import os
+import hashlib
+
+from flask_restful import Resource, request
+
 from colleague.acl import login_required
-from flask_restful import Resource
+from colleague.service.aliyun import aliyun_oss_service
+from colleague.utils import st_raise_error, ErrorCode, encode_id
+from colleague.models.meida import Image, MediaLocation
+from . import compose_response
 
 
 class ApiImage(Resource):
     @login_required
-    def post():
-        pass
+    def post(self):
+        img = request.files['image']
+        date = datetime.now()
+        date_dir = "{}/{}/{}".format(date.year, date.month, date.day)
+        saved_dir = os.path.join("feed", date_dir)
+        data = img.read()
+        md5hash = hashlib.md5(data).hexdigest()
+        saved_path = os.path.join(saved_dir, md5hash)
+        db_image = Image.find_by_path(saved_path)
+        if db_image:
+            return compose_response(result={'id': encode_id(db_image.id)})
+        img.seek(0)
+        (result, request_id) = aliyun_oss_service.upload_file(saved_path, img)
+        if result:
+            db_image = Image(path=saved_path, location=MediaLocation.AliyunOSS,
+                             info=request_id)
+            Image.add(db_image)
+            return compose_response(result={'id': encode_id(db_image.id)})
+        else:
+            st_raise_error(ErrorCode.UPLOAD_IMAGE_FAILED)

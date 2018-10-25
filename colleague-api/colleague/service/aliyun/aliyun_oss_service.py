@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 
 import os
+import logging
 
 import oss2
-
 
 def upload_file(path, file_stream):
     key = os.getenv("OSS_KEY")
@@ -13,7 +13,8 @@ def upload_file(path, file_stream):
     auth = oss2.Auth(key, sec)
     bucket = oss2.Bucket(auth, endpoint, bucket_name)
     try:
-        result = bucket.put_object(path, file_stream)
+        result = bucket.put_object(path, file_stream,headers={"Content-Type":'image/png'})
+        return result.status == 200, result.request_id
     except Exception, e:
-        print e
-    return result.status == 200
+        logging.error(str(e))
+        return False, None

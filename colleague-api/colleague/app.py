@@ -73,6 +73,7 @@ def register_blueprints(app):
     from .resources.api_contact import ApiContacts, ApiContactRequest
     from .resources.api_endorse import (
         ApiEndorseNiubility, ApiEndorseReliability, ApiEndorseComment)
+    from .resources.api_image import ApiImage
 
     api = ColleagueApi(app)
 
@@ -107,6 +108,8 @@ def register_blueprints(app):
     api.add_resource(ApiEndorseComment, '/endorse/comment')
     # 获取融云token
     api.add_resource(RongCloud, '/im/token')
+    # 上传图片
+    api.add_resource(ApiImage, '/image/upload')
 
 
 def register_errorhandlers(app):

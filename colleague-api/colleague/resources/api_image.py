@@ -18,8 +18,7 @@ class ApiImage(Resource):
     def post(self):
         img = request.files['image']
         date = datetime.now()
-        date_dir = "{}/{}/{}".format(date.year, date.month, date.day)
-        saved_dir = os.path.join("feed", date_dir)
+        saved_dir = "feed/{}/{}/{}".format(date.year, date.month, date.day)
         data = img.read()
         md5hash = hashlib.md5(data).hexdigest()
         saved_path = os.path.join(saved_dir, md5hash)

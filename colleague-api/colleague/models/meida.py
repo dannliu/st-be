@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 from colleague.extensions import db
-from colleague.utils import list_to_dict, encode_id, decode_id
+from colleague.utils import list_to_dict
 
 
 class MediaLocation(object):

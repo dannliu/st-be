@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from datetime import datetime
+import time
 
 from flask import request
 from flask_jwt_extended import current_user
@@ -8,16 +9,18 @@ from flask_restful import Resource, reqparse
 from werkzeug.utils import secure_filename
 
 from colleague.acl import login_required, refresh_token_required
-from colleague.aliyunsms.demo_sms_send import send_sms_code
+from colleague.service.aliyun.aliyun_sms_service import send_sms_code
 from colleague.config import settings
 from colleague.extensions import db
 from colleague.extensions import redis_conn
 from colleague.models.endorsement import Endorsement
 from colleague.models.user import User
 from colleague.service import user_service, rc_service
+from colleague.service.aliyun import aliyun_oss_service
 from colleague.utils import (ErrorCode, VerificationCode, md5,
                              st_raise_error, decode_id, generate_random_verification_code)
 from . import compose_response
+import logging
 
 
 class Register(Resource):
@@ -154,7 +157,7 @@ class UserDetail(Resource):
         }
 
 
-class UploadUserIcon(Resource):
+class UploadAvatar(Resource):
     @login_required
     def post(self):
         img = request.files['image']
@@ -164,18 +167,24 @@ class UploadUserIcon(Resource):
         date = datetime.now()
         date_dir = "{}/{}/{}".format(date.year, date.month, date.day)
         saved_dir = os.path.join(settings['UPLOAD_FOLDER'], date_dir)
-        if not os.path.exists(saved_dir):
-            try:
-                # Don't use os.path.exists, two processes may create the folder
-                # at the same time
-                os.makedirs(saved_dir)
-            except:
-                pass
-        img_file = "{}.{}".format(md5(str(user_id), settings["SECRET_KEY"]), ext)
-        saved_path = os.path.join(saved_dir, img_file)
-        img.save(saved_path)
+        # if not os.path.exists(saved_dir):
+        #     try:
+        #         # Don't use os.path.exists, two processes may create the folder
+        #         # at the same time
+        #         os.makedirs(saved_dir)
+        #     except:
+        #         pass
 
-        user_info = current_user.user.update_user(avatar=os.path.join(date_dir, img_file))
+        # Fix bug, change the avatar url when upload, as client will cache
+        # the avatar using url as key
+        img_file = "{}.{}".format(md5(str(user_id), str(time.time())), ext)
+        saved_path = os.path.join(saved_dir, img_file)
+        # img.save(saved_path)
+        print ">>>>>> upload avatar, saved path = {}".format(saved_path)
+        logging.info(">>>>>> Upload path %s", saved_path)
+        aliyun_oss_service.upload_file(saved_path, img)
+
+        user_info = current_user.user.update_user(avatar=saved_path)
         login_user = User.find(current_user.user.id)
         rc_service.refresh_user_info(login_user)
         return {

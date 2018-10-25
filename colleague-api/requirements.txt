@@ -12,6 +12,7 @@ python-dotenv
 passlib
 pycrypto
 requests
+oss2
 
 # test
 factory-boy

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from datetime import datetime
 
 import arrow
@@ -142,7 +143,7 @@ class User(db.Model):
 
     @property
     def avatar_url(self):
-        return "{}/images/avatar/{}".format(settings["SERVER_NAME"], self.avatar) if self.avatar else ""
+        return os.path.join(settings["SERVER_NAME"], self.avatar) if self.avatar else ""
 
     def to_dict_with_mobile(self):
         d = self.to_dict()

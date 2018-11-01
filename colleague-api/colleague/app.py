@@ -74,6 +74,7 @@ def register_blueprints(app):
     from .resources.api_endorse import (
         ApiEndorseNiubility, ApiEndorseReliability, ApiEndorseComment)
     from .resources.api_image import ApiImage
+    from .resources.api_feed import ApiFeed, ApiFeedLike
 
     api = ColleagueApi(app)
 
@@ -110,6 +111,8 @@ def register_blueprints(app):
     api.add_resource(RongCloud, '/im/token')
     # 上传图片
     api.add_resource(ApiImage, '/image/upload')
+    # 动态
+    api.add_resource(ApiFeed, '/feed')
 
 
 def register_errorhandlers(app):

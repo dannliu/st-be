@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 from colleague.extensions import db
-from colleague.utils import list_to_dict
+from colleague.utils import list_to_dict, encode_id
 
 
 class MediaLocation(object):
@@ -43,5 +43,14 @@ class Image(db.Model):
     def find_by_path(path):
         return Image.query.filter(Image.path == path).one_or_none()
 
-    def url(self):
-        return os.path.join(os.getenv("SERVER_NAME"), self.path)
+
+    @staticmethod
+    def path_to_url(path, location=MediaLocation.AliyunOSS):
+        if location == MediaLocation.AliyunOSS:
+            return os.path.join(os.getenv("SERVER_NAME"), path)
+
+    def to_dict(self):
+        return {
+            "id": encode_id(self.id),
+            "url": Image.path_to_url(self.path)
+        }

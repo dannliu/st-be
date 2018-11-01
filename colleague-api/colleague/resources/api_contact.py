@@ -38,7 +38,7 @@ class ApiContactRequest(Resource):
         return compose_response(result=requests)
 
     @login_required
-    def put(self):
+    def post(self):
         # 请求建立联系人关系
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('uidA', type=unicode, location='json', required=True)
@@ -61,7 +61,7 @@ class ApiContactRequest(Resource):
         return compose_response(message="请求发送成功")
 
     @login_required
-    def post(self):
+    def put(self):
         # 接受或者删除联系人申请
         # TODO: We need check whether two users were once in the same company?
         reqparser = reqparse.RequestParser()

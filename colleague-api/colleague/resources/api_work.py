@@ -28,7 +28,7 @@ class ApiWorkExperience(Resource):
         }
 
     @login_required
-    def put(self):
+    def post(self):
         # Add a new work experience
         reqparser = reqparse.RequestParser()
         # company_id and company_name must have one
@@ -55,7 +55,7 @@ class ApiWorkExperience(Resource):
         return compose_response(result=user_service.get_login_user_profile(current_user.user.id))
 
     @login_required
-    def post(self):
+    def put(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('id', type=unicode, location='json', required=True)
         # company_id and company_name must have one

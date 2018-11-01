@@ -24,13 +24,13 @@ class ApiImage(Resource):
         saved_path = os.path.join(saved_dir, md5hash)
         db_image = Image.find_by_path(saved_path)
         if db_image:
-            return compose_response(result={'id': encode_id(db_image.id)})
+            return compose_response(result=db_image.to_dict())
         img.seek(0)
         (result, request_id) = aliyun_oss_service.upload_file(saved_path, img)
         if result:
             db_image = Image(path=saved_path, location=MediaLocation.AliyunOSS,
                              info=request_id)
             Image.add(db_image)
-            return compose_response(result={'id': encode_id(db_image.id)})
+            return compose_response(result=db_image.to_dict())
         else:
             st_raise_error(ErrorCode.UPLOAD_IMAGE_FAILED)

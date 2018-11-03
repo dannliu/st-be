@@ -10,6 +10,7 @@ from . import compose_response
 
 
 class ApiCompanySearch(Resource):
+    @login_required
     def get(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('keyword', type=unicode, location='args', required=False)

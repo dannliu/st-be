@@ -43,7 +43,11 @@ class ErrorCode(object):
     ENDORSE_TYPE_INVALID = STError(2014, "你要背的书我们还没有提供哦")
 
     RCTOKEN_FETCH_ERROR = STError(2015, "获取token失败")
+
+    # Feed
     FEED_NOT_FOUND = STError(2016, "feed不存在")
+    FEED_CONTENT_INCOMPLETE = STError(2017, "请发布完整的动态")
+    FEED_IMAGE_NOT_EXIST = STError(2018, "图片不存在")
 
     UPLOAD_IMAGE_FAILED = STError(3000, "图片上传失败")
 

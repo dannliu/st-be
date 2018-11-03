@@ -16,11 +16,13 @@ class ApiFeed(Resource):
     @login_required
     def post(self):
         text = request.json.get('text')
-        images = request.json.get('images')
-        if images:
-            image_ids = [int(decode_id(id)) for id in images]
-            images = [item.path for item in Image.find_by_ids(image_ids)]
-        feed = Feed(uid=current_user.user.id, images=images, text=text)
+        encoded_image_ids = request.json.get('images')
+        if not text and not encoded_image_ids:
+            st_raise_error(ErrorCode.FEED_CONTENT_INCOMPLETE)
+        image_ids = None
+        if encoded_image_ids:
+            image_ids = [Image.decode_id(id) for id in encoded_image_ids]
+        feed = Feed(uid=current_user.user.id, images=image_ids, text=text)
         Feed.add(feed)
         new_feed = Feed.find(feed.id)
         return compose_response(result=new_feed.to_dict(), message="发布成功")
@@ -37,6 +39,8 @@ class ApiFeed(Resource):
 
 
 class ApiFeedLike(Resource):
+
+    @login_required
     def post(self):
         reqparser = reqparse.RequestParser()
         reqparser.add_argument('feed_id', type=unicode, location='json', required=False)

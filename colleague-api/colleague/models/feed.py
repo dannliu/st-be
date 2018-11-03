@@ -16,7 +16,8 @@ class Feed(db.Model):
     uid = db.Column(db.BigInteger, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship("colleague.models.user.User", lazy="selectin")
     type = db.Column(db.SMALLINT, nullable=False, default=0)
-    images = db.Column(db.JSON, nullable=False)
+    # images are ids of table 'image.id'
+    images = db.Column(db.JSON, nullable=False, comment=u"图片id")
     text = db.Column(db.TEXT, nullable=False)
     like_count = db.Column(db.Integer, nullable=False, default=0)
     comment_count = db.Column(db.Integer, nullable=False, default=0)
@@ -47,7 +48,6 @@ class Feed(db.Model):
             'id': encode_id(self.id),
             'user': self.user.to_dict(),
             'type': self.type,
-            'images': [os.path.join(os.getenv("SERVER_NAME"), url) for url in self.images],
             'text': self.text,
             'like_count': self.like_count,
             'comment_count': self.comment_count,

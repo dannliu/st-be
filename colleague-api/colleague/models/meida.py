@@ -4,7 +4,7 @@ import os
 from datetime import datetime
 
 from colleague.extensions import db
-from colleague.utils import list_to_dict, encode_id
+from colleague.utils import list_to_dict, encode_id, decode_id
 
 
 class MediaLocation(object):
@@ -14,7 +14,11 @@ class MediaLocation(object):
 
 class Image(db.Model):
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
+    uid = db.Column(db.BigInteger, db.ForeignKey("users.id"), nullable=False)
     path = db.Column(db.String(255), unique=True)
+    width = db.Column(db.Integer)
+    height = db.Column(db.Integer)
+    size = db.Column(db.Integer)
     location = db.Column(db.SMALLINT, default=0, comment="0:local, 1: aliyun oss")
     info = db.Column(db.String(255))
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -43,7 +47,6 @@ class Image(db.Model):
     def find_by_path(path):
         return Image.query.filter(Image.path == path).one_or_none()
 
-
     @staticmethod
     def path_to_url(path, location=MediaLocation.AliyunOSS):
         if location == MediaLocation.AliyunOSS:
@@ -51,6 +54,16 @@ class Image(db.Model):
 
     def to_dict(self):
         return {
-            "id": encode_id(self.id),
-            "url": Image.path_to_url(self.path)
+            "id": Image.encode_id(self.id),
+            "url": Image.path_to_url(self.path),
+            "width": self.width,
+            "height": self.height,
         }
+
+    @staticmethod
+    def encode_id(id):
+        return encode_id("image" + str(id))
+
+    @staticmethod
+    def decode_id(id):
+        return int(decode_id(id)[5:])

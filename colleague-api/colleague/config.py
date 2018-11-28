@@ -30,8 +30,8 @@ class Config(Configuration):
     redis_port = int(os.getenv('REDIS_PORT'))
     redis_db = int(os.getenv('REDIS_DB'))
     jwt_secret_key = os.getenv("JWT_SECRET_KEY")
-    jwt_access_token_expires = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRES")
-    jwt_refresh_token_expires = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRES")
+    jwt_access_token_expires = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRES"))
+    jwt_refresh_token_expires = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRES"))
 
     max_verification_code_request_count = 5
 

@@ -3,40 +3,40 @@ import datetime
 import os
 
 import dotenv
-from confire import Configuration, environ_setting
+from confire import Configuration
 
-dotenv.load_dotenv(dotenv.find_dotenv(".env", raise_error_if_not_found=True, usecwd=True))
+#dotenv.load_dotenv(dotenv.find_dotenv(".env", raise_error_if_not_found=True, usecwd=True))
 
 
 class Config(Configuration):
     debug = False
     testing = False
 
-    secret_key = environ_setting('SECRET_KEY', required=True)
+    secret_key = os.getenv('SECRET_KEY')
 
-    aes_key = environ_setting("AES_KEY", required=True)
-    aes_iv = environ_setting("AES_IV", required=True)
+    aes_key = os.getenv("AES_KEY")
+    aes_iv = os.getenv("AES_IV")
 
-    db_host = environ_setting("DB_HOST")
-    db_port = environ_setting("DB_PORT", 5432, required=False)
-    db_name = environ_setting("DB_NAME", required=True)
-    db_user = environ_setting("DB_USER")
-    db_pass = environ_setting("DB_PASS", "", required=False)
+    db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
+    db_name = os.getenv("DB_NAME")
+    db_user = os.getenv("DB_USER")
+    db_pass = os.getenv("DB_PASS")
     sqlalchemy_database_uri = 'postgresql://{}:{}@{}:{}/{}'.format(
             db_user, db_pass, db_host, db_port, db_name
     )
 
-    redis_host = environ_setting('REDIS_HOST', required=True)
-    redis_port = int(environ_setting('REDIS_PORT', 6379, required=False))
-    redis_db = int(environ_setting('REDIS_DB', 0, required=True))
-    jwt_secret_key = environ_setting("JWT_SECRET_KEY", required=True)
-    jwt_access_token_expires = int(environ_setting("JWT_ACCESS_TOKEN_EXPIRES", default=30, required=False))  # days
-    jwt_refresh_token_expires = int(environ_setting("JWT_REFRESH_TOKEN_EXPIRES", default=365, required=False))  # days
+    redis_host = os.getenv('REDIS_HOST')
+    redis_port = int(os.getenv('REDIS_PORT'))
+    redis_db = int(os.getenv('REDIS_DB'))
+    jwt_secret_key = os.getenv("JWT_SECRET_KEY")
+    jwt_access_token_expires = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRES")
+    jwt_refresh_token_expires = int(os.getenv("JWT_REFRESH_TOKEN_EXPIRES")
 
     max_verification_code_request_count = 5
 
-    server_name = environ_setting("SERVER_NAME", required=True)
-    upload_folder = environ_setting("UPLOAD_FOLDER", required=True)
+    server_name = os.getenv("SERVER_NAME")
+    upload_folder = os.getenv("UPLOAD_FOLDER")
 
     def config_for_flask(self):
         """

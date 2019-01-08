@@ -63,5 +63,6 @@ class ApiFeedLike(Resource):
         if feed.like_count < 0:
             # Ensure the count is >= 0
             feed.like_count = 0
-        feed.update()
-        return compose_response(result=feed.to_dict())
+        feed_like.update()
+        new_feed = feed_service.get_feed(current_user.user.id, feed_id)
+        return compose_response(result=new_feed)

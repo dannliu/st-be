@@ -27,3 +27,16 @@ def get_feeds(uid, last_id, size):
         "next_cursor": next_cursor,
         "feeds": dict_feeds
     }
+
+
+def get_feed(uid, id):
+    feed = Feed.find(id)
+    if feed:
+        feed_like = FeedLike.find_by_uid(uid, feed.id)
+        liked = (feed_like is not None and feed_like.status == FeedLikeStatus.Liked)
+        dict_feed = feed.to_dict()
+        dict_feed['liked'] = liked
+        if feed.images:
+            images = [image.to_dict() for image in Image.find_by_ids(feed.images)]
+            dict_feed['images'] = images
+        return dict_feed

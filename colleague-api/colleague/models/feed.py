@@ -76,7 +76,7 @@ class FeedLike(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     db.UniqueConstraint(uid, feed_id)
 
-    def update():
+    def update(self):
         db.session.commit()
 
     @staticmethod

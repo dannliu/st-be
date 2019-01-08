@@ -113,6 +113,8 @@ def register_blueprints(app):
     api.add_resource(ApiImage, '/image/upload')
     # 动态
     api.add_resource(ApiFeed, '/feed')
+    # 动态like
+    api.add_resource(ApiFeedLike, '/feed/like')
 
 
 def register_errorhandlers(app):

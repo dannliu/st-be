@@ -23,3 +23,6 @@ mock
 pytest
 pytest-flask
 pytest-mock
+
+backports.functools_lru_cache
+rongcloud

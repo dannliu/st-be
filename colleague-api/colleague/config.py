@@ -5,7 +5,7 @@ import os
 import dotenv
 from confire import Configuration
 
-#dotenv.load_dotenv(dotenv.find_dotenv(".env", raise_error_if_not_found=True, usecwd=True))
+dotenv.load_dotenv(dotenv.find_dotenv(".env", raise_error_if_not_found=True, usecwd=True))
 
 
 class Config(Configuration):

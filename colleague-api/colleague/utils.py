@@ -101,7 +101,7 @@ def decode_id(cursor):
         cursor = cursor.encode('utf-8')
     cursor += '=' * (-len(cursor) % 4)
     raw = base64.urlsafe_b64decode(cursor)
-    obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
+    obj = AES.new(settings['AES_KEY'].encode("utf8"), AES.MODE_CBC, settings['AES_IV'].encode("utf8"))
     data = obj.decrypt(raw)
     return data.rstrip('\t')
 
@@ -116,7 +116,7 @@ def encode_id(cursor):
     left = len(cursor) % 16
     left = 0 if left == 0 else (16 - left)
     data = cursor + '\t' * left
-    obj = AES.new(settings['AES_KEY'], AES.MODE_CBC, settings['AES_IV'])
+    obj = AES.new(settings['AES_KEY'].encode("utf8"), AES.MODE_CBC, settings['AES_IV'].encode("utf8"))
     return base64.urlsafe_b64encode(obj.encrypt(data)).rstrip('==')
 
 

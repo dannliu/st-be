@@ -22,7 +22,7 @@ class Config(Configuration):
     db_name = os.getenv("DB_NAME")
     db_user = os.getenv("DB_USER")
     db_pass = os.getenv("DB_PASS")
-    sqlalchemy_database_uri = 'postgresql://{}:{}@{}:{}/{}'.format(
+    sqlalchemy_database_uri = 'mysql://{}:{}@{}:{}/{}?charset=utf8mb4'.format(
             db_user, db_pass, db_host, db_port, db_name
     )
 

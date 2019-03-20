@@ -12,10 +12,10 @@ class Organization(db.Model):
     id = db.Column(db.BigInteger, nullable=False, unique=True, autoincrement=True, primary_key=True)
     name = db.Column(db.String(255), unique=True, index=True)
     icon = db.Column(db.TEXT)
-    verified = db.Column(db.Boolean)
     alias = db.Column(db.String(255))
     info = db.Column(db.Text)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    verified = db.Column(db.Boolean)
 
     @staticmethod
     def add(new_one):

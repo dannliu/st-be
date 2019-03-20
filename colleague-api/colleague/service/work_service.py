@@ -90,6 +90,7 @@ def delete_work_experience(uid, id):
     WorkExperience.delete(uid, id)
     _update_user_title(uid)
 
+
 def search_company(keyword, count=10):
     if not keyword:
         return []
